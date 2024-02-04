@@ -9,10 +9,10 @@
             <ul class="d-flex gap-4 list-unstyled ">
                 <li><router-link class="nav-link" to="/">Home</router-link></li>
                 <li><router-link class="nav-link" to="/AboutUs">About Us</router-link></li>
-                <li class="nav-item dropdown ">
+                <li class="nav-item dropdown "  style="z-index: 1000 !important;">
                     <router-link class="dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false" to="/Servises">Services</router-link>
-                    <div class="dropdown-menu routerLink shadow-medium">
-                        <div class="row container">
+                    <div class="dropdown-menu routerLink shadow-medium " >
+                        <div class="row container" >
                             <router-link class="nav-link p-2 col-5 serviceLink" to="/Servises/Question">
                                 <img src="../assets/img/question.png" width="40px" alt="Question"> <span class="px-3">Question</span> 
                             </router-link>
@@ -89,6 +89,8 @@
 <style>
     .headerLayout{
         height: 80px;
+        position: sticky !important;
+        top: 0px !important;
     }
     .routerLink{
         width: 600px;

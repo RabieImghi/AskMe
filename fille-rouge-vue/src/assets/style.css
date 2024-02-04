@@ -1,10 +1,10 @@
-*{
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
-}
-.shadow-mdf{ box-shadow: 0px -6px 60px rgba(128, 128, 128, 0.237);}
+*{ font-family: Arial, Helvetica, sans-serif; box-sizing: border-box;}
+body{background-color: #FDFEF9 !important;}
+.shadow-mdf{ box-shadow: 0px -6px 60px rgba(128, 128, 128, 0.173);}
 .container-mf{ padding: 0 40px;}
 .nav-link{ font-size: 20px;}
+.text-color-primary{color: #26333B;}
+.btn-primary{background-color: #2101FF !important;}
 .m-none{ margin: 0px !important;}
 .shadow-medium{ box-shadow: 0px 0px 20px rgba(128, 128, 128, 0.237);}
 .dropdown-menu{background-color: white !important;}
