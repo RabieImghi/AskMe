@@ -1,5 +1,5 @@
 <template>
-  <AppLayout title="CRUD"/>
+  <AppLayout/>
   <router-view></router-view>
 </template>
 
