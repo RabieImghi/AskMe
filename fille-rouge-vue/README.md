@@ -1,4 +1,4 @@
-# fille-rouge-vue
+# fullstack-crud
 
 ## Project setup
 ```
