@@ -65,7 +65,7 @@
                 </div>
                 
             </section>
-            <section class="topMembers container-mf border-top mt-4 pt-4">
+            <section class="topMembers container-mf border-top mt-4 pt-4 mb-">
                 <div class="headerMembers d-flex gap-3 align-items-end">
                     <img src="../assets/img/tage.png" width="45px" alt="User">
                     <span class="h3 text-color-primary fw-bold">Trending Tages</span>   
@@ -133,7 +133,9 @@
     .togleButton{
         display: none !important;
         z-index: 1 !important;
-        position: relative
+        position: absolute;
+        top: 80px;
+        right: 0px;
     }
     @media screen and (max-width: 1250px) {
         .togleButton{
