@@ -17,6 +17,16 @@ body{background-color: #FDFEF9 !important;}
 .Explainer{background: #069801; color: white; border-radius: 3px; border: none; }
 @media screen and (max-width: 1250px) {
     .routerLink{ width: 450px;}
+    .AppContentBody{
+        width: 100%;
+    }
+    .sectionHome{
+        padding: 0 !important;
+    }
+    .contentApp{
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+    }
     aside{
         position: absolute;
         top: 80px;
@@ -27,6 +37,9 @@ body{background-color: #FDFEF9 !important;}
     @media screen and (max-width: 800px) {
         .navigationLayout{
             display: none;
+        }
+        #imageAuth{
+            display: none !important;
         }
         .nav-mobile{display: block !important;}
         .profile-menu{width: 200px !important;}
