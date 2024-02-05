@@ -91,6 +91,8 @@
         height: 80px;
         position: sticky !important;
         top: 0px !important;
+        z-index: 100 !important;
+        position: relative;
     }
     .routerLink{
         width: 600px;
