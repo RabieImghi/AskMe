@@ -17,6 +17,7 @@ body{background-color: #FDFEF9 !important;}
 .Professional{background: #8700B7; color: white; border-radius: 3px; border: none; }
 .Explainer{background: #069801; color: white; border-radius: 3px; border: none; }
 .rotate-180{rotate: 180deg;}
+.curs_point{cursor: pointer;}
 @media screen and (max-width: 1250px) {
     .routerLink{ width: 450px;}
     .AppContentBody{
@@ -46,5 +47,28 @@ body{background-color: #FDFEF9 !important;}
         .nav-mobile{display: block !important;}
         .profile-menu{width: 200px !important;}
         .container-mf{padding: 0 10px;}
+    }
+    @media screen and (max-width: 450px) {
+        .imageInfoUser.col-1{
+            width: 100%;
+        }
+        .imageInfoUser{
+            flex-direction: row !important;
+            justify-content: start !important;
+            gap: 30px !important;
+        }
+        .imageInfoUser .raitting{
+            flex-direction: row !important;
+            gap: 15px !important;
+        }
+        .userInfo{
+            display: grid !important;
+            grid-template-columns: 1fr  1fr !important;
+        }
+        .mobileQuestion{
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+        }
+        
     }
 }
