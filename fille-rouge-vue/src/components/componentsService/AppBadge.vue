@@ -9,7 +9,7 @@
                 <p class="text-secondary h5 pt-3">Besides gaining reputation with your questions and answers, you receive badges for being especially 
                     helpful. Badges appears on your profile page, questions & answers.</p>
                 <div class="badges d-flex flex-wrap justify-content-start gap-3 align-items-center pt-4">
-                    <div v-for="badge in Badges" :key='badge.id' 
+                    <div v-for="badge in Badges" :key='badge.id' style="min-height:123px" 
                         class="badge border  p-3 rounded-2 d-flex gap-3 align-items-center" >
                         <img src="./../../assets/img/bagde.png" alt="image" width="60px">
                         <div class="points d-flex flex-column">

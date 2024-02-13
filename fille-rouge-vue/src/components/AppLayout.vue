@@ -13,7 +13,7 @@
                     <router-link class="dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false" to="/Servises">Services</router-link>
                     <div class="dropdown-menu routerLink shadow-medium " >
                         <div class="row container" >
-                            <router-link class="nav-link p-2 col-5 serviceLink" to="/Servises/Question">
+                            <router-link class="nav-link p-2 col-5 serviceLink" to="/">
                                 <img src="../assets/img/question.png" width="40px" alt="Question"> <span class="px-3">Question</span> 
                             </router-link>
                             <router-link class="nav-link p-2 col-5 serviceLink" to="/Servises/Users">
