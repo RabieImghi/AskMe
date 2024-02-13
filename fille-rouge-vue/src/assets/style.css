@@ -11,7 +11,7 @@ body{background-color: #FDFEF9 !important;}
 .color-premary{color: #2101FF !important;}
 .shadow{box-shadow: 0px 2px 10px lightgray  !important;}
 .nav-mobile{display: none !important;}
-.router-link-active{color: #2101FF; text-decoration: underline;}
+.router-link-active{color: #2101FF}
 .Beginner{background: black; color: white; border-radius: 3px; border: none; }
 .Enlightened{background: red; color: white; border-radius: 3px; border: none; }
 .Professional{background: #8700B7; color: white; border-radius: 3px; border: none; }
@@ -37,6 +37,20 @@ body{background-color: #FDFEF9 !important;}
         left: 0;
         display: none;
     }
+    @media screen and (max-width: 1000px) {
+        .badgeLevel{
+            display: grid !important;
+        }
+        .infobadgeLevel{
+            display: flex !important;
+            align-items: center !important;
+            gap: 30px;
+            justify-content: space-between;
+        }
+        .infobadgeLevel .pt-3{
+            padding: 0 !important;
+        }
+    }
     @media screen and (max-width: 800px) {
         .navigationLayout{
             display: none;
@@ -49,6 +63,9 @@ body{background-color: #FDFEF9 !important;}
         .container-mf{padding: 0 10px;}
     }
     @media screen and (max-width: 450px) {
+        *{
+            font-size: 14px;
+        }
         .imageInfoUser.col-1{
             width: 100%;
         }
@@ -68,6 +85,15 @@ body{background-color: #FDFEF9 !important;}
         .mobileQuestion{
             display: grid !important;
             grid-template-columns: 1fr !important;
+        }
+        .btnLevel{
+            font-size: 13px;
+        }
+        .image-user img{
+            width: 45px;
+        }
+        .logoImage{
+            width: 90px;
         }
         
     }

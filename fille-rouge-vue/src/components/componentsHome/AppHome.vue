@@ -323,9 +323,7 @@
                 </div>
                 
             </div>
-            
-            
-            <div class="pagination container-mf d-flex pt-4 justify-content-end">
+            <div class="pagination border-bottom pb-4 container-mf d-flex pt-4 justify-content-end">
                 <ul class="nav">
                     <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold text-secondary border mx-2">&lt;</li>
                     <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold text-secondary border mx-2">1</li>
@@ -334,6 +332,10 @@
                     <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold text-secondary border mx-2">&gt;</li>
                 </ul>
             </div>
+            <footer class="text-center text-secondary fw-bold pt-3">
+                © Copyright AskMe. All Rights Reserved <br>
+                Designed by Rabie Ait Imghi
+            </footer>
         </section>
        
     </div>
