@@ -15,6 +15,7 @@
                             <span class="fw-bold text-secondary h3 ">{{tage.name}}</span>
                         </div>
                         <div class="text-secondary">
+                            
                             {{ tage.description }}
                         </div>
                     </div>
