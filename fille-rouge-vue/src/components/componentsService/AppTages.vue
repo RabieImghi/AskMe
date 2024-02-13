@@ -1,6 +1,6 @@
 <template>
-    <div class="sectionBadge pe-4">
-        <div class="bg-white">
+    <div class=" pe-4">
+        <div class="sectionBadge bg-white shadow">
             <div class="border-bottom container-mf pt-4 pb-4 d-flex align-items-center justify-content-between">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
                 <div class="search">
@@ -15,13 +15,17 @@
                             <span class="fw-bold text-secondary h3 ">{{tage.name}}</span>
                         </div>
                         <div class="text-secondary">
-                            
+
                             {{ tage.description }}
                         </div>
                     </div>
                     
                 </div>
             </section>
+            <footer class="text-center text-secondary fw-bold pt-3">
+                © Copyright AskMe. All Rights Reserved <br>
+                Designed by Rabie Ait Imghi
+            </footer>
         </div>
     </div>
 </template>
@@ -57,6 +61,9 @@
     }
 </script>
 <style>
+    .sectionBadge{
+        min-height: calc( 100vh - 80px);
+    }
     .tagelists{
         min-width: 360px;
         max-width: 360px;

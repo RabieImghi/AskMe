@@ -1,6 +1,6 @@
 <template>
-    <div class="sectionBadge pe-4">
-        <div class="bg-white">
+    <div class=" pe-4">
+        <div class="bg-white sectionUser shadow">
             <div class="border-bottom container-mf pt-4 pb-4 d-flex align-items-center justify-content-between">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
                 <div class="search">
@@ -72,6 +72,9 @@
     }
 </script>
 <style>
+    .sectionUser{
+        min-height: calc( 100vh - 80px );
+    }
     .user{
         min-width: 360px;
         max-width: 360px;

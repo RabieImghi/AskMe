@@ -1,6 +1,6 @@
 <template>
     <div class="sectionBadge pe-4">
-        <div class="bg-white">
+        <div class="bg-white shadow">
             <div class="border-bottom container-mf pt-4 pb-4">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
             </div> 
