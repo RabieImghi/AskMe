@@ -27,7 +27,7 @@
                 </div>
             </section>
             <section class="pt-4 h3 border-bottom pb-4 container-mf">
-                <span class="fw-bold">Badges System</span>
+                <p class="fw-bold h3">Badges System</p>
                 <p class="text-secondary h5 pt-3">Besides gaining reputation with your questions and answers, you receive badges for being especially helpful. 
                     Badges appears on your profile page, questions & answers.</p>
                 <div class="badgesPonit">

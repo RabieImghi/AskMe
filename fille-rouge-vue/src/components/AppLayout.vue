@@ -2,7 +2,7 @@
     <div class="content d-flex justify-content-between align-items-center headerLayout shadow-mdf container-mf">
         <div class="logo">
             <router-link to="/">
-                <img src="../assets/img/logo.png" width="110px" alt="">
+                <img src="../assets/img/logo.png" class="logoImage" width="110px" alt="">
             </router-link> 
         </div>
         <nav class="navigationLayout mt-2">
@@ -41,7 +41,7 @@
         <div class="profil dropdown d-flex gap-2 align-items-center">
             <div class="info d-flex flex-column">
                 <span class="fw-bold">Rabie Ait Imghi</span>
-                <button  class="Professional">Professional</button>
+                <button  class="Professional btnLevel">Professional</button>
             </div>
             <div class="image-user dropdown-toggle" id="dropdown2" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="../assets/img/user.png" width="60px" alt="">
@@ -56,7 +56,9 @@
                         <img src="../assets/img/settings.png" width="30px" alt="Settings"> Settings
                     </router-link>
                     <hr class="m-none nav-mobile">
-                    
+                    <router-link class="nav-link d-flex gap-2 align-items-center px-3 nav-mobile" to="/">
+                        <img src="../assets/img/question.png" width="30px" alt="Question"> <span>Question</span> 
+                    </router-link>
                     <router-link class="nav-link d-flex gap-2 align-items-center px-3 nav-mobile" to="/">
                         <img src="../assets/img/question.png" width="30px" alt="Question"> <span>Question</span> 
                     </router-link>
