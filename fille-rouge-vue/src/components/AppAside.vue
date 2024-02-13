@@ -93,20 +93,11 @@
                 
             </section>
         </aside>
-        <div class="togleButton d-flex justify-content-end pe-4 pt-3">
-            <img @click="toggleAside" src="../assets/img/menu.png" class="p-1 shadow rounded-1" style="background: white;" id="togleButton" width="50px" alt="togleMenu">
-        </div>
     </div>
 </template>
 <script>
     export default{
         name: 'AppAside',
-        methods: {
-            toggleAside() {
-                const aside = document.getElementById('aside');
-                aside.classList.toggle('show-aside');
-            },
-        },
     }
 </script>
 <style>
@@ -118,10 +109,6 @@
     }
     aside::-webkit-scrollbar{
         display: none;
-    }
-    .show-aside {
-        display: block !important;
-        transform: translateX(0);
     }
     .col-6{
         padding-left: 0px !important;

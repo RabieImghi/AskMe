@@ -57,7 +57,7 @@
                     </router-link>
                     <hr class="m-none nav-mobile">
                     
-                    <router-link class="nav-link d-flex gap-2 align-items-center px-3 nav-mobile" to="/Servises/Question">
+                    <router-link class="nav-link d-flex gap-2 align-items-center px-3 nav-mobile" to="/">
                         <img src="../assets/img/question.png" width="30px" alt="Question"> <span>Question</span> 
                     </router-link>
                     <router-link class="nav-link d-flex gap-2 align-items-center px-3 nav-mobile" to="/Servises/Users">

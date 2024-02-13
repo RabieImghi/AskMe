@@ -37,6 +37,20 @@ body{background-color: #FDFEF9 !important;}
         left: 0;
         display: none;
     }
+    @media screen and (max-width: 1000px) {
+        .badgeLevel{
+            display: grid !important;
+        }
+        .infobadgeLevel{
+            display: flex !important;
+            align-items: center !important;
+            gap: 30px;
+            justify-content: space-between;
+        }
+        .infobadgeLevel .pt-3{
+            padding: 0 !important;
+        }
+    }
     @media screen and (max-width: 800px) {
         .navigationLayout{
             display: none;
