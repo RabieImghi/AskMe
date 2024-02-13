@@ -66,6 +66,9 @@ body{background-color: #FDFEF9 !important;}
         *{
             font-size: 14px;
         }
+        #saerchUesr{
+            width: 200px !important;
+        }
         .imageInfoUser.col-1{
             width: 100%;
         }
