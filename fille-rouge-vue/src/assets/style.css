@@ -18,6 +18,7 @@ body{background-color: #FDFEF9 !important;}
 .Explainer{background: #069801; color: white; border-radius: 3px; border: none; }
 .rotate-180{rotate: 180deg;}
 .curs_point{cursor: pointer;}
+.cursor-point{cursor: pointer;}
 @media screen and (max-width: 1250px) {
     .routerLink{ width: 450px;}
     .AppContentBody{
