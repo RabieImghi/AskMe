@@ -14,7 +14,7 @@
                         <div class="containName infoProfileHiden  m-1 rounded-1 d-flex justify-content-between align-items-center">
                             <btn class="btn btn-dark p-1 h4 mt-2 fw-bold mx-3">Rabie_Imghi</btn>
                             <div class="buttons d-flex gap-4 ">
-                                <button class="btn btn-dark m-1">Edit</button>
+                                <router-link to='/Settings'> <button class="btn btn-dark m-1">Edit</button></router-link>
                                 <button class="Enlightened m-1">Enlightened</button>
                             </div>
                         </div>
@@ -69,37 +69,37 @@
                 <div class="fw-bold text-secondary h3 mt-4">Contact </div>
                 <hr>
                 <div class="sociallink d-flex flex-wrap gap-4 justify-content-between align-items-center">
-                    <a href="https://www.google.com" class="linksosial shadow rounded-1 border translateEffect p-2  text-decoration-none" target="_blank">
+                    <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
                             <img src="../../assets/img/facebook.png" width="50px" alt="facebook">
                             <span class="fw-bold text-primary h4">Rabie Ait Imghi</span> 
                         </div>
                     </a>
-                    <a href="https://www.google.com" class="linksosial shadow rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
+                    <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
                             <img src="../../assets/img/github.png" width="50px" alt="facebook">
                             <span class="fw-bold text-dark h4">RabieImghi</span> 
                         </div>
                     </a>
-                    <a href="https://www.google.com" class="linksosial shadow rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
+                    <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
                             <img src="../../assets/img/whatsapp.png" width="50px" alt="facebook">
                             <span class="fw-bold text-success h4">+21263948-3932</span> 
                         </div>
                     </a>
-                    <a href="https://www.google.com" class="linksosial shadow rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
+                    <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
                             <img src="../../assets/img/gmail.png" width="50px" alt="facebook">
                             <span class="fw-bold text-danger h4">rabieImghi@gmail.com</span> 
                         </div>
                     </a>
-                    <a href="https://www.google.com" class="linksosial shadow rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
+                    <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
                             <img src="../../assets/img/linkedin.png" width="50px" alt="facebook">
                             <span class="fw-bold text-primary h4">RabieAitImghi</span> 
                         </div>
                     </a>
-                    <a href="https://www.google.com" class="linksosial shadow rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
+                    <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
                             <img src="../../assets/img/website.png" width="50px" alt="facebook">
                             <span class="fw-bold text-dark h4">RabieImghi.com</span> 
