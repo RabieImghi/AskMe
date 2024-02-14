@@ -1,5 +1,5 @@
 <template>
-    <div class=" pe-4">
+    <div class="contentPage pe-4">
         <div class="sectionBadge bg-white shadow">
             <div class="border-bottom container-mf pt-4 pb-4 d-flex align-items-center justify-content-between">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
@@ -9,7 +9,7 @@
             </div> 
             <section class="tageList container-mf border-bottom pb-4 pt-4  ">
                 <div class="tage d-flex flex-wrap gap-3 justify-content-between">
-                    <div class="tagelists border p-3 rounded-1 shadow" v-for="tage in filteredUsers" :key="tage.id">
+                    <div class="translateEffect cursor-point tagelists border p-3 rounded-1 shadow" v-for="tage in filteredUsers" :key="tage.id">
                         <div class="TageTitle d-flex gap-4">
                             <img src="../../assets/img/tage.png" width="35px" alt="">
                             <span class="fw-bold text-secondary h3 ">{{tage.name}}</span>

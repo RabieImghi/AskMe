@@ -1,5 +1,5 @@
 <template>
-    <div class="sectionBadge pe-4">
+    <div class="contentPage pe-4">
         <div class="bg-white shadow">
             <div class="border-bottom container-mf pt-4 pb-4">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
@@ -10,14 +10,14 @@
                     helpful. Badges appears on your profile page, questions & answers.</p>
                 <div class="badges d-flex flex-wrap justify-content-start gap-3 align-items-center pt-4">
                     <div v-for="badge in Badges" :key='badge.id' style="min-height:123px" 
-                        class="badge border  p-3 rounded-2 d-flex gap-3 align-items-center" >
+                        class="badge translateEffect cursor-point border  p-3 rounded-2 d-flex gap-3 align-items-center" >
                         <img src="./../../assets/img/bagde.png" alt="image" width="60px">
                         <div class="points d-flex flex-column">
                             <div class="fw-bold text-secondary h4 text-start"> <span class="text-warning">{{badge.point}}</span>  Point</div>
                             <p class="text-secondary dscription h5">{{badge.description}}</p>
                         </div>
                     </div>  
-                    <div  class="badge border  p-3 rounded-2 d-flex gap-3 align-items-center" >
+                    <div  class="badge border translateEffect cursor-point  p-3 rounded-2 d-flex gap-3 align-items-center" >
                         <img src="./../../assets/img/bagde.png" alt="image" width="60px">
                         <div class="points d-flex flex-column">
                             <div class="fw-bold text-secondary h4 text-start"> <span class="text-warning">20</span>  Point</div>

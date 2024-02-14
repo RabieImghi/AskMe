@@ -1,5 +1,5 @@
 <template>
-    <div class=" pe-4">
+    <div class="contentPage pe-4">
         <div class="bg-white contactpage shadow">
             <div class="border-bottom container-mf pt-4 pb-4">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Contact</span></span>  
