@@ -29,7 +29,7 @@
             <section class="container-mf mt-4 pt-2">
                 <form class="mt-4">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="../../assets/img/information.png" width="50px" alt="info">
+                        <img src="../../assets/img/information.png" class="imageprofilesetting2" width="50px" alt="info">
                         <div class="fw-bold text-secondary h3 pt-2">Basic Information</div>
                     </div>
                     <hr>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 pt-4">
-                        <img src="../../assets/img/webpage.png" width="40px" alt="info">
+                        <img src="../../assets/img/webpage.png" class="imageprofilesetting" width="40px" alt="info">
                         <div class="fw-bold text-secondary h3 pt-2">Social Profiles </div>
                     </div>
                     <hr>
