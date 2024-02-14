@@ -27,7 +27,7 @@
                             <option value="question">Title</option>
                             <option value="tages">Tages</option>
                         </select>
-                        <input v-model="searchQuery" type="search" style="width: 250px;" class="shadow-sm form-control" placeholder="Search...">
+                        <input v-model="searchQuery" type="search" style="max-width: 250px;" class="shadow-sm form-control" placeholder="Search...">
                     </div>
                 </div>
             </div>

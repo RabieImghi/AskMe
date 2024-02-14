@@ -1,5 +1,5 @@
 <template>
-    <div class=" pe-4">
+    <div class="contentPage pe-4">
         <div class="bg-white sectionUser shadow">
             <div class="border-bottom container-mf pt-4 pb-4 d-flex align-items-center justify-content-between">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
@@ -10,7 +10,7 @@
             <section class="userList container-mf border-bottom pb-4 pt-4  ">
                 <div class="d-flex flex-wrap gap-3 justify-content-between">
                     <div v-for="user in filteredUsers" :key="user.id"
-                        class="user border d-flex align-items-start gap-3 p-2">
+                        class="user translateEffect cursor-point border d-flex align-items-start gap-3 p-2">
                         <div class="leftInfo d-flex flex-column gap-3 align-items-center">
                             <img src="../../assets/img/user.png" width="60px" alt="">
                             <span class="color-premary fw-bold">{{user.name}}</span>
