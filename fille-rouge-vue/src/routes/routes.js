@@ -6,6 +6,7 @@ import AppTages from '../components/componentsService/AppTages.vue';
 import AppContact from '../components/componentsService/AppContact.vue';
 import AppProfile from '../components/componrntsProfile/AppProfile.vue';
 import AppProfileSetting from '../components/componrntsProfile/AppProfileSetting.vue';
+import AppMyQuistion from '../components/componrntsProfile/AppMyQuestion.vue';
 
 const routes = [
     {name: 'Home', path: '/', component: AppHome},
@@ -15,6 +16,7 @@ const routes = [
     {name: '/ContactUs', path: '/ContactUs', component: AppContact},
     {name: '/Profile', path: '/Profile', component: AppProfile},
     {name: '/Settings', path: '/Settings', component: AppProfileSetting},
+    {name: '/MyQuistion', path: '/MyQuistion', component: AppMyQuistion},
     
 ];
 
