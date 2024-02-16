@@ -21,8 +21,10 @@
                         <span class="text-secondary">Asked : <span class="text-danger">{{post.date}}</span></span>
                         <span class="text-secondary">In : <span class="text-danger">{{post.category}}</span></span>
                     </div>
-                    <span class=" h3 fw-bold">{{post.question}}</span>
-                    <p class="text-secondary pt-3">{{post.questionDetail}}</p>
+                    <router-link to="/Answers" class="nav-link">
+                        <span class=" h3 fw-bold">{{post.question}}</span>
+                        <p class="text-secondary pt-3">{{post.questionDetail}}</p>  
+                    </router-link>
                     <div class="Tages  d-flex gap-3 align-items-center flex-wrap">
                         <div  v-for="tag in post.tages" :key="tag" 
                         class="user d-flex gap-2 justify-content-between align-items-center flex-wrap border mt-2 p-2">
