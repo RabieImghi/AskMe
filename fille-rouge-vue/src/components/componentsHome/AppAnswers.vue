@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="container-mf d-flex justify-content-end mt-3 pb-3">
+                <div class="container-mf butoonaddanswer d-flex justify-content-end mt-3 pb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewAnswer">
                         Add Answer
                     </button>
@@ -72,10 +72,23 @@
             </footer>
         </section>
         <div class="modal fade" id="addNewAnswer" tabindex="-1" aria-labelledby="addNewAnswerLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        ...
+                        <form action="">
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="fw-bold h6 text-secondary">Your Answer</label>
+                                    <textarea  class="form-control" rows="10" placeholder="Type Your Message..."></textarea>
+                                </div>
+                            </div>
+                            <div class="buttond d-flex justify-content-end gap-4 mt-3 pb-3">
+                                <button type="button"  data-bs-dismiss="modal" class="btn btn-warning">Close</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="button" class="btn btn-success">Add Answer</button>  
+                            </div>
+                            
+                        </form>
                     </div>
                 </div>
             </div>
@@ -152,5 +165,10 @@
     }
     .statistiqueQuistion{
         background: #FDFEF9;
+    }
+    .butoonaddanswer{   
+        position: sticky !important;
+        top: 100px !important;
+        z-index: 100000000000 !important;
     }
 </style>

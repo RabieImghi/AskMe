@@ -41,6 +41,9 @@ body{background-color: #FDFEF9 !important;}
         display: none;
     }
     @media screen and (max-width: 1000px) {
+        #imageAuth{
+            width: 400px  !important;
+        }
         .badgeLevel{
             display: grid !important;
         }
@@ -55,6 +58,13 @@ body{background-color: #FDFEF9 !important;}
         }
     }
     @media screen and (max-width: 800px) {
+        .aboutUs {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+        }
+        #imageAuth{
+            display: none !important;
+        }
         .navigationLayout{
             display: none;
         }
@@ -67,6 +77,10 @@ body{background-color: #FDFEF9 !important;}
         .contentPage.pe-4{padding: 0 !important;}
     }
     @media screen and (max-width: 450px) {
+        #imageAuth{
+            display: none !important;
+        }
+       
         *{
             font-size: 14px;
         }

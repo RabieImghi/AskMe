@@ -8,6 +8,7 @@ import AppProfile from '../components/componrntsProfile/AppProfile.vue';
 import AppProfileSetting from '../components/componrntsProfile/AppProfileSetting.vue';
 import AppMyQuistion from '../components/componrntsProfile/AppMyQuestion.vue';
 import AppAnswers from '../components/componentsHome/AppAnswers.vue';
+import AppAboutUs from '../components/componentsHome/AppAboutUs.vue';
 
 const routes = [
     {name: 'Home', path: '/', component: AppHome},
@@ -19,6 +20,7 @@ const routes = [
     {name: '/Settings', path: '/Settings', component: AppProfileSetting},
     {name: '/MyQuistion', path: '/MyQuistion', component: AppMyQuistion},
     {name: '/Answers', path: '/Answers', component: AppAnswers},
+    {name: '/AboutUs', path: '/AboutUs', component: AppAboutUs},
     
 ];
 
