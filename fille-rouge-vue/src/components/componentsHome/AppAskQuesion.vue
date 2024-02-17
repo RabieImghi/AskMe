@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col">
                                 <label class="fw-bold h5 text-secondary">Question Title <span class="text-danger">*</span></label>
-                                <div class="row">
+                                <div class="row mobilAskStyle">
                                     <div class="img col-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="mt-2 bi bi-patch-question" viewBox="0 0 16 16">
                                             <path d="M8.05 9.6c.336 0 .504-.24.554-.627.04-.534.198-.815.847-1.26.673-.475 1.049-1.09 1.049-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.7 1.7 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745"/>
@@ -28,7 +28,7 @@
                         <div class="row pt-4">
                             <div class="col pt-2">
                                 <label class="fw-bold h5 text-secondary">Category <span class="text-danger">*</span></label>
-                                <div class="row">
+                                <div class="row mobilAskStyle">
                                     <div class="img col-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="mt-2 bi bi-bookmark" viewBox="0 0 16 16">
                                             <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
@@ -48,9 +48,9 @@
                         <div class="row pt-4">
                             <div class="col pt-2">
                                 <label class="fw-bold h5 text-secondary">Tags  <span class="text-danger">*</span></label>
-                                <div class="row">
+                                <div class="row mobilAskStyle">
                                     <div class="img col-1">
-                                        
+
                                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="mt-2 bi bi-tags" viewBox="0 0 16 16">
                                         <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
                                         <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1z"/>
@@ -70,7 +70,7 @@
                         <div class="row pt-4">
                             <div class="col pt-2">
                                 <label class="fw-bold h5 text-secondary">Details  <span class="text-danger">*</span></label>
-                                <div class="row">
+                                <div class="row mobilAskStyle">
                                     <div class="img col-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="mt-2 bi bi-ticket-detailed" viewBox="0 0 16 16">
                                             <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M5 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2z"/>
@@ -85,10 +85,10 @@
                                 
                             </div>
                         </div>
-                        <div class="row pt-4">
+                        <div class="row pt-4 border-bottom pb-3">
                             <div class="col pt-2">
                                 <label class="fw-bold h5 text-secondary">File <span class="text-warning h6">(optionel)</span></label>
-                                <div class="row">
+                                <div class="row mobilAskStyle">
                                     <div class="img col-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="mt-2 bi bi-cloud-arrow-up" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z"/>
@@ -103,7 +103,11 @@
                                 
                             </div>
                         </div>
-                    <!-- <button class="btn btn-primary w-100 mt-3">Send Your Message</button> -->
+                        <div class="d-flex justify-content-end gap-3 align-items-center">
+                            <button type="reset" class="btn btn-secondary mt-3">Reste</button>
+                            <button class="btn btn-primary mt-3">Add Question</button>
+                        </div>
+                    
                 </form>
                 </div>
            </section>
