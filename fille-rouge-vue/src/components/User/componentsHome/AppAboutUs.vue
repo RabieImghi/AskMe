@@ -19,7 +19,7 @@
                     </p>
                 </div>
                 <div class="imageAbout col text-end">
-                    <img src="../../assets/img/auth.png" id="imageAuth" width="90%" class="p-3" alt="Image">
+                    <img src="../../../assets/img/auth.png" id="imageAuth" width="90%" class="p-3" alt="Image">
                 </div>
             </section>
             <section class="mt-4 container-mf ">

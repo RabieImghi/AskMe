@@ -12,7 +12,7 @@
                     <div v-for="user in filteredUsers" :key="user.id"
                         class="user translateEffect cursor-point border d-flex align-items-start gap-3 p-2">
                         <div class="leftInfo d-flex flex-column gap-3 align-items-center">
-                            <img src="../../assets/img/user.png" width="60px" alt="">
+                            <img src="../../../assets/img/user.png" width="60px" alt="">
                             <span class="color-premary fw-bold">{{user.name}}</span>
                             <button  :class="user.Level">{{user.Level}}</button>
                         </div>

@@ -2,7 +2,7 @@
     <div class="asideBare">
         <aside class="bg-white pt-4" id="aside">
             <section class="addQuesion container-mf ">
-                <router-link to="/AskQuesion">
+                <router-link to="/user/AskQuesion">
                   <button  class="btn btn-primary w-100 fw-bold f-flex align-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="me-2 bi bi-patch-question" viewBox="0 0 16 16">
                         <path d="M8.05 9.6c.336 0 .504-.24.554-.627.04-.534.198-.815.847-1.26.673-.475 1.049-1.09 1.049-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.7 1.7 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745"/>
@@ -51,7 +51,7 @@
                 <div class="BodMembers px-2 mt-3">
                     <div v-for="user in TopUsers" :key="user.id" 
                         class="user d-flex justify-content-between align-items-center flex-wrap border mt-2 p-2">
-                        <img src="../assets/img/user.png" width="60px" alt="">
+                        <img src="../../assets/img/user.png" width="60px" alt="">
                         <div class="infoUser fw-bold d-flex flex-column align-items-center">
                             <span class="color-premary">{{user.name}}</span>
                             <span class="text-secondary">{{ user.question }} Question</span>

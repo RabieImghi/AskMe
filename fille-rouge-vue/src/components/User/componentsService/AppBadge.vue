@@ -11,14 +11,14 @@
                 <div class="badges d-flex flex-wrap justify-content-start gap-3 align-items-center pt-4">
                     <div v-for="badge in Badges" :key='badge.id' style="min-height:123px" 
                         class="badge translateEffect cursor-point border  p-3 rounded-2 d-flex gap-3 align-items-center" >
-                        <img src="./../../assets/img/bagde.png" alt="image" width="60px">
+                        <img src="../../../assets/img/bagde.png" alt="image" width="60px">
                         <div class="points d-flex flex-column">
                             <div class="fw-bold text-secondary h4 text-start"> <span class="text-warning">{{badge.point}}</span>  Point</div>
                             <p class="text-secondary dscription h5">{{badge.description}}</p>
                         </div>
                     </div>  
                     <div  class="badge border translateEffect cursor-point  p-3 rounded-2 d-flex gap-3 align-items-center" >
-                        <img src="./../../assets/img/bagde.png" alt="image" width="60px">
+                        <img src="../../../assets/img/bagde.png" alt="image" width="60px">
                         <div class="points d-flex flex-column">
                             <div class="fw-bold text-secondary h4 text-start"> <span class="text-warning">20</span>  Point</div>
                             <p class="text-secondary  h5">When your answer has been<br>chosen as the best answer.</p>
@@ -35,7 +35,7 @@
                         <div class="infobadgeLevel  p-2">
                             <button  :class="BadgesLevel.class">{{ BadgesLevel.level }}</button>
                             <div  class="badg pt-3 d-flex gap-3 align-items-center" >
-                                <img src="./../../assets/img/bagde.png" alt="image" width="40px">
+                                <img src="../../../assets/img/bagde.png" alt="image" width="40px">
                                 <div class="fw-bold text-secondary h5 text-start"> <span class="text-warning">{{BadgesLevel.point}}</span>_Point</div>
                             </div>  
                         </div>

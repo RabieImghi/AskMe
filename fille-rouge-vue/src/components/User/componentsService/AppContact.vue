@@ -6,7 +6,7 @@
             </div> 
             <section class="contact container-mf border-bottom pb-4 pt-4  ">
                 <div class="title d-flex align-items-center gap-3">
-                    <img src="../../assets/img/contactus.png" width="35px" alt="image">
+                    <img src="../../../assets/img/contactus.png" width="35px" alt="image">
                     <span class="fw-bold h4">Contact Us</span>
                 </div>
                 <p class="text-secondary h5 mt-3">We understand the importance of approaching each work integrally and believe in the power of simple and 

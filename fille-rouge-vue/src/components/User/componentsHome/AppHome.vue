@@ -8,7 +8,7 @@
                 and to empower everyone to share their knowledge.</p>
                 <router-link to='/SignUp' class="btn btn-primary w-50">Create A New Account</router-link>
             </div>
-            <img src="../../assets/img/auth.png" id="imageAuth" width="40%" class="p-3" alt="Image">
+            <img src="../../../assets/img/auth.png" id="imageAuth" width="40%" class="p-3" alt="Image">
         </section>
         <section class="QuestionSection shadow pt-4  py-4 ">
             <div class="border-bottom pb-4">

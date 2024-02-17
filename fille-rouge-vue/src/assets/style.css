@@ -22,6 +22,7 @@ body{background-color: #FDFEF9 !important;}
 .cursor-point{cursor: pointer;}
 .text-white-md{color: rgb(203, 203, 203);}
 .translateEffect:hover{transform: translate(0, -10px); transition-duration: 0.7s;background: rgba(190, 190, 190, 0.17) !important;}
+hr{color: lightgray !important;}
 @media screen and (max-width: 1250px) {
     .routerLink{ width: 450px;}
     .AppContentBody{

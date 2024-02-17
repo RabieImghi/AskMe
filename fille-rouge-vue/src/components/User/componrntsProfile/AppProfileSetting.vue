@@ -5,7 +5,7 @@
                 <div class="coverInfo row p-3">
                     <div class="profile col-2 d-flex flex-column justify-content-end">
                         <input type="file" class="d-none" id="fileinputProfil">
-                        <img @click="uploadsImageProfile" class="cursor-point imageProfil" src="../../assets/img/user.png" alt="image" width="140px">
+                        <img @click="uploadsImageProfile" class="cursor-point imageProfil" src="../../../assets/img/user.png" alt="image" width="140px">
                     </div>
                     <div class="infoProfile col p-4">
                         <input type="file" class="d-none" id="fileinput">
@@ -29,7 +29,7 @@
             <section class="container-mf mt-4 pt-2">
                 <form class="mt-4">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="../../assets/img/information.png" class="imageprofilesetting2" width="50px" alt="info">
+                        <img src="../../../assets/img/information.png" class="imageprofilesetting2" width="50px" alt="info">
                         <div class="fw-bold text-secondary h3 pt-2">Basic Information</div>
                     </div>
                     <hr>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 pt-4">
-                        <img src="../../assets/img/webpage.png" class="imageprofilesetting" width="40px" alt="info">
+                        <img src="../../../assets/img/webpage.png" class="imageprofilesetting" width="40px" alt="info">
                         <div class="fw-bold text-secondary h3 pt-2">Social Profiles </div>
                     </div>
                     <hr>
@@ -138,7 +138,7 @@
         background: rgba(255, 255, 255, 0.341);
     }
     .cover{
-        background-image: url("../../assets/img/cover.jpg");
+        background-image: url("../../../assets/img/cover.jpg");
     }
     .imageProfil{
         border: 6px solid white;

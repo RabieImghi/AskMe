@@ -5,7 +5,7 @@
                 <div class="coverInfo row p-3">
                     <div class="profile col-2 d-flex flex-column justify-content-end">
                         <input type="file" class="d-none" id="fileinputProfil">
-                        <img @click="uploadsImageProfile" class="cursor-point imageProfil" src="../../assets/img/user.png" alt="image" width="140px">
+                        <img @click="uploadsImageProfile" class="cursor-point imageProfil" src="../../../assets/img/user.png" alt="image" width="140px">
                     </div>
                     <div class="infoProfile col p-4">
                         <input type="file" class="d-none" id="fileinput">
@@ -33,28 +33,28 @@
                 <hr>
                 <div class="statistique mt-4 d-flex flex-wrap justify-content-between align-items-center">
                     <div class="statique translateEffect cursor-point d-flex gap-4 p-2 boeder rounded-1 bg-white shadow">
-                        <img src="../../assets/img/questionred.png"  height="50px" width="50px" alt="">
+                        <img src="../../../assets/img/questionred.png"  height="50px" width="50px" alt="">
                         <div class="info d-flex flex-column justify-content-around">
                             <span class="fw-bold h5 text-danger">1000</span>
                             <span class="fw-bold h6 text-secondary">Quesions</span>
                         </div>
                     </div>
                     <div class="statique translateEffect cursor-point d-flex gap-4 p-2 boeder rounded-1 bg-white shadow">
-                        <img src="../../assets/img/responsegreen.png"  height="50px" width="50px" alt="">
+                        <img src="../../../assets/img/responsegreen.png"  height="50px" width="50px" alt="">
                         <div class="info d-flex flex-column justify-content-around">
                             <span class="fw-bold h5 text-success">3332</span>
                             <span class="fw-bold h6 text-secondary">Reponse </span>
                         </div>
                     </div>
                     <div class="statique translateEffect cursor-point d-flex gap-4 p-2 boeder rounded-1 bg-white shadow">
-                        <img src="../../assets/img/badgeOrange.png"  height="50px" width="50px" alt="">
+                        <img src="../../../assets/img/badgeOrange.png"  height="50px" width="50px" alt="">
                         <div class="info d-flex flex-column justify-content-around">
                             <span class="fw-bold h5 text-warning">300</span>
                             <span class="fw-bold h6 text-secondary">Point</span>
                         </div>
                     </div>
                     <div class="statique translateEffect cursor-point d-flex gap-4 p-2 boeder rounded-1 bg-white shadow">
-                        <img src="../../assets/img/reviews.png" height="50px" width="50px" alt="">
+                        <img src="../../../assets/img/reviews.png" height="50px" width="50px" alt="">
                         <div class="info d-flex flex-column justify-content-around">
                             <span class="fw-bold h5 text-primary">2190</span>
                             <span class="fw-bold h6 text-secondary">Reviews</span>
@@ -73,37 +73,37 @@
                 <div class="sociallink d-flex flex-wrap gap-4 justify-content-between align-items-center">
                     <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
-                            <img src="../../assets/img/facebook.png" width="50px" alt="facebook">
+                            <img src="../../../assets/img/facebook.png" width="50px" alt="facebook">
                             <span class="fw-bold text-primary h4">Rabie Ait Imghi</span> 
                         </div>
                     </a>
                     <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
-                            <img src="../../assets/img/github.png" width="50px" alt="facebook">
+                            <img src="../../../assets/img/github.png" width="50px" alt="facebook">
                             <span class="fw-bold text-dark h4">RabieImghi</span> 
                         </div>
                     </a>
                     <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
-                            <img src="../../assets/img/whatsapp.png" width="50px" alt="facebook">
+                            <img src="../../../assets/img/whatsapp.png" width="50px" alt="facebook">
                             <span class="fw-bold text-success h4">+21263948-3932</span> 
                         </div>
                     </a>
                     <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
-                            <img src="../../assets/img/gmail.png" width="50px" alt="facebook">
+                            <img src="../../../assets/img/gmail.png" width="50px" alt="facebook">
                             <span class="fw-bold text-danger h4">rabieImghi@gmail.com</span> 
                         </div>
                     </a>
                     <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
-                            <img src="../../assets/img/linkedin.png" width="50px" alt="facebook">
+                            <img src="../../../assets/img/linkedin.png" width="50px" alt="facebook">
                             <span class="fw-bold text-primary h4">RabieAitImghi</span> 
                         </div>
                     </a>
                     <a href="https://www.google.com" class="linksosial  rounded-1 border translateEffect  p-2  text-decoration-none" target="_blank">
                         <div class="social cursor-point d-flex align-items-end gap-2">
-                            <img src="../../assets/img/website.png" width="50px" alt="facebook">
+                            <img src="../../../assets/img/website.png" width="50px" alt="facebook">
                             <span class="fw-bold text-dark h4">RabieImghi.com</span> 
                         </div>
                     </a>
@@ -142,7 +142,7 @@
         background: rgba(255, 255, 255, 0.341);
     }
     .cover{
-        background-image: url("../../assets/img/cover.jpg");
+        background-image: url("../../../assets/img/cover.jpg");
     }
     .imageProfil{
         border: 6px solid white;

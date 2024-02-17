@@ -9,14 +9,14 @@
                 <div class=" pb-4 pt-4" v-for="post in Posts" :key="post.id">
                     <div class="container-mf mobileQuestion row">
                         <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-center align-items-center">
-                            <img src="../../assets/img/user.png" width="80px" alt="User">
+                            <img src="../../../assets/img/user.png" width="80px" alt="User">
                             <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
                                 <router-link to="">
-                                    <img src="../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
+                                    <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
                                 </router-link>
                                 <span class="text-secondary fw-bold">123</span>
                                 <router-link to="">
-                                    <img src="../../assets/img/raitting.png" width="20px" alt="raitin">
+                                    <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
                                 </router-link>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                             </div>
                             <span class=" h3 fw-bold">{{post.question}}</span>
                             <p class="text-secondary pt-3">{{post.questionDetail}}</p>
-                            <img src="../../assets/img/answer.png" width="80%" alt="Answer">
+                            <img src="../../../assets/img/answer.png" width="80%" alt="Answer">
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                 <div class=" pb-4 pt-4" v-for="answer in Answers" :key="answer.id">
                     <div class="container-mf mobileQuestion row">
                         <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-center align-items-center">
-                            <img src="../../assets/img/user.png" width="80px" alt="User">
+                            <img src="../../../assets/img/user.png" width="80px" alt="User">
                         </div>
                         <div class="infoQuestion col-11">
                             <div class="userInfo d-flex gap-5 pt-2 pb-3">
@@ -55,11 +55,11 @@
                             <p class="text-secondary pt-3">{{answer.questionDetail}}</p>
                             <div class="raitting d-flex  justify-content-start align-items-center gap-2">
                                 <router-link to="">
-                                    <img src="../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
+                                    <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
                                 </router-link>
                                 <span class="text-secondary fw-bold">{{answer.Reviews}}</span>
                                 <router-link to="">
-                                    <img src="../../assets/img/raitting.png" width="20px" alt="raitin">
+                                    <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
                                 </router-link>
                             </div>
                         </div>
