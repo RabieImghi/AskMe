@@ -129,6 +129,9 @@ body{background-color: #FDFEF9 !important;}
         .imageProfil{
             width: 100px;
         }
+        .mobilAskStyle .img{
+            display: none !important;
+        }
         
     }
 }
