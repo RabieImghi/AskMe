@@ -23,9 +23,9 @@
                 </div>
             </section>
             <section class="mt-4 container-mf ">
-                <div class="context mt-4">
+                <div class="context mt-4 mb-4">
                     <span class="h3 fw-bold">Why Choosing DiscyOur Values. </span>
-                    <div class=" mt-3 d row" > 
+                    <div class=" mt-3 d row border-bottom pb-4" > 
                         <div class="about pt-4 col-5">
                             <span class="h4 pt-2 color-premary">1. Maximize long-term value</span>
                             <p class="text-secondary mt-2">We are building a product that we hope lasts 
@@ -35,31 +35,27 @@
                             </p>
                         </div>
                         <div class="about pt-4 col-5">
-                            <span class="h4 pt-2 color-premary">1. Maximize long-term value</span>
-                            <p class="text-secondary mt-2">We are building a product that we hope lasts 
-                            forever. We want to be a strong and independent 
-                            engine, this long term focus guides all of the 
-                            decisions we make.
+                            <span class="h4 pt-2 color-premary">2. Continuously learn and adapt</span>
+                            <p class="text-secondary mt-2">We value experimentation, metrics-driven decisions,
+                                and speed of iteration. We push to production with 
+                                every commit so we launch as soon as work is done 
+                                and learn as quickly as possible.
                             </p>
                         </div>
                         <div class="about pt-4 col-5">
-                            <span class="h4 pt-2 color-premary">1. Maximize long-term value</span>
-                            <p class="text-secondary mt-2">We are building a product that we hope lasts 
-                            forever. We want to be a strong and independent 
-                            engine, this long term focus guides all of the 
-                            decisions we make.
+                            <span class="h4 pt-2 color-premary">3. Execute</span>
+                            <p class="text-secondary mt-2">We value people who have great ideas but who 
+                                also can quickly drive them all the way to bring 
+                                their ideas into life.
                             </p>
                         </div>
                         <div class="about pt-4 col-5">
-                            <span class="h4 pt-2 color-premary">1. Maximize long-term value</span>
-                            <p class="text-secondary mt-2">We are building a product that we hope lasts 
-                            forever. We want to be a strong and independent 
-                            engine, this long term focus guides all of the 
-                            decisions we make.
+                            <span class="h4 pt-2 color-premary">4. Be direct and respectful</span>
+                            <p class="text-secondary mt-2">We expect and welcome constant feedback. We trust 
+                                each other to be open and straightforward, so if you 
+                                have anything in mind don’t hesitate to call us.
                             </p>
                         </div>
-
-                        
                     </div>
                 </div>
             </section>
