@@ -1,5 +1,6 @@
 <template>
     <div class="asideBare">
+        
         <aside class="bg-white pt-4" id="aside">
             <section class="addQuesion container-mf ">
                 <router-link to="/AskQuesion" class="btn btn-primary w-100 fw-bold">Ask A Question</router-link>
