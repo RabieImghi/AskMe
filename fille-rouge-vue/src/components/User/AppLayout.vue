@@ -1,5 +1,5 @@
 <template>
-    <div class="content d-flex justify-content-between align-items-center headerLayout shadow-mdf container-mf">
+    <div class="d-flex justify-content-between align-items-center headerLayout shadow-mdf container-mf">
         <div class="logo">
             <router-link to="/">
                 <img src="../../assets/img/logo3.png" class="logoImage" width="140px" alt="">
