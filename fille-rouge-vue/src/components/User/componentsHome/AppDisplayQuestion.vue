@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <div class="border-bottom pb-4 pt-4" v-for="post in Posts" :key="post.id">
             <div class="container-mf mobileQuestion row">
                 <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-center align-items-center">
@@ -8,7 +9,7 @@
                         <router-link to="">
                             <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
                         </router-link>
-                        <span class="text-secondary fw-bold">123</span>
+                        <span class="text-secondary fw-bold">{{post.reating}}</span>
                         <router-link to="">
                             <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
                         </router-link>
@@ -16,17 +17,17 @@
                 </div>
                 <div class="infoQuestion col-11">
                     <div class="userInfo d-flex gap-5 pt-2 pb-3">
-                        <span class="color-premary fw-bold">{{post.user.name}}</span>
+                        <span class="color-premary fw-bold">{{post.name}}</span>
                         <!-- <button  :class='post.badge'>{{post.badge}}</button> -->
                         <span class="text-secondary">Asked : <span class="text-danger">{{post.created_at}}</span></span>
-                        <span class="text-secondary">In : <span class="text-danger">{{post.category.name}}</span></span>
+                        <span class="text-secondary">In : <span class="text-danger">{{post.category}}</span></span>
                     </div>
                     <router-link to="/user/Answers" class="nav-link questiondisplay">
                         <span class=" h3 fw-bold">{{post.title}}</span>
                         <p class="text-secondary pt-3">{{post.content}}</p>  
                     </router-link>
                     <div class="Tages  d-flex gap-3 align-items-center flex-wrap">
-                        <!-- <div  v-for="tag in post.tages" :key="tag" 
+                        <div  v-for="tag in post.tages" :key="tag" 
                         class="user d-flex gap-2 justify-content-between align-items-center flex-wrap border mt-2 p-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-tags" viewBox="0 0 16 16">
                                 <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
@@ -35,7 +36,7 @@
                             <div class="infoUser fw-bold d-flex flex-column align-items-center">
                                 <span  class="color-premary">{{tag}}</span>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="statistiqueQuistion shadow d-flex flex-wrap gap-3 justify-content-between align-items-center p-3 mt-3 ">
                         <div class="statiqueInfo d-flex gap-5 align-items-centerlign">
@@ -69,6 +70,9 @@
             </div>
             
         </div>
+        <button @click="previews()">previews</button>
+        <button>{{ this.page }}</button>
+        <button @click="next()">next</button>
     </div>
 </template>
 <script>
@@ -77,65 +81,10 @@
         name: 'AppDisplayQuestion',
         data(){
             return {
-                // Posts : [
-                //     {
-                //         id:1,
-                //         user: {
-                //             name: "User 1"
-                //         },
-                //         badge: 'Professional',
-                //         date:' April 19, 2023',
-                //         category : 'PHP',
-                //         title: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
-                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                //         tages : ["tag1", "tag2", "tag3"],
-                //         answor : 10,
-                //         views : 20,
-                //     },
-                //     {
-                //         id:2,
-                //         user: {
-                //             name: "User 1"
-                //         },
-                //         badge: 'Professional',
-                //         date:' April 19, 2023',
-                //         category : 'PHP',
-                //         title: 'How do native speakers tell I’m foreign based on my English alone?',
-                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                //         tages : ["tag1", "tag2", "tag3", "tag4"],
-                //         answor : 10,
-                //         views : 20,
-                //     },
-                //     {
-                //         id:3,
-                //         user: {
-                //             name: "User 1"
-                //         },
-                //         badge: 'Professional',
-                //         date:' April 19, 2023',
-                //         category : 'PHP',
-                //         title: 'Why are the British confused about us calling bread rolls “biscuits” when they call bread rolls “puddings”?',
-                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                //         tages : ["tag1", "tag2", "tag3"],
-                //         answor : 10,
-                //         views : 20,
-                //     },
-                //     {
-                //         id:4,
-                //         user: {
-                //             name: "User 1"
-                //         },
-                //         badge: 'Professional',
-                //         date:' April 19, 2023',
-                //         category : 'PHP',
-                //         title: 'Google Analytics reads like a seismic chart lately',
-                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                //         tages : ["tag1", "tag2", "tag3"],
-                //         answor : 10,
-                //         views : 20,
-                //     }
-                // ],
                 Posts : [],
+                nombrePost: 0,
+                page:1,
+                count:0,
             };
         },
         mounted() {
@@ -143,19 +92,34 @@
         },
         methods: {
             fetchPosts() {
-                axios.get('http://127.0.0.1:8000/api/allPost')
+                axios.get(`http://127.0.0.1:8000/api/allPost?page=${this.nombrePost}`)
                     .then(response => {
-                        // this.Posts = response.data;
-                        this.Posts = response.data.map(post => {
-                            let date = new Date(post.created_at);
-                            let options = { year: 'numeric', month: 'long', day: 'numeric' };
-                            post.created_at = date.toLocaleDateString('en-US', options);
-                            return post;
-                        });
+                        this.Posts = response.data.data;
+                        this.count= response.data.count;
                     })
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            next(){
+                if(this.nombrePost < this.count - 6){
+                    this.nombrePost += 6;
+                    this.page += 1;
+                    this.fetchPosts(); 
+                    this.$nextTick(() => {
+                        document.querySelector('.sectionHome').scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+            },
+            previews(){
+                if(this.nombrePost >= 6){
+                    this.nombrePost -= 6;
+                    this.page -= 1;
+                    this.fetchPosts();
+                    this.$nextTick(() => {
+                        document.querySelector('.sectionHome').scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
             }
         }
     }

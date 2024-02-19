@@ -32,15 +32,6 @@
                 </div>
             </div>
             <AppDisplayQuestion/>
-            <div class="border-bottom pb-4  pagination container-mf d-flex pt-4 justify-content-end">
-                <ul class="nav">
-                    <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold text-secondary border mx-2">&lt;</li>
-                    <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold text-secondary border mx-2">1</li>
-                    <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold border mx-2 btn-primary btn">2</li>
-                    <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold text-secondary border mx-2">3</li>
-                    <li class="pt-2 curs_point pb-2 px-3 pe-3 fw-bold text-secondary border mx-2">&gt;</li>
-                </ul>
-            </div>
             <footer>
                 <p class="fw-bold text-secondary text-center p-2">© Copyright AskMe. All Rights Reserved <br>
                 Designed by Rabie Ait Imghi</p>
