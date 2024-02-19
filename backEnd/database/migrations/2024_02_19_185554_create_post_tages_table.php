@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('post_tages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('post_id');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('tage_id');
-            $table->foreign('tage_id')->references('id')->on('tages')->onDelete('cascade');
+            $table->foreign('tage_id')->references('id')->on('tages')->onDelete('cascade')->onUpdate('cascade');
             $table->engine = 'InnoDB';
             $table->timestamps();
         });

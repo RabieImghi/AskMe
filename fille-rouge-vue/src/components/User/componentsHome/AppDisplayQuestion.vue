@@ -16,17 +16,17 @@
                 </div>
                 <div class="infoQuestion col-11">
                     <div class="userInfo d-flex gap-5 pt-2 pb-3">
-                        <span class="color-premary fw-bold">{{post.name}}</span>
-                        <button  :class='post.badge'>{{post.badge}}</button>
-                        <span class="text-secondary">Asked : <span class="text-danger">{{post.date}}</span></span>
-                        <span class="text-secondary">In : <span class="text-danger">{{post.category}}</span></span>
+                        <span class="color-premary fw-bold">{{post.user.name}}</span>
+                        <!-- <button  :class='post.badge'>{{post.badge}}</button> -->
+                        <span class="text-secondary">Asked : <span class="text-danger">{{post.created_at}}</span></span>
+                        <span class="text-secondary">In : <span class="text-danger">{{post.category.name}}</span></span>
                     </div>
                     <router-link to="/user/Answers" class="nav-link questiondisplay">
-                        <span class=" h3 fw-bold">{{post.question}}</span>
-                        <p class="text-secondary pt-3">{{post.questionDetail}}</p>  
+                        <span class=" h3 fw-bold">{{post.title}}</span>
+                        <p class="text-secondary pt-3">{{post.content}}</p>  
                     </router-link>
                     <div class="Tages  d-flex gap-3 align-items-center flex-wrap">
-                        <div  v-for="tag in post.tages" :key="tag" 
+                        <!-- <div  v-for="tag in post.tages" :key="tag" 
                         class="user d-flex gap-2 justify-content-between align-items-center flex-wrap border mt-2 p-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-tags" viewBox="0 0 16 16">
                                 <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
@@ -35,7 +35,7 @@
                             <div class="infoUser fw-bold d-flex flex-column align-items-center">
                                 <span  class="color-premary">{{tag}}</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="statistiqueQuistion shadow d-flex flex-wrap gap-3 justify-content-between align-items-center p-3 mt-3 ">
                         <div class="statiqueInfo d-flex gap-5 align-items-centerlign">
@@ -43,7 +43,8 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="pb-1 bi bi-reply" viewBox="0 0 16 16">
                                 <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.7 8.7 0 0 0-1.921-.306 7 7 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254l-.042-.028a.147.147 0 0 1 0-.252l.042-.028zM7.8 10.386q.103 0 .223.006c.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96z"/>
                                 </svg>
-                                {{post.answor}} Answers
+                                <!-- {{post.answor}} Answers -->
+                                00 Answers
                             </span>
                             <span class="border bg-white p-1 rounded-1 text-secondary fw-bold d-flex gap-2 flex-wrap align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -71,61 +72,91 @@
     </div>
 </template>
 <script>
+    import axios from 'axios';
     export default{
         name: 'AppDisplayQuestion',
         data(){
             return {
-                Posts : [
-                    {
-                        id:1,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        category : 'PHP',
-                        question: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        tages : ["tag1", "tag2", "tag3"],
-                        answor : 10,
-                        views : 20,
-                    },
-                    {
-                        id:2,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        category : 'PHP',
-                        question: 'How do native speakers tell I’m foreign based on my English alone?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        tages : ["tag1", "tag2", "tag3", "tag4"],
-                        answor : 10,
-                        views : 20,
-                    },
-                    {
-                        id:3,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        category : 'PHP',
-                        question: 'Why are the British confused about us calling bread rolls “biscuits” when they call bread rolls “puddings”?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        tages : ["tag1", "tag2", "tag3"],
-                        answor : 10,
-                        views : 20,
-                    },
-                    {
-                        id:4,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        category : 'PHP',
-                        question: 'Google Analytics reads like a seismic chart lately',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        tages : ["tag1", "tag2", "tag3"],
-                        answor : 10,
-                        views : 20,
-                    }
-                ],
+                // Posts : [
+                //     {
+                //         id:1,
+                //         user: {
+                //             name: "User 1"
+                //         },
+                //         badge: 'Professional',
+                //         date:' April 19, 2023',
+                //         category : 'PHP',
+                //         title: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
+                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
+                //         tages : ["tag1", "tag2", "tag3"],
+                //         answor : 10,
+                //         views : 20,
+                //     },
+                //     {
+                //         id:2,
+                //         user: {
+                //             name: "User 1"
+                //         },
+                //         badge: 'Professional',
+                //         date:' April 19, 2023',
+                //         category : 'PHP',
+                //         title: 'How do native speakers tell I’m foreign based on my English alone?',
+                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
+                //         tages : ["tag1", "tag2", "tag3", "tag4"],
+                //         answor : 10,
+                //         views : 20,
+                //     },
+                //     {
+                //         id:3,
+                //         user: {
+                //             name: "User 1"
+                //         },
+                //         badge: 'Professional',
+                //         date:' April 19, 2023',
+                //         category : 'PHP',
+                //         title: 'Why are the British confused about us calling bread rolls “biscuits” when they call bread rolls “puddings”?',
+                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
+                //         tages : ["tag1", "tag2", "tag3"],
+                //         answor : 10,
+                //         views : 20,
+                //     },
+                //     {
+                //         id:4,
+                //         user: {
+                //             name: "User 1"
+                //         },
+                //         badge: 'Professional',
+                //         date:' April 19, 2023',
+                //         category : 'PHP',
+                //         title: 'Google Analytics reads like a seismic chart lately',
+                //         content: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
+                //         tages : ["tag1", "tag2", "tag3"],
+                //         answor : 10,
+                //         views : 20,
+                //     }
+                // ],
+                Posts : [],
             };
         },
+        mounted() {
+            this.fetchPosts();
+        },
+        methods: {
+            fetchPosts() {
+                axios.get('http://127.0.0.1:8000/api/allPost')
+                    .then(response => {
+                        // this.Posts = response.data;
+                        this.Posts = response.data.map(post => {
+                            let date = new Date(post.created_at);
+                            let options = { year: 'numeric', month: 'long', day: 'numeric' };
+                            post.created_at = date.toLocaleDateString('en-US', options);
+                            return post;
+                        });
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+        }
     }
 </script>
