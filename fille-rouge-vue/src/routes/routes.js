@@ -33,7 +33,7 @@ const routes = [
             { path: 'profile', component: AppProfile },
             { path: 'settings', component: AppProfileSetting },
             { path: 'myQuestion', component: AppMyQuistion },
-            { path: 'answers', component: AppAnswers },
+            { path: 'Answers', component: AppAnswers },
             { path: 'aboutUs', component: AppAboutUs },
             { path: 'AskQuesion', component: AppAskQuesion },
         ]

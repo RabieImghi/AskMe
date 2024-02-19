@@ -14,7 +14,7 @@
                 </router-link>
             </section>
             <section class="countStatique container-mf border-top mt-4 pt-4">
-                <div class="content bg-white">
+                <div class="bg-white asideHome">
                     <div class="row">
                         <div class="col-6 pt-4 pb-4 border">
                             <div class="p-2 contentColumn text-secondary fw-bold d-flex flex-column gap-2 text-center border-left border-primary ">
@@ -114,6 +114,9 @@
         overflow-y: scroll;
         box-shadow: 5px 10px 20px rgba(128, 128, 128, 0.245);
         transition: transform 0.3s ease;
+    }
+    #aside{
+        width: 100% !important;
     }
     aside::-webkit-scrollbar{
         display: none;
