@@ -19,6 +19,10 @@ import AppAdmin from '../components/Admin/AppAdmin.vue';
 import AppAdminHome from '../components/Admin/AppAdminHome.vue';
 import AppAdminUsers from '../components/Admin/AppAdminUsers.vue';
 
+import AppAuth from '../components/Auth/AppAuth.vue';
+import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
+import AppAuthRegister from '../components/Auth/AppAuthRegister.vue';
+
 const routes = [
     { path: '', redirect: '/user/' },
     { 
@@ -46,6 +50,15 @@ const routes = [
             { path: 'users', component: AppAdminUsers },
         ]
     },
+    { 
+        path: '/user/auth',
+        component: AppAuth,
+        children: [
+            { path: '', component: AppAuthLogin },
+            { path: 'register', component: AppAuthRegister },
+        ]
+    },
+    
 ];
 
 const router = createRouter({

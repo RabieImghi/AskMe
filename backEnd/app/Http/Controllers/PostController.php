@@ -24,11 +24,17 @@ class PostController extends Controller
                 $tage = Tage::find($tage->tage_id);
                 $dataTage[] = $tage->name;
             }
+            $badge ='';
+            if($post->user->points>=150) $badge = "Professional";
+            else if($post->user->points>=100) $badge = "Enlightened";
+            else if($post->user->points>=50) $badge = "Explainer";
+            else if($post->user->points>=10) $badge = "Beginner";
             $data[] = [
                 'id' => $post->id,
                 'title' => $post->title,
                 'content' => $post->content,
                 'views' => $post->views,
+                'badge' => $badge,
                 'name' => $post->user->name,
                 'category' => $post->category->name,
                 'created_at' => Carbon::parse($post->created_at)->format('F j, Y'),

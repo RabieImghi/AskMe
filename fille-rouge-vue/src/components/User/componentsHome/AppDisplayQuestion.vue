@@ -18,7 +18,7 @@
                 <div class="infoQuestion col-11">
                     <div class="userInfo d-flex gap-5 pt-2 pb-3">
                         <span class="color-premary fw-bold">{{post.name}}</span>
-                        <!-- <button  :class='post.badge'>{{post.badge}}</button> -->
+                        <button  :class='post.badge'>{{post.badge}}</button>
                         <span class="text-secondary">Asked : <span class="text-danger">{{post.created_at}}</span></span>
                         <span class="text-secondary">In : <span class="text-danger">{{post.category}}</span></span>
                     </div>
@@ -70,9 +70,12 @@
             </div>
             
         </div>
-        <button @click="previews()">previews</button>
-        <button>{{ this.page }}</button>
-        <button @click="next()">next</button>
+        <div class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+            <button @click="previews()" class="btn btn-primary fw-bold">&lt;</button>
+            <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
+            <button @click="next()" class="btn btn-primary fw-bold">></button>
+        </div>
+        
     </div>
 </template>
 <script>
@@ -85,6 +88,7 @@
                 nombrePost: 0,
                 page:1,
                 count:0,
+                nbPage:1,
             };
         },
         mounted() {
@@ -96,6 +100,7 @@
                     .then(response => {
                         this.Posts = response.data.data;
                         this.count= response.data.count;
+                        this.nbPage = Math.ceil(this.count / 6);
                     })
                     .catch(error => {
                         console.log(error);
@@ -120,7 +125,21 @@
                         document.querySelector('.sectionHome').scrollIntoView({ behavior: 'smooth' });
                     });
                 }
+            },
+            getPage(page){
+                this.nombrePost = page * 6 - 6;
+                this.page = page;
+                this.fetchPosts();
+                this.$nextTick(() => {
+                    document.querySelector('.sectionHome').scrollIntoView({ behavior: 'smooth' });
+                });
             }
         }
     }
 </script>
+<style>
+    .activeClass{
+        background: #0D6EFD;
+        color: white;
+    }
+</style>
