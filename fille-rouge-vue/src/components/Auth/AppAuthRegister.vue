@@ -66,7 +66,7 @@ import axios from 'axios';
                     name: '', 
                     email: '', 
                     password: '',
-                    points: 5, role_id: 0
+                    points: 5, role_id: 2
                 },
             };
         },
@@ -83,16 +83,13 @@ import axios from 'axios';
                 }
             },
             createUser(){
-                
                 axios.post('http://127.0.0.1:8000/api/RegisterUser', this.formData)
                 .then(response => {
-                    console.log(response.data.user);
                     this.$router.push('/user/auth');
                 }).catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors;
                     }
-                    alert(error);
                 });
             }
         }

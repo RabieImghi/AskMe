@@ -1,7 +1,7 @@
 <template>
     <div class="asideBare">
         <aside class="bg-white pt-4" id="aside">
-            <section class="addQuesion container-mf ">
+            <section class="addQuesion container-mf border-bottom pb-3" v-if="tokenExists">
                 <router-link to="/user/AskQuesion">
                   <button  class="btn btn-primary w-100 fw-bold f-flex align-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="me-2 bi bi-patch-question" viewBox="0 0 16 16">
@@ -13,7 +13,7 @@
                 </button>  
                 </router-link>
             </section>
-            <section class="countStatique container-mf border-top mt-4 pt-4">
+            <section class="countStatique container-mf pt-4">
                 <div class="bg-white asideHome">
                     <div class="row">
                         <div class="col-6 pt-4 pb-4 border">
@@ -105,7 +105,12 @@
                 ],
             }
                 
-        }
+        },
+        computed: {
+            tokenExists() {
+                return localStorage.getItem('token');
+            },
+        },
     }
 </script>
 <style>
