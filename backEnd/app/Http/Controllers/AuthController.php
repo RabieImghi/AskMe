@@ -22,6 +22,7 @@ class AuthController extends Controller
         if (!Hash::check($request->password, $user->password)) 
             return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
         $token = $user->createToken('authToken')->plainTextToken;
+        setcookie('authToken', $token, time() + (60 * 60 * 24 * 365), "/");
         return response()->json(['user' => $user, 'token' => $token]);
     }
 
@@ -56,8 +57,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Successfully logged out']);
+        setcookie('authToken', '', time() - (60 * 60 * 24 * 365), '/');
+        return response()->json(['message' => 'Successfully logged out'],200);
     }
 
     public function getAuthenticatedUser(Request $request)
