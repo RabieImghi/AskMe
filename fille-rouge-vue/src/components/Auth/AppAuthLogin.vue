@@ -5,12 +5,13 @@
                 <img src="../../assets/img/logo3.png" alt="logo" width="300px">
             </div>
             <div class="cardForm shadow p-5 m-3 ">
+                <div class="alert alert-danger" v-if="errorsTest" >{{ errorsRequire }}</div>
                 <h3 class="blueColor text-center">Login to Your Account</h3>
                 <p class="text-center text-secondary">Enter your email & password to login</p>
                 <form action="" class="d-flex flex-column justify-content-between gap-4">
                     <label class="text-secondary">
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" name="email" placeholder="Email ..">
+                            <input v-model="email" type="email" :class="{ 'is-invalid': emailErroe }" class="form-control" name="email" placeholder="Email ..">
                             <div class="input-group-append cursor-point">
                                 <span class="input-group-text"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
@@ -22,7 +23,7 @@
                     </label>
                     <label class="text-secondary">
                         <div class="input-group mb-3">
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <input v-model="password" type="password" :class="{ 'is-invalid': passwordErroe }" class="form-control" id="password" placeholder="Password">
                             <div class="input-group-append cursor-point">
                                 <span class="input-group-text" @click="togleInputPassword()"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -36,7 +37,7 @@
                     <label class="text-secondary">
                         <input type="checkbox" class="form-check-input"> Remember me
                     </label>
-                    <button type="button" class="btn btn-primary">Login</button>
+                    <button @click="login()" type="button" class="btn btn-primary">Login</button>
                     <p class="text-secondary">Don't have account? <router-link to="/user/auth/register"  class="blueColor no-underline"> Create an account</router-link></p>
                 </form>
             </div>
@@ -47,9 +48,25 @@
         </main>
     </div>
 </template>
+<style>
+    .is-invalid{
+        border: 1px solid red;
+    }
+</style>
 <script>
+import axios from 'axios';
+import Swal from 'sweetalert2'
     export default{
-        name: 'AppAuthLogin',
+        data() {
+            return {
+                email: '',
+                password: '',
+                emailErroe: false,
+                passwordErroe: false,
+                errorsRequire: "",
+                errorsTest:false,
+            }
+        },
         methods: {
             togleInputPassword(){
                 let input = document.getElementById('password');
@@ -61,7 +78,52 @@
                     input.type = 'password';
                     svg.style.fill = 'currentColor';
                 }
-            }
+            },
+            showAlert(message,icone) {
+                Swal.fire({
+                position: 'bottom-end',
+                icon: icone,
+                title: message,
+                showConfirmButton: false,
+                timer: 1500
+                });
+            },
+            login() {
+                this.errorsTest = false;
+                this.emailErroe= false;
+                this.passwordErroe= false;
+                axios.post('http://127.0.0.1:8000/api/login', {
+                    email: this.email,
+                    password: this.password
+                })
+                .then(response => {
+                    localStorage.setItem('token', response.data.token);
+                   
+                    this.$router.push('/user/');
+                })
+                .catch(error => {
+                    if(error.response.status === 422){
+                        this.emailErroe = true;
+                        this.passwordErroe = true;
+                        this.errorsRequire = "Email and password are required";
+                        this.errorsTest = true;
+                    }
+                    if (error.response.status === 401) {
+                        if(error.response.data.error === 'email'){
+                            this.emailErroe = true;
+                            this.errorsRequire = "Email is invalid or not exist";
+                            this.errorsTest = true;
+                        }else this.emailErroe = false;
+                        if(error.response.data.error === 'password'){
+                            this.passwordErroe = true;
+                            this.errorsRequire = "Password is invalid";
+                            this.errorsTest = true;
+                        }
+                        else this.passwordErroe = false;
+                    }
+                    // this.$router.push('/user/auth/register');
+                });
+            },
         }
     }
 </script>
