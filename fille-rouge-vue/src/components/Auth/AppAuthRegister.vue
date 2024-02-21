@@ -6,30 +6,28 @@
             </div>
             
             <div class="cardForm shadow p-5 m-3 ">
-                
                 <h3 class="blueColor text-center">Create an Account</h3>
                 <p class="text-center text-secondary">Enter your personal details <br> to create account</p>
                 <form id="form" class="d-flex flex-column justify-content-between gap-4">
                     <label class="text-secondary"> 
-                        <input type="email" name="firstname"  placeholder="First Name ..." class="form-control mt-1">
+                        <input type="text" v-model="formData.firstname" name="firstname"  placeholder="First Name ..." class="form-control mt-1">
                         <span class="txet-danger">{{ errors.firstname }}</span>
                     </label>
                     <label class="text-secondary">
-                        <input type="email" name="lastname"  placeholder="Last Name ..." class="form-control mt-1">
+                        <input type="text" v-model="formData.lastname" name="lastname"  placeholder="Last Name ..." class="form-control mt-1">
                         <span class="txet-danger">{{ errors.lastname }}</span>
                     </label>
-                    <input type="hidden" name="points" value="5" id="">
                     <label class="text-secondary">
-                        <input type="email" name="name"  placeholder="UsrerName ..." class="form-control mt-1">
+                        <input type="text" v-model="formData.name" name="name"  placeholder="UsrerName ..." class="form-control mt-1">
                         <span class="txet-danger">{{ errors.name }}</span>
                     </label>
                     <label class="text-secondary">
-                        <input type="email" name="email"  placeholder="Your Email ..." class="form-control mt-1">
+                        <input type="email" v-model="formData.email" name="email"  placeholder="Your Email ..." class="form-control mt-1">
                         <span class="txet-danger">{{ errors.email }}</span>
                     </label>
                     <label class="text-secondary">
                         <div class="input-group mb-3">
-                            <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                            <input type="password" v-model="formData.password" name="password" class="form-control" id="password" placeholder="Password">
                             <div class="input-group-append cursor-point">
                                 <span class="input-group-text" @click="togleInputPassword()"> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -61,7 +59,15 @@ import axios from 'axios';
     export default{
         data() {
             return {
-                errors: {}
+                errors: {},
+                formData: {
+                    firstname: '', 
+                    lastname: '', 
+                    name: '', 
+                    email: '', 
+                    password: '',
+                    points: 5, role_id: 0
+                },
             };
         },
         methods: {
@@ -77,15 +83,11 @@ import axios from 'axios';
                 }
             },
             createUser(){
-                let form = document.getElementById('form');
-                let data = new FormData(form);
-                let object = {};
-                data.forEach((value, key) => {
-                    object[key] = value;
-                });
-                axios.post('http://127.0.0.1:8000/api/RegisterUser', object)
+                
+                axios.post('http://127.0.0.1:8000/api/RegisterUser', this.formData)
                 .then(response => {
-                    alert(response.data.data);
+                    console.log(response.data.user);
+                    this.$router.push('/user/auth');
                 }).catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors;
