@@ -30,6 +30,7 @@ const routes = [
         component: AppUser,
         children: [
             { path: '', component: AppHome },
+            { path: 'home', component: AppHome },
             { path: 'Servises/Badges', component: AppBadge },
             { path: 'Servises/Users', component: AppUsers },
             { path: 'Servises/Tages', component: AppTages },

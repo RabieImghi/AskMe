@@ -98,7 +98,6 @@ import Swal from 'sweetalert2'
                 })
                 .then(response => {
                     localStorage.setItem('token', response.data.token);
-                   
                     this.$router.push('/user/');
                 })
                 .catch(error => {
@@ -121,7 +120,6 @@ import Swal from 'sweetalert2'
                         }
                         else this.passwordErroe = false;
                     }
-                    // this.$router.push('/user/auth/register');
                 });
             },
         }
