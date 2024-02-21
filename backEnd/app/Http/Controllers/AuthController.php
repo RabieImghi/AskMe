@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\NewAccessToken;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -22,21 +23,36 @@ class AuthController extends Controller
         if (!Hash::check($request->password, $user->password)) 
             return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
         $token = $user->createToken('authToken')->plainTextToken;
-        setcookie('authToken', $token, time() + (60 * 60 * 24 * 365), "/");
-        return response()->json(['user' => $user, 'token' => $token]);
+        $badge ='';
+        if($user->points>=150) $badge = "Professional";
+        else if($user->points>=100) $badge = "Enlightened";
+        else if($user->points>=50) $badge = "Explainer";
+        else if($user->points>=5) $badge = "Beginner";
+        $dataUser = [
+            'username'=>$user->name,
+            'badge'=>$badge,
+            'points'=>$user->points,
+            'role_id'=>$user->role_id,
+        ];
+        $jsonDataUser = json_encode($dataUser);
+        cookie("authToken", $token, time() + (60 * 60 * 24 * 365));
+        cookie("authUser", $jsonDataUser, time() + (60 * 60 * 24 * 365));
+        return response()->json(['user' => $dataUser, 'token' => $token]);
     }
 
     public function register(Request $request)
     {
+        
         $request->validate([
             'lastname' => 'required',
             'firstname' => 'required',
-            'name' => 'required',
-            'email' => 'required',
+            'name' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'points' => 'required',
             'role_id' => 'required',
         ]);
+        
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -46,18 +62,15 @@ class AuthController extends Controller
             'points' => $request->points,
             'role_id' => $request->role_id,
         ]);
-
-        $token = $user->createToken('authToken')->plainTextToken;
-
         return response()->json([
             'user' => $user,
-            'token' => $token
-        ], 201);
+        ]);
     }
 
     public function logout(Request $request)
     {
-        setcookie('authToken', '', time() - (60 * 60 * 24 * 365), '/');
+        cookie('authToken', "", time() - (60 * 60 * 24 * 365));
+        cookie('authUser', "", time() - (60 * 60 * 24 * 365));
         return response()->json(['message' => 'Successfully logged out'],200);
     }
 

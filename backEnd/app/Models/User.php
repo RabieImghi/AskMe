@@ -26,6 +26,10 @@ class User extends Authenticatable
         'points',
         'role_id'
     ];
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
