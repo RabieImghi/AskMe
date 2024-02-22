@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\NewAccessToken;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
@@ -35,8 +33,8 @@ class AuthController extends Controller
             'role_id'=>$user->role_id,
         ];
         $jsonDataUser = json_encode($dataUser);
-        cookie("authToken", $token, time() + (60 * 60 * 24 * 365));
-        cookie("authUser", $jsonDataUser, time() + (60 * 60 * 24 * 365));
+        Cookie::make("authToken", $token, time() + (60 * 60 * 24 * 365));
+        // Cookie::make("authUser", $jsonDataUser, time() + (60 * 60 * 24 * 365));
         return response()->json(['user' => $dataUser, 'token' => $token]);
     }
 

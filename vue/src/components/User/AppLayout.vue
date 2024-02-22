@@ -135,33 +135,16 @@
                 
             </div>
         </div>
-        {{ this.user }}
     </div>
 </template>
 <script>
 import axios from 'axios';
     export default{
         name: 'AppLayout',
-        data() {
-            return {
-            user: "rferfre",
-            };
-        },
         computed: {
             tokenExists() {
                 return localStorage.getItem('token');
             },
-        },
-        created() {
-            let user = localStorage.getItem('user');
-
-            if (user) {
-            try {
-                this.user = JSON.parse(user);
-            } catch (e) {
-                console.error('Error parsing user from local storage:', e);
-            }
-            }
         },
         methods:{
             logout() {

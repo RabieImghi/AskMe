@@ -85,6 +85,7 @@ import axios from 'axios';
             createUser(){
                 axios.post('http://127.0.0.1:8000/api/RegisterUser', this.formData)
                 .then(response => {
+                console.log(response);
                     this.$router.push('/user/auth');
                 }).catch(error => {
                     if (error.response.status === 422) {
