@@ -46,6 +46,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\GeneratePermission::class,
             \App\Http\Middleware\HasPermission::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             
         ],
     ];

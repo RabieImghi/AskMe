@@ -41,6 +41,7 @@
                     <p class="text-secondary">Don't have account? <router-link to="/user/auth/register"  class="blueColor no-underline"> Create an account</router-link></p>
                 </form>
             </div>
+            {{ this.count }}
             <footer>
                 <p class="fw-bold text-secondary text-center p-2">© Copyright AskMe. All Rights Reserved <br>
                 Designed by Rabie Ait Imghi</p>
@@ -55,17 +56,67 @@
 </style>
 <script>
 import axios from 'axios';
-import Swal from 'sweetalert2'
+import { ref } from 'vue';
+import { useStore } from '../../store'
     export default{
-        data() {
-            return {
-                email: '',
-                password: '',
-                emailErroe: false,
-                passwordErroe: false,
-                errorsRequire: "",
-                errorsTest:false,
+        setup() {
+            const store = useStore();
+            const errorsTest = ref(false);
+            const emailError = ref(false);
+            const passwordError = ref(false);
+            const email = ref('');
+            const password = ref('');
+            const errorsRequire = ref('');
+
+            const login = () => {
+            errorsTest.value = false;
+            emailError.value = false;
+            passwordError.value = false;
+            axios.post('http://127.0.0.1:8000/api/login', {
+                email: email.value,
+                password: password.value,
+                role_id: 3
+            }).then(response => {
+                let user = response.data.user;
+                store.storeId(user.id); 
+                store.setUser(user) 
+                this.$router.push('/user/');
+            })
+            .catch(error => {
+                if(error.response.status === 422){
+                    emailError.value = true;
+                    passwordError.value = true;
+                    errorsRequire.value = "Email and password are required";
+                    errorsTest.value = true;
+                }
+                if (error.response.status === 401) {
+                    if(error.response.data.error === 'email'){
+                        emailError.value = true;
+                        errorsRequire.value = "Email is invalid or not exist";
+                        errorsTest.value = true;
+                    }else emailError.value = false;
+                    if(error.response.data.error === 'password'){
+                        passwordError.value = true;
+                        errorsRequire.value = "Password is invalid";
+                        errorsTest.value = true;
+                    }
+                    else passwordError.value = false;
+                }
+            });
             }
+
+            return {
+                login,
+                email,
+                password,
+                emailError,
+                passwordError,
+                errorsRequire,
+                errorsTest
+            }
+        },
+        data() {
+      
         },
         methods: {
             togleInputPassword(){
@@ -79,49 +130,43 @@ import Swal from 'sweetalert2'
                     svg.style.fill = 'currentColor';
                 }
             },
-            showAlert(message,icone) {
-                Swal.fire({
-                position: 'bottom-end',
-                icon: icone,
-                title: message,
-                showConfirmButton: false,
-                timer: 1500
-                });
-            },
-            login() {
-                this.errorsTest = false;
-                this.emailErroe= false;
-                this.passwordErroe= false;
-                axios.post('http://127.0.0.1:8000/api/login', {
-                    email: this.email,
-                    password: this.password
-                }).then(response => {
-                    localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('token', response.data.user);
-                    this.$router.push('/user/');
-                })
-                .catch(error => {
-                    if(error.response.status === 422){
-                        this.emailErroe = true;
-                        this.passwordErroe = true;
-                        this.errorsRequire = "Email and password are required";
-                        this.errorsTest = true;
-                    }
-                    if (error.response.status === 401) {
-                        if(error.response.data.error === 'email'){
-                            this.emailErroe = true;
-                            this.errorsRequire = "Email is invalid or not exist";
-                            this.errorsTest = true;
-                        }else this.emailErroe = false;
-                        if(error.response.data.error === 'password'){
-                            this.passwordErroe = true;
-                            this.errorsRequire = "Password is invalid";
-                            this.errorsTest = true;
-                        }
-                        else this.passwordErroe = false;
-                    }
-                });
-            },
+            // login() {
+            //     this.errorsTest = false;
+            //     this.emailErroe= false;
+            //     this.passwordErroe= false;
+            //     axios.post('http://127.0.0.1:8000/api/login', {
+            //         email: this.email,
+            //         password: this.password,
+            //         count: this.count
+            //     }).then(response => {
+            //         // localStorage.setItem('token', response.data.token);
+            //         // localStorage.setItem('token', response.data.user);
+            //         let usre = response.data.user;
+            //         alert(response.data.TEST)
+            //         // this.$router.push('/user/');
+            //     })
+            //     .catch(error => {
+            //         if(error.response.status === 422){
+            //             this.emailErroe = true;
+            //             this.passwordErroe = true;
+            //             this.errorsRequire = "Email and password are required";
+            //             this.errorsTest = true;
+            //         }
+            //         if (error.response.status === 401) {
+            //             if(error.response.data.error === 'email'){
+            //                 this.emailErroe = true;
+            //                 this.errorsRequire = "Email is invalid or not exist";
+            //                 this.errorsTest = true;
+            //             }else this.emailErroe = false;
+            //             if(error.response.data.error === 'password'){
+            //                 this.passwordErroe = true;
+            //                 this.errorsRequire = "Password is invalid";
+            //                 this.errorsTest = true;
+            //             }
+            //             else this.passwordErroe = false;
+            //         }
+            //     });
+            // },
         }
     }
 </script>
