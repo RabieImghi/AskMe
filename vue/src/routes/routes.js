@@ -23,6 +23,7 @@ import AppAuth from '../components/Auth/AppAuth.vue';
 import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
 import AppAuthRegister from '../components/Auth/AppAuthRegister.vue';
 
+
 const routes = [
     { path: '', redirect: '/user/' },
     { 
@@ -41,6 +42,7 @@ const routes = [
             { path: 'Answers', component: AppAnswers },
             { path: 'aboutUs', component: AppAboutUs },
             { path: 'AskQuesion', component: AppAskQuesion },
+            
         ]
     },
     { 
@@ -66,5 +68,6 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 });
+
 
 export default router;

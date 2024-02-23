@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
+use App\Models\RolePermission;
 
 class AuthController extends Controller
 {
@@ -33,8 +34,6 @@ class AuthController extends Controller
             'role_id'=>$user->role_id,
         ];
         $jsonDataUser = json_encode($dataUser);
-        Cookie::make("authToken", $token, time() + (60 * 60 * 24 * 365));
-        // Cookie::make("authUser", $jsonDataUser, time() + (60 * 60 * 24 * 365));
         return response()->json(['user' => $dataUser, 'token' => $token]);
     }
 
@@ -72,8 +71,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out'],200);
     }
 
-    public function getAuthenticatedUser(Request $request)
+    public function CheckPermission()
     {
-        return response()->json($request->user());
+        return response()->json(['message' => 'You have permission to access this route!'],200);
     }
 }

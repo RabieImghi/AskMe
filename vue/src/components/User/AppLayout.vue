@@ -139,11 +139,14 @@
 </template>
 <script>
 import axios from 'axios';
+import { useStore } from '../../store';
     export default{
         name: 'AppLayout',
+        
         computed: {
             tokenExists() {
-                return localStorage.getItem('token');
+                const store = useStore();
+                return store.token;
             },
         },
         methods:{

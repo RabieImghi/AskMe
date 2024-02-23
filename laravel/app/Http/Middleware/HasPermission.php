@@ -20,12 +20,13 @@ class HasPermission
     {
         $uri = $request->route()->uri;
         $role_id = $request->input('role_id');
-        $allowedRoutes = Permission::where('role_id', $role_id)->get();
-        $allowed =[];
+
+        $allowedRoutes = RolePermission::with('permission')->where('role_id', $role_id)->get();
+        $allowedRouteTable =[];
         foreach($allowedRoutes as $allowed){
-            $allowed[]= $allowedRoutes->permission->name;
+            $allowedRouteTable[]= $allowed->permission->name;
         }
-        if (in_array($uri, $allowed)) return response()->json(['message' => "Password not correct!",'error'=>"password"], 200);
-        else return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
+        if (in_array($uri, $allowedRouteTable)) return $next($request);
+        else return response()->json(['error'=>"author"], 401);
     }
 }
