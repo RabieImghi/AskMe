@@ -57,9 +57,11 @@
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'
 import { useStore } from '../../store'
     export default{
-        setup() {
+        setup() {        
+            const router = useRouter()
             const store = useStore();
             const errorsTest = ref(false);
             const emailError = ref(false);
@@ -75,12 +77,13 @@ import { useStore } from '../../store'
             axios.post('http://127.0.0.1:8000/api/login', {
                 email: email.value,
                 password: password.value,
-                role_id: 3
+                role_id: store.role_id
             }).then(response => {
                 let user = response.data.user;
                 store.storeId(user.id); 
-                store.setUser(user) 
-                this.$router.push('/user/');
+                store.setUser(user);
+                store.setToken(response.data.token);
+                router.push('/user/');
             })
             .catch(error => {
                 if(error.response.status === 422){
@@ -90,6 +93,7 @@ import { useStore } from '../../store'
                     errorsTest.value = true;
                 }
                 if (error.response.status === 401) {
+                    alert('ok3');
                     if(error.response.data.error === 'email'){
                         emailError.value = true;
                         errorsRequire.value = "Email is invalid or not exist";
@@ -100,6 +104,10 @@ import { useStore } from '../../store'
                         errorsRequire.value = "Password is invalid";
                         errorsTest.value = true;
                     }
+                    if(error.response.data.error === 'NotAuthorized'){
+                        alert('NotAuthorized');
+                    }
+                    
                     else passwordError.value = false;
                 }
             });
