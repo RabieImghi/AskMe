@@ -39,6 +39,7 @@
                     </label>
                     <button @click="login()" type="button" class="btn btn-primary">Login</button>
                     <p class="text-secondary">Don't have account? <router-link to="/user/auth/register"  class="blueColor no-underline"> Create an account</router-link></p>
+                    <p class="text-secondary">Back to home page? <router-link to="/user/"  class="blueColor no-underline"> Home</router-link></p>
                 </form>
             </div>
             {{ this.count }}
@@ -80,10 +81,11 @@ import { useStore } from '../../store'
                 role_id: store.role_id
             }).then(response => {
                 let user = response.data.user;
-                store.storeId(user.id); 
+                store.storeRole_id(user.role_id); 
                 store.setUser(user);
                 store.setToken(response.data.token);
-                router.push('/user/');
+                if(user.role_id === 2) router.push('/user/');
+                if(user.role_id === 1) router.push('/admin/');
             })
             .catch(error => {
                 if(error.response.status === 422){

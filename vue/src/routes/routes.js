@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
+import axios from 'axios';
+import {useStore} from '../store';
 
 import AppUser from '../components/User/AppUser.vue';
 import AppHome from '../components/User/componentsHome/AppHome.vue';
@@ -22,6 +23,9 @@ import AppAdminUsers from '../components/Admin/AppAdminUsers.vue';
 import AppAuth from '../components/Auth/AppAuth.vue';
 import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
 import AppAuthRegister from '../components/Auth/AppAuthRegister.vue';
+
+
+import AppError from '../components/Error/AppError404.vue';
 
 
 const routes = [
@@ -61,6 +65,13 @@ const routes = [
             { path: 'register', component: AppAuthRegister },
         ]
     },
+    { 
+        path: '/user/Error404',
+        component: AppError,
+        children: [
+            { path: '', component: AppError },
+        ]
+    },
     
 ];
 
@@ -70,4 +81,38 @@ const router = createRouter({
 });
 
 
+function extractURIs(routes, parentPath = '') {
+    const URIs = [];
+    routes.forEach(route => { 
+        const fullPath = parentPath + route.path; 
+        if (route.children) {
+            URIs.push(fullPath);
+            URIs.push(...extractURIs(route.children, fullPath + '/'));   
+        } else {
+            URIs.push(fullPath);
+        }
+    });
+    return URIs;
+}
+const routerURIs = extractURIs(routes);
+axios.post('http://127.0.0.1:8000/api/PermissionVueJs', {router: routerURIs});
+
+router.beforeEach((to, from, next) => {
+    const store = useStore();
+    axios.post('http://127.0.0.1:8000/api/CheckPermission', {
+      uri: to.path,
+      role_id: store.role_id
+    })
+    .then(response => {
+        console.log(response.data);
+        next()
+    }).catch(error => {
+      if (error.response.status === 401) {
+        next('/user/Error404/')
+      } else {
+        next()
+      }
+    });
+});
+  
 export default router;

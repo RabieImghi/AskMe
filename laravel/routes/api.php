@@ -2,8 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\UserController;
-use App\Models\Permission;
+use App\Http\Controllers\CheckController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +22,6 @@ Route::get('/allPost',[PostController::class,'allPost']);
 Route::post('/RegisterUser',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::get('/logout',[AuthController::class,'logout']);
-Route::get('/getPermmisions',[Permission::class,'getPermissions']);
+Route::post('/PermissionVueJs',[AuthController::class,'PermissionVueJs']);
+Route::post('/CheckPermission',[CheckController::class,'CheckPermission']);
 

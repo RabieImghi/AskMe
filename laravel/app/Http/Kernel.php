@@ -45,7 +45,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\GeneratePermission::class,
-            \App\Http\Middleware\HasPermission::class,
+            // \App\Http\Middleware\HasPermission::class,
             
         ],
     ];

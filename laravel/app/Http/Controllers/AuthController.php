@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PermessionVue;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -74,5 +75,16 @@ class AuthController extends Controller
     public function CheckPermission()
     {
         return response()->json(['message' => 'You have permission to access this route!'],200);
+    }
+
+    public function PermissionVueJs(Request $request){
+        PermessionVue::truncate();
+        foreach($request->input('router') as $router){
+            if($router == '/user' || $router == '/admin' || $router == null || $router == '/user/Error404' || $router == '/user/auth') continue;
+            PermessionVue::create([
+                'name' => $router,
+            ]);
+        }
+        return response()->json(['test' => $request->input('router')],200);
     }
 }
