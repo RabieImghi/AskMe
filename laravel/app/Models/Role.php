@@ -15,4 +15,14 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function permissionVue()
+    {
+        return $this->belongsToMany(PermessionVue::class, 'permession_vue__roles');
+    }
 }

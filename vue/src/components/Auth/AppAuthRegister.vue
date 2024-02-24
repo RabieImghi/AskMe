@@ -87,8 +87,8 @@ import { useStore } from '../../store'
                 const store = useStore();
                 axios.post('http://127.0.0.1:8000/api/RegisterUser', this.formData)
                 .then(response => {
-                console.log(response);
-                    this.$router.push('/user/auth');
+                    console.log(response.data.test);
+                    this.$router.push('/user/auth/');
                 }).catch(error => {
                     console.log(error.response.data)
                     if (error.response.status === 422) {

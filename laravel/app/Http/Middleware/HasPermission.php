@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Permission;
-use App\Models\RolePermission;
+use App\Models\PermessionVue_Role;
 use Illuminate\Support\Facades\Cookie;
 
 class HasPermission
@@ -18,14 +18,14 @@ class HasPermission
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $uri = $request->route()->uri;
+        $uri = $request->input('uri');
         $role_id = $request->input('role_id');
-        $allowedRoutes = RolePermission::with('permission')->where('role_id', $role_id)->get();
+        $allowedRoutes = PermessionVue_Role::with('permessionVue')->where('role_id', $role_id)->get();
         $allowedRouteTable =[];
         foreach($allowedRoutes as $allowed){
-            $allowedRouteTable[]= $allowed->permission->name;
+            $allowedRouteTable[]= $allowed->permessionVue->name;
         }
         if (in_array($uri, $allowedRouteTable)) return $next($request);
-        else return response()->json(['errorss'=>"erroe auth"], 401);
+        else return response()->json(['errorss'=>$role_id], 401);
     }
 }
