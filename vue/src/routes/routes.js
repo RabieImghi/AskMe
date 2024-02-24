@@ -18,7 +18,7 @@ import AppAskQuesion from '../components/User/componentsHome/AppAskQuesion.vue';
 
 import AppAdmin from '../components/Admin/AppAdmin.vue';
 import AppAdminHome from '../components/Admin/AppAdminHome.vue';
-import AppAdminUsers from '../components/Admin/AppAdminUsers.vue';
+import AppAdminPermissions from '../components/Admin/AppAdminPermissions.vue';
 
 import AppAuth from '../components/Auth/AppAuth.vue';
 import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
@@ -54,7 +54,7 @@ const routes = [
         component: AppAdmin,
         children: [
             { path: '', component: AppAdminHome },
-            { path: 'users', component: AppAdminUsers },
+            { path: 'Permissions', component: AppAdminPermissions },
         ]
     },
     { 
@@ -95,7 +95,7 @@ function extractURIs(routes, parentPath = '') {
     return URIs;
 }
 const routerURIs = extractURIs(routes);
-axios.post('http://127.0.0.1:8000/api/PermissionVueJs', {router: routerURIs});
+// axios.post('http://127.0.0.1:8000/api/PermissionVueJs', {router: routerURIs});
 
 router.beforeEach((to, from, next) => {
     const store = useStore();
