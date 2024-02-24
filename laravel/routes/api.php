@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CheckController;
+use App\Http\Controllers\PermissionController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,5 @@ Route::post('/login',[AuthController::class,'login']);
 Route::get('/logout',[AuthController::class,'logout']);
 Route::post('/PermissionVueJs',[AuthController::class,'PermissionVueJs']);
 Route::post('/CheckPermission',[CheckController::class,'CheckPermission']);
+Route::get('/getRolePemissions',[PermissionController::class,'getRolePemissions']);
 
