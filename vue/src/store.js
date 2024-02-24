@@ -6,11 +6,14 @@ export const useStore = defineStore('main', {
     role_id: localStorage.getItem('role_id') || 3,
     user: localStorage.getItem('user') || null,
     token: localStorage.getItem('token') || null,
+    permissions : {
+      
+    }
   }),
   actions: {
-    storeId(user_id) {
-      this.user_id = user_id;
-      localStorage.setItem('user_id', user_id)
+    storeRole_id(role_id) {
+      this.role_id = role_id;
+      localStorage.setItem('role_id', role_id)
     },
     setUser(user) { 
       this.user = user;

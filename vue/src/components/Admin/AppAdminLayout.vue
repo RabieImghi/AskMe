@@ -21,7 +21,7 @@
                                 <li><a class="dropdown-item" href="#">Settings</a></li>
                                 <li><a class="dropdown-item" href="#">Profile</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                                <li><a class="dropdown-item" href="/user/auth/" @click="logout">Sign out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -30,3 +30,16 @@
         </header>
     </div>
 </template>
+<script>
+import axios from 'axios';
+    export default{
+        methods:{
+            logout() {
+                localStorage.setItem('role_id', 3);
+                localStorage.removeItem('token');
+                axios.get("http://127.0.0.1:8000/api/logout");
+            }
+            
+        }
+    }
+</script>

@@ -24,6 +24,9 @@ import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
 import AppAuthRegister from '../components/Auth/AppAuthRegister.vue';
 
 
+import AppError from '../components/Error/AppError404.vue';
+
+
 const routes = [
     { path: '', redirect: '/user/' },
     { 
@@ -59,6 +62,13 @@ const routes = [
         children: [
             { path: '', component: AppAuthLogin },
             { path: 'register', component: AppAuthRegister },
+        ]
+    },
+    { 
+        path: '/user/Error404',
+        component: AppError,
+        children: [
+            { path: '', component: AppError },
         ]
     },
     
