@@ -64,18 +64,14 @@ class CheckController extends Controller
                 }else $message = "notAuth";
             }else $message = "notAuth";
         }else{
-            $allowedRoutes = permession_vues_users::with('permessionVue')->where('user_id', $user_id)->get();
-            $allowedRouteTable =[];
-            foreach($allowedRoutes as $allowed){
-                $allowedRouteTable['route'][]= $allowed->permessionVue->name;
-                $allowedRouteTable['isActive'][]= $allowed->is_active;
+            $allowedRoutesRole = PermessionVue_Role::with('permessionVue')->where('role_id', $role_id)->get();
+            $allowedRouteRoleTable =[];
+            foreach($allowedRoutesRole as $allowed){
+                $allowedRouteRoleTable[]= $allowed->permessionVue->name;
             }
-            $index = array_search($uri, $allowedRouteTable['route']);
-            if($index !== FALSE){
-                if( $allowedRouteTable['isActive'][$index] == 1){
-                    $message = "Auth";
-                }
-            }else $message = "notAuth";
+            if (in_array($uri, $allowedRouteRoleTable)){
+                $message = "Auth";
+            }else $message= "notAuth";
         }
         return response()->json($message);
     }

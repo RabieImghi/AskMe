@@ -9,9 +9,6 @@
                         </div>
                     </div>
                     <div class="profile d-flex gap-4 align-items-center">
-                        <div class="search">
-                            <input type="search" name="Search" placeholder="Searche..." class="form-control" id="search">
-                        </div>
                         <div class="dropdown text-end">
                             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="../../assets/img/user.png" alt="mdo" width="32" height="32" class="rounded-circle">

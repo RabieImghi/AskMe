@@ -23,7 +23,7 @@
             </section> 
             <div class="border-bottom container-mf pt-4 pb-4 d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> RabieImghi</span></span> 
-                <router-link to="/MyQuistion" >
+                <router-link to="/user/myQuestion" >
                     <button class="btn btn-light shadow fw-bold text-secondary">Show All Your Question</button>
                 </router-link> 
             </div> 

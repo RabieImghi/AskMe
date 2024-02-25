@@ -140,7 +140,23 @@ hr{color: lightgray !important;}
             min-width: 260px !important;
             max-width: 260px !important;
         }
-        
+        .aside{
+            display: none !important;
+        }
+        .sectionHome.pe-4, .sectionBadge.pe-4{
+            padding: 0 !important;
+        }
+        .imageInfoUser.col-1 {
+            justify-content: start !important;
+            flex-direction: row !important;
+        }
+        .userInfo.d-flex{
+            flex-wrap: wrap !important;
+        }
+        .answerHead{
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+        }
         
     }
 }
