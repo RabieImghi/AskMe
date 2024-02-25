@@ -56,7 +56,6 @@
 </style>
 <script>
 import axios from 'axios';
-import { useStore } from '../../store'
     export default{
         data() {
             return {
@@ -84,7 +83,6 @@ import { useStore } from '../../store'
                 }
             },
             createUser(){
-                const store = useStore();
                 axios.post('http://127.0.0.1:8000/api/RegisterUser', this.formData)
                 .then(response => {
                     console.log(response.data.test);

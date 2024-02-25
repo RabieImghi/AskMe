@@ -34,8 +34,7 @@ class AuthController extends Controller
             'points'=>$user->points,
             'role_id'=>$user->role_id,
         ];
-        $jsonDataUser = json_encode($dataUser);
-        return response()->json(['user' => $dataUser, 'token' => $token]);
+        return response()->json(['user' => $dataUser, 'token' => $token, "user_id"=>$user->id],200);
     }
 
     public function register(Request $request)
@@ -79,12 +78,12 @@ class AuthController extends Controller
 
     public function PermissionVueJs(Request $request){
         PermessionVue::truncate();
-        foreach($request->input('router') as $router){
+        foreach($request->router as $router){
             if($router == '/user' || $router == '/admin' || $router == null || $router == '/user/Error404' || $router == '/user/auth') continue;
             PermessionVue::create([
                 'name' => $router,
             ]);
         }
-        return response()->json(['test' => $request->input('router')],200);
+        return response()->json(['test' => $request->router[2]],200);
     }
 }

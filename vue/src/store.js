@@ -4,16 +4,19 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('main', {
   state: () => ({
     role_id: localStorage.getItem('role_id') || 3,
+    user_id: localStorage.getItem('user_id') || null,
     user: localStorage.getItem('user') || null,
     token: localStorage.getItem('token') || null,
-    permissions : {
-      
-    }
+    PermissionsUser: localStorage.getItem('permissionsUser') || null,
   }),
   actions: {
     storeRole_id(role_id) {
       this.role_id = role_id;
       localStorage.setItem('role_id', role_id)
+    },
+    storeUser_id(user_id) {
+      this.user_id = user_id;
+      localStorage.setItem('user_id', user_id)
     },
     setUser(user) { 
       this.user = user;
@@ -23,5 +26,10 @@ export const useStore = defineStore('main', {
       this.token = token;
       localStorage.setItem('token', token)
     },
+    setPermissionsUser(permissionsUser) {
+      localStorage.setItem('permissionsUser', permissionsUser)
+      this.PermissionsUser = permissionsUser
+    },
+    
   },
 })

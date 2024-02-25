@@ -5,29 +5,89 @@
         </div>
         <hr>
         <div class="container-mf">
-            <table class="table align-middle mb-0 bg-white ">
-                <thead class="bg-light">
-                    <tr>
-                    <th>Role</th>
-                    <th>Permissions</th>
+            <div class="text-end">
+                <button class="btn btn-primary" @click="showModal = !showModal">Add Permission</button>
+            </div>
+            <table class="">
+                <thead >
+                    <tr class="itemsPermission">
+                        <th>Role</th>
+                        <th>Permissions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(routes, role) in permissions" :key="role">
+                    <tr v-for="(routes, role) in permissions" :key="role" class="itemsPermission">
                         <td>
                             <p class="fw-bold mb-1 text-start" :class="role">{{ role }}</p>
                         </td>
                         <td class="d-flex flex-wrap gap-4" >
-                            <span class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index">{{ route }}</span>
+                            <span class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index">
+                                {{ route }}
+                            </span>
                         </td>
                     </tr>
                 </tbody>
             </table>   
         </div>
-        
+        <div class="overlay" @click="showModal = !showModal" v-bind:class="{ 'show': !showModal }"></div>
+        <div class="model addpermission"  v-bind:class="{ 'show': !showModal }">
+            <div class="p-4">
+                <div>
+                    <span class="h4 fw-bold title">New Permission</span>
+                    <div class="mt-3">
+                        <p class="text-secondary">Add information and add new Permission.</p>
+                    </div>
+                    <form>
+                        <div>
+                            <label class="fw-bold h6 text-secondary">Role</label>
+                            <select name="role_id" class="form-select">
+                                <option value="1">User</option>
+                                <option value="1">Admin</option>
+                                <option value="1">Guest</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="fw-bold h6 text-secondary">Permissions</label>
+                            <select name="role_id" class="form-select">
+                                <option value="1">User</option>
+                                <option value="1">Admin</option>
+                                <option value="1">Guest</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <style>
+    .model {
+        position: fixed;
+        right: 0;
+        top: 10vh;
+        width: 400px;
+        height: 90vh;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+        overflow: auto;
+    }
+    .model.show {
+        display: block !important;
+        transform: translateX(0);
+    }
+    .overlay.show {
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 10vh;
+        left: 0;
+        width: 100%;
+        height: 90vh;
+        transform: translateX(0);
+        transition: transform 0.3s ease-out;
+        opacity: 0.2;
+    }
     .prmissions{
         background-color: #f0f0f0;
         padding: 5px 10px;
@@ -48,6 +108,9 @@
         color: #dc3545;
     
     }
+    .title{
+        color: #474747;
+    }
 </style>
 <script>
 import axios from 'axios';
@@ -56,6 +119,7 @@ export default {
     data() {
         return {
             permissions: [],
+            showModal: true
         }
     },
     mounted() {
