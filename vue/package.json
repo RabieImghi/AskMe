@@ -9,8 +9,13 @@
   },
   "dependencies": {
     "axios": "^1.6.7",
+    "bootstrap": "^5.3.3",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
+    "jquery": "^3.7.1",
     "pinia": "^2.1.7",
+    "select2": "^4.1.0-rc.0",
+    "select2-bootstrap-theme": "^0.1.0-beta.10",
     "sweetalert2": "^11.10.5",
     "vue": "^3.2.13",
     "vue-pagination-2": "^3.1.0",

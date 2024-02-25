@@ -48,7 +48,7 @@
                                 <span class="text-secondary">Asked : <span class="text-danger">{{post.date}}</span></span>
                                 <span class="text-secondary">In : <span class="text-danger">{{post.category}}</span></span>
                             </div>
-                            <router-link to="/Answers" class="nav-link">
+                            <router-link to="/Answers" class="nav-link answerHead">
                                 <span class=" h3 fw-bold">{{post.question}}</span>
                                 <p class="text-secondary pt-3">{{post.questionDetail}}</p>  
                             </router-link>

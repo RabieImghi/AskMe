@@ -84,6 +84,7 @@ import { useStore } from '../../store'
                 store.storeRole_id(user.role_id); 
                 store.setUser(user);
                 store.setToken(response.data.token);
+                store.storeUser_id(response.data.user_id);
                 if(user.role_id === 2) router.push('/user/');
                 if(user.role_id === 1) router.push('/admin/');
             })

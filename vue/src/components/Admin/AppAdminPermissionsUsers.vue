@@ -1,0 +1,100 @@
+<template>
+    <div class="test">
+        <div class="headerDashboard container-mf pb-1">
+            <span class="fw-bold h5 text-dark">Admin / <span class="text-secondary">Permissions</span> </span>
+        </div>
+        <hr>
+        <div class="container-mf">
+            <table class="table align-middle mb-0 bg-white ">
+                <thead class="bg-light">
+                    <tr>
+                    <th>Role</th>
+                    <th>Permissions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(routes, user) in permissions" :key="user">
+                        <td>
+                            <p class="fw-bold mb-1 text-start" :class="role">{{ user }}</p>
+                        </td>
+                        <td class="d-flex flex-wrap gap-4" >
+                            <span class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index"
+                            :class="route.isActive === 1 ? 'active' : 'inactive'"
+                            @click="changeStatus(route.id, route.isActive)"
+                            >{{ route.route }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+        
+    </div>
+</template>
+<style>
+    .prmissions{
+        background-color: #f0f0f0;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    .prmissions:hover{
+        background-color: #e0e0e0;
+        transform: translateY(-2px);
+        transition: all 0.7s ease;
+    }
+    .active{
+        background-color: #4caf50;
+        color: white;
+    }
+    .inactive{
+        background-color: #f44336;
+        color: white;
+    }
+</style>
+<script>
+import axios from 'axios';
+import {useStore} from '../../store'
+export default {
+    name: "AppAdminPermissions",
+    data() {
+        return {
+            permissions: [],
+        }
+    },
+    mounted() {
+        this.getPermissions();
+    },  
+    methods: {
+        getPermissions() {
+            axios.get('http://127.0.0.1:8000/api/getRolePemissionsUsers')
+            .then(response => {
+                this.permissions = response.data.permissions;
+                console.log(this.permissions);
+            }).catch(error => {
+                console.log(error);
+            })
+        },
+        changeStatus(id, isActive) {
+            const store = new useStore();
+            var is_active = 1;
+            if(isActive === 1) is_active = 0;
+            axios.post('http://127.0.0.1:8000/api/ChangeStatusPermissions', {
+                id: id,
+                is_active: is_active
+            }).then(response => { 
+                console.log(response);
+                axios.post('http://127.0.0.1:8000/api/CheckPermissionUser',{
+                    user_id: store.user_id
+                })
+                .then(response => {
+                    store.setPermissionsUser(JSON.stringify(response.data.permissionsUser));
+                }).catch(error => {
+                    console.log(error.response);
+                });
+                this.getPermissions();
+            }).catch(error => {
+                console.log(error);
+            })
+        },
+    }
+}
+</script>

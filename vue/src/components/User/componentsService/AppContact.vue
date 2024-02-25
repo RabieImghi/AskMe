@@ -59,4 +59,9 @@
     .contactpage{
         min-height: calc( 100vh - 80px ) !important;
     }
+    input::-webkit-input-placeholder {
+        color: rgb(124, 124, 124) !important;
+        font-size: 1em !important;
+        font-family: sans-serif;
+    }
 </style>

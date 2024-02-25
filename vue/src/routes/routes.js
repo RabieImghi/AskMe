@@ -19,6 +19,8 @@ import AppAskQuesion from '../components/User/componentsHome/AppAskQuesion.vue';
 import AppAdmin from '../components/Admin/AppAdmin.vue';
 import AppAdminHome from '../components/Admin/AppAdminHome.vue';
 import AppAdminPermissions from '../components/Admin/AppAdminPermissions.vue';
+import AppAdminPermissionsUsers from '../components/Admin/AppAdminPermissionsUsers.vue';
+
 
 import AppAuth from '../components/Auth/AppAuth.vue';
 import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
@@ -55,6 +57,8 @@ const routes = [
         children: [
             { path: '', component: AppAdminHome },
             { path: 'Permissions', component: AppAdminPermissions },
+            { path: 'Permissions/Users', component: AppAdminPermissionsUsers },
+            
         ]
     },
     { 
@@ -81,38 +85,108 @@ const router = createRouter({
 });
 
 
-function extractURIs(routes, parentPath = '') {
-    const URIs = [];
-    routes.forEach(route => { 
-        const fullPath = parentPath + route.path; 
-        if (route.children) {
-            URIs.push(fullPath);
-            URIs.push(...extractURIs(route.children, fullPath + '/'));   
-        } else {
-            URIs.push(fullPath);
-        }
-    });
-    return URIs;
-}
-const routerURIs = extractURIs(routes);
+// function extractURIs(routes, parentPath = '') {
+//     const URIs = [];
+//     routes.forEach(route => { 
+//         const fullPath = parentPath + route.path; 
+//         if (route.children) {
+//             URIs.push(fullPath);
+//             URIs.push(...extractURIs(route.children, fullPath + '/'));   
+//         } else {
+//             URIs.push(fullPath);
+//         }
+//     });
+//     return URIs;
+// }
+// const routerURIs = extractURIs(routes);
 // axios.post('http://127.0.0.1:8000/api/PermissionVueJs', {router: routerURIs});
+
+// router.beforeEach((to, from, next) => {
+//     const store = useStore();
+//     axios.post('http://127.0.0.1:8000/api/CheckPermission', {
+//       uri: to.path,
+//       role_id: store.role_id
+//     })
+//     .then(response => {
+//         console.log(response.data);
+//         next()
+//         return;
+//     }).catch(error => {
+//       if (error.response.status === 401) {
+//         next()
+//         return;
+//       }
+//     });
+// });
 
 router.beforeEach((to, from, next) => {
     const store = useStore();
-    axios.post('http://127.0.0.1:8000/api/CheckPermission', {
-      uri: to.path,
-      role_id: store.role_id
+    var data=[];
+    if(store.user_id){
+        data = {
+            user_id: store.user_id,
+            role_id: store.role_id,
+            uri: to.path
+        }
+    }else{
+        data = {
+            user_id: null,
+            role_id: store.role_id,
+            uri: to.path
+        }
+    }
+    axios.post('http://127.0.0.1:8000/api/CheckPermissionUser',{
+        dataUser: data
     })
     .then(response => {
         console.log(response.data);
-        next()
+        if(response.data=='Auth' || to.path === '/user/Error404/'){
+            next();
+            return;
+        } else {
+            router.push('/user/Error404/');
+        }
     }).catch(error => {
-      if (error.response.status === 401) {
-        next('/user/Error404/')
-      } else {
-        next()
-      }
+        console.log(error.response);
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// if(store.PermissionsUser != null){
+//     console.log(store.PermissionsUser)
+// }else{
+//     console.log('null')
+
+// }
+
+// router.beforeEach(async (to, from, next) => {
+//     const store = useStore();
+//     if(store.user_id != null){
+//       const permissions = await import('@/Cache/PermissionsUser.js');
+//       for (let i = 0; i < permissions.route.length; i++) {
+//         if (to.path == permissions.route[i] && permissions.isActive[i] == 1) {
+//           next();
+//           return;
+//         }
+//       }
+//     }
+//     next();
+//   });
+
   
 export default router;
