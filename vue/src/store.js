@@ -6,6 +6,7 @@ export const useStore = defineStore('main', {
     role_id: localStorage.getItem('role_id') || 3,
     user_id: localStorage.getItem('user_id') || null,
     user: localStorage.getItem('user') || null,
+    badge: localStorage.getItem('badge') || null,
     token: localStorage.getItem('token') || null,
     PermissionsUser: localStorage.getItem('permissionsUser') || null,
   }),
@@ -21,6 +22,10 @@ export const useStore = defineStore('main', {
     setUser(user) { 
       this.user = user;
       localStorage.setItem('user', user)
+    },
+    setBadge(badge) { 
+      this.badge = badge;
+      localStorage.setItem('badge', badge)
     },
     setToken(token) {
       this.token = token;
