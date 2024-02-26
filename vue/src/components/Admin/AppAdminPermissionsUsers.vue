@@ -5,19 +5,19 @@
         </div>
         <hr>
         <div class="container-mf">
-            <table class="table align-middle mb-0 bg-white ">
-                <thead class="bg-light">
+            <table class="">
+                <thead class="">
                     <tr>
-                    <th>Role</th>
-                    <th>Permissions</th>
+                    <th class="px-3">Role</th>
+                    <th class="px-3">Permissions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(routes, user) in permissions" :key="user">
-                        <td>
+                        <td class="px-3">
                             <p class="fw-bold mb-1 text-start" :class="role">{{ user }}</p>
                         </td>
-                        <td class="d-flex flex-wrap gap-4" >
+                        <td class="d-flex flex-wrap gap-4 px-3" >
                             <span class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index"
                             :class="route.isActive === 1 ? 'active' : 'inactive'"
                             @click="changeStatus(route.id, route.isActive)"
@@ -31,6 +31,23 @@
     </div>
 </template>
 <style>
+    table {
+        border-collapse: separate;
+        border-spacing: 0 20px;
+    }
+
+    table tr {
+        box-shadow: 2px 3px 10px rgba(211, 211, 211, 0.635);
+        border-radius: 3px;
+        padding: 20px;
+    }
+    table tr:hover {
+        transform: translateY(-2px);
+        background-color: #f5f5f580;
+    }
+    table td, table th {
+        padding: 10px 0;
+    }
     .prmissions{
         background-color: #f0f0f0;
         padding: 5px 10px;

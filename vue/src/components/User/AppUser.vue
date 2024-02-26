@@ -14,18 +14,18 @@
 <script>
     import AppUserLayout from './AppLayout.vue';
     import AppUserAside from './AppAside.vue';
-    import { useStore } from '../../store'
+    // import { useStore } from '../../store'
     export default {
         components:{
             AppUserLayout,
             AppUserAside,
         },
-        mounted(){
-            const store = useStore();
-            if(store.role_id == 1){
-              this.$router.push('/admin/');
-            }
-        }
+        // mounted(){
+        //     const store = useStore();
+        //     if(store.role_id == 1){
+        //       this.$router.push('/admin/');
+        //     }
+        // }
         
         
     }

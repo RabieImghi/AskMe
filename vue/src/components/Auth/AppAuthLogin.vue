@@ -82,7 +82,8 @@ import { useStore } from '../../store'
             }).then(response => {
                 let user = response.data.user;
                 store.storeRole_id(user.role_id); 
-                store.setUser(user);
+                store.setUser(user.username);
+                store.setBadge(user.badge);
                 store.setToken(response.data.token);
                 store.storeUser_id(response.data.user_id);
                 if(user.role_id === 2) router.push('/user/');

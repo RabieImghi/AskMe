@@ -14,18 +14,18 @@
 <script>
     import AppAdminLayout from './AppAdminLayout.vue';
     import AppAdminAside from './AppAdminAside.vue';
-    import { useStore } from '../../store'
+    // import { useStore } from '../../store'
     export default {
         components:{
             AppAdminLayout,
             AppAdminAside
         },
-        mounted(){
-            const store = useStore();
-            if(store.role_id == 2 || store.role_id == 3 ){
-                this.$router.push('/user/Error404/');
-            }
-        }
+        // mounted(){
+        //     const store = useStore();
+        //     if(store.role_id == 2 || store.role_id == 3 ){
+        //         this.$router.push('/user/Error404/');
+        //     }
+        // }
     }
 </script>
 <style>
