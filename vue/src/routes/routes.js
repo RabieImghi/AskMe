@@ -85,21 +85,21 @@ const router = createRouter({
 });
 
 
-// function extractURIs(routes, parentPath = '') {
-//     const URIs = [];
-//     routes.forEach(route => { 
-//         const fullPath = parentPath + route.path; 
-//         if (route.children) {
-//             URIs.push(fullPath);
-//             URIs.push(...extractURIs(route.children, fullPath + '/'));   
-//         } else {
-//             URIs.push(fullPath);
-//         }
-//     });
-//     return URIs;
-// }
-// const routerURIs = extractURIs(routes);
-// axios.post('http://127.0.0.1:8000/api/PermissionVueJs', {router: routerURIs});
+function extractURIs(routes, parentPath = '') {
+    const URIs = [];
+    routes.forEach(route => { 
+        const fullPath = parentPath + route.path; 
+        if (route.children) {
+            URIs.push(fullPath);
+            URIs.push(...extractURIs(route.children, fullPath + '/'));   
+        } else {
+            URIs.push(fullPath);
+        }
+    });
+    return URIs;
+}
+const routerURIs = extractURIs(routes);
+axios.post('http://127.0.0.1:8000/api/PermissionVueJs', {router: routerURIs});
 
 // router.beforeEach((to, from, next) => {
 //     const store = useStore();

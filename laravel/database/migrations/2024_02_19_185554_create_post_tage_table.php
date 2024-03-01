@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_tages', function (Blueprint $table) {
+        Schema::create('post_tage', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('post_id');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('tage_id');
-            $table->foreign('tage_id')->references('id')->on('tages')->onDelete('cascade')->onUpdate('cascade');
-            $table->engine = 'InnoDB';
             $table->timestamps();
+        
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('tage_id')->references('id')->on('tages')->onDelete('cascade');
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_tages');
+        Schema::dropIfExists('post_tage');
     }
 };

@@ -19,7 +19,7 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <input type="text" class="form-control mb-2" placeholder="Type Question Title ...">
+                                        <input v-model="title" type="text" class="form-control mb-2" placeholder="Type Question Title ...">
                                         <span class="text-secondary">Please choose an appropriate title for the question so it can be answered easily.</span>
                                     </div>
                                 </div>
@@ -35,9 +35,8 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <select name="" class="form-select mb-2" id="">
-                                            <option value="">PHP</option>
-                                            <option value="">Categorys</option>
+                                        <select name="category" class="form-select mb-2" v-model="category" id="">
+                                            <option value="1">PHP</option>
                                         </select>
                                         <span class="text-secondary">Please choose the appropriate section so the question can be searched easily.</span>
                                     </div>
@@ -57,9 +56,9 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <select name="" class="form-select mb-2" id="">
-                                            <option value="">Programation</option>
-                                            <option value="">Categorys</option>
+                                        <select name="tages" class="form-select mb-2" id="" v-model="tages" multiple>
+                                            <option value="1">Programation</option>
+                                            <option value="2">Categorys</option>
                                         </select>
                                         <span class="text-secondary">Please choose suitable Keywords.</span>
                                     </div>
@@ -78,7 +77,7 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <textarea id="mytextarea" class="mb-2" placeholder="Type the description thoroughly and in details."></textarea>
+                                        <textarea name="description" id="mytextarea" class="mb-2" placeholder="Type the description thoroughly and in details."></textarea>
                                         <span class="text-secondary">Type the description thoroughly and in details.    </span>
                                     </div>
                                 </div>
@@ -96,7 +95,7 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <input type="file" class="form-control mb-2" accept="png,jpg,jpeg,jpf" name="" id="">
+                                        <input type="file" @change="onFileChange" class="form-control mb-2" accept="png,jpg,jpeg,jpf" name="" id="">
                                         <span class="text-secondary">Please upload your file accepted file: png, jpf, jpeg.    </span>
                                     </div>
                                 </div>
@@ -105,10 +104,10 @@
                         </div>
                         <div class="d-flex justify-content-end gap-3 align-items-center">
                             <button type="reset" class="btn btn-secondary mt-3">Reste</button>
-                            <button class="btn btn-primary mt-3">Add Question</button>
+                            <button type="button" @click="submitForm" class="btn btn-primary mt-3">Add Question</button>
                         </div>
                     
-                </form>
+                    </form>
                 </div>
            </section>
             <footer>
@@ -119,13 +118,46 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
+import { useStore } from '@/store';
  /* global tinymce */
     export default{
         name: 'AppAskQuesion',
+        data(){
+            return{
+                title: '',
+                category: '',
+                tages: [],
+                file: null
+            }
+            
+        },
         mounted(){
             tinymce.init({
                 selector: '#mytextarea'
             });
+        },
+        methods:{
+            onFileChange(e) {
+                this.file = e.target.files[0];
+            },
+            submitForm(){
+                const store = new useStore();
+                let formData = new FormData();
+                formData.append('user_id', store.user_id);
+                formData.append('title', this.title);
+                formData.append('category', this.category);
+                formData.append('tages', this.tages);
+                formData.append('description', tinymce.get('mytextarea').getContent());
+                formData.append('image', this.file);
+                // console.log(formData.get('tages'));
+                axios.post('http://localhost:8000/api/AddQuestions', formData)
+                .then(response => {
+                    console.log(response)
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
         }
     }
 </script>

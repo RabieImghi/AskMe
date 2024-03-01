@@ -20,23 +20,6 @@ class CheckController extends Controller
         if (in_array($uri, $allowedRouteTable)) return response()->json(['uri'=>$uri]);
         else return response()->json(['errors'=>"Not Auth ouriside"], 401);
     }
-    // public function CheckPermissionUser(Request $request)
-    // {
-    //     $uri = $request->uri;
-    //     $user_id = $request->user_id;
-    //     $allowedRoutes = permession_vues_users::with('permessionVue')->where('user_id', $user_id)->get();
-    //     $allowedRouteTable =[];
-    //     foreach($allowedRoutes as $allowed){
-    //         $allowedRouteTable['route'][]= $allowed->permessionVue->name;
-    //         $allowedRouteTable['isActive'][]= $allowed->is_active;
-    //     }
-    //     // for($i=0; $i<count($allowedRouteTable['route']); $i++){
-    //     //     if($allowedRouteTable['route'][$i]==$uri && $allowedRouteTable['isActive'][$i]==1)
-    //     //     return response()->json(['uri'=>$uri]);
-    //     // }
-    //     return response()->json(['permissionsUser'=>$allowedRouteTable]);
-    // }
-
     public function CheckPermissionUser(Request $request)
     {
         $uri = $request->dataUser['uri'];

@@ -26,6 +26,6 @@ class Post extends Model
     }
     public function tages()
     {
-        return $this->hasMany(Tage::class);
+        return $this->belongsToMany(Tage::class);
     }
 }
