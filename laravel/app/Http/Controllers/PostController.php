@@ -47,5 +47,31 @@ class PostController extends Controller
             'count' => $count,
         ]);
     }
+    public function AddQuestions(Request $request)
+    {
+        $filename = "";
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+        }
+        $post = new Post();
+        $post->title = $request->title;
+        $post->content = $request->description;
+        $post->views = 0;
+        $post->image = $filename;
+        $post->user_id = $request->user_id;
+        $post->category_id = $request->category;
+        $post->save();
+        $id = $post->id;
+        $tages = explode(',', $request->tages) ;
+        foreach ($tages as $tage) {
+            $post->tages()->attach($tage);
+        }
+        return response()->json([
+            'message' => 'Post created successfully',
+            'data' => $filename,
+        ]);
+    }
 }
          

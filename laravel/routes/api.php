@@ -34,3 +34,6 @@ Route::post('/ChangeStatusPermissions',[PermissionController::class,'ChangeStatu
 Route::post('/addNewPermissions',[PermissionController::class,'addNewPermissions']);
 Route::post('/deleteNewPermissions',[PermissionController::class,'deleteNewPermissions']);
 
+Route::post('/AddQuestions',[PostController::class,'AddQuestions']);
+
+
