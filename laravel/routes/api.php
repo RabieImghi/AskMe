@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/allPost',[PostController::class,'allPost']);
+
 Route::post('/RegisterUser',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::get('/logout',[AuthController::class,'logout']);
@@ -35,5 +35,6 @@ Route::post('/addNewPermissions',[PermissionController::class,'addNewPermissions
 Route::post('/deleteNewPermissions',[PermissionController::class,'deleteNewPermissions']);
 
 Route::post('/AddQuestions',[PostController::class,'AddQuestions']);
-
-
+Route::get('/allPost',[PostController::class,'allPost']);
+Route::get('/MyPost/{id}',[PostController::class,'MyPost']);
+Route::delete('/DeletePost/{id}',[PostController::class,'DeletePost']);

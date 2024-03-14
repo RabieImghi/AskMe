@@ -14,6 +14,7 @@ import AppMyQuistion from '../components/User/componrntsProfile/AppMyQuestion.vu
 import AppAnswers from '../components/User/componentsHome/AppAnswers.vue';
 import AppAboutUs from '../components/User/componentsHome/AppAboutUs.vue';
 import AppAskQuesion from '../components/User/componentsHome/AppAskQuesion.vue';
+import UpdateMyQuestion from '../components/User/componrntsProfile/AppUpdateMyQuestion.vue';
 
 
 import AppAdmin from '../components/Admin/AppAdmin.vue';
@@ -48,6 +49,7 @@ const routes = [
             { path: 'Answers', component: AppAnswers },
             { path: 'aboutUs', component: AppAboutUs },
             { path: 'AskQuesion', component: AppAskQuesion },
+            { path: 'UpdateMyQuestion', component: UpdateMyQuestion, name: 'UpdateMyQuestion', props: true}
             
         ]
     },

@@ -10,6 +10,7 @@ class CheckController extends Controller
 {
     public function CheckPermission(Request $request)
     {
+            
         $uri = $request->uri;
         $role_id = $request->role_id;
         $allowedRoutes = PermessionVue_Role::with('permessionVue')->where('role_id', $role_id)->get();
@@ -43,9 +44,9 @@ class CheckController extends Controller
                 if($index !== FALSE){
                     if( $allowedRouteTable['isActive'][$index] == 1){
                         $message = "Auth";
-                    }else $message = "notAuth";
-                }else $message = "notAuth";
-            }else $message = "notAuth";
+                    }else $message = "notAuth1";
+                }else $message = "notAuth2";
+            }else $message = "notAuth3";
         }else{
             $allowedRoutesRole = PermessionVue_Role::with('permessionVue')->where('role_id', $role_id)->get();
             $allowedRouteRoleTable =[];
@@ -54,7 +55,7 @@ class CheckController extends Controller
             }
             if (in_array($uri, $allowedRouteRoleTable)){
                 $message = "Auth";
-            }else $message= "notAuth";
+            }else $message= "notAuth4";
         }
         return response()->json($message);
     }

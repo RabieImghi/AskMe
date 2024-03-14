@@ -38,12 +38,11 @@ hr{color: lightgray !important;}
         display: grid !important;
         grid-template-columns: 1fr !important;
     }
-    aside{
-        position: absolute;
-        top: 80px;
-        width: 300px;
-        left: 0;
+    .aside{
         display: none;
+    }
+    .sectionHome.pe-4 {
+        padding: 0 !important;  
     }
     @media screen and (max-width: 1000px) {
         #imageAuth{
@@ -63,6 +62,12 @@ hr{color: lightgray !important;}
         }
     }
     @media screen and (max-width: 800px) {
+        .aside{
+            display: none !important;
+        }
+        .sectionHome.pe-4 {
+            padding: 0 !important;  
+        }
         .aboutUs {
             display: grid !important;
             grid-template-columns: 1fr !important;

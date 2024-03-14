@@ -14,11 +14,11 @@ class PostController extends Controller
     {
         $data = [];
         $page = $request->query('page', 1);
-        $posts = Post::with('user', 'category')->skip($page)->take(6)->get();
+        $posts = Post::with('user', 'category')->skip($page)->take(6)->orderBy('updated_at', 'desc')->get();
         $count = Post::count();
         foreach ($posts as $post) {
             $dataTage =[];
-            $tages=DB::table('post_tages')->select('*')->where('post_id', $post->id)->get();
+            $tages=DB::table('post_tage')->select('*')->where('post_id', $post->id)->get();
             $reating=DB::table('post_reatings')->select('*')->where('post_id', $post->id)->count();
             foreach ($tages as $tage) {
                 $tage = Tage::find($tage->tage_id);
@@ -28,7 +28,7 @@ class PostController extends Controller
             if($post->user->points>=150) $badge = "Professional";
             else if($post->user->points>=100) $badge = "Enlightened";
             else if($post->user->points>=50) $badge = "Explainer";
-            else if($post->user->points>=10) $badge = "Beginner";
+            else if($post->user->points>=0) $badge = "Beginner";
             $data[] = [
                 'id' => $post->id,
                 'title' => $post->title,
@@ -71,6 +71,51 @@ class PostController extends Controller
         return response()->json([
             'message' => 'Post created successfully',
             'data' => $filename,
+        ]);
+    }
+    public function MyPost(Request $request,$id)
+    {
+        $data = [];
+        $page = $request->query('page', 1);
+        $posts = Post::with('user', 'category')->where('user_id',$id)->skip($page)->take(6)->orderBy('updated_at', 'desc')->get();
+        $count = Post::count();
+        foreach ($posts as $post) {
+            $dataTage =[];
+            $tages=DB::table('post_tage')->select('*')->where('post_id', $post->id)->get();
+            $reating=DB::table('post_reatings')->select('*')->where('post_id', $post->id)->count();
+            foreach ($tages as $tage) {
+                $tage = Tage::find($tage->tage_id);
+                $dataTage[] = $tage->name;
+            }
+            $badge ='';
+            if($post->user->points>=150) $badge = "Professional";
+            else if($post->user->points>=100) $badge = "Enlightened";
+            else if($post->user->points>=50) $badge = "Explainer";
+            else if($post->user->points>=0) $badge = "Beginner";
+            $data[] = [
+                'id' => $post->id,
+                'title' => $post->title,
+                'content' => $post->content,
+                'views' => $post->views,
+                'badge' => $badge,
+                'name' => $post->user->name,
+                'category' => $post->category->name,
+                'created_at' => Carbon::parse($post->created_at)->format('F j, Y'),
+                'tages' => $dataTage,
+                'reating' => $reating,
+            ];
+        }
+        return response()->json([
+            'data' => $data,
+            'count' => $count,
+        ]);
+    }
+    public function DeletePost($id)
+    {
+        $post = Post::find($id);
+        $post->delete();
+        return response()->json([
+            'message' => 'Post deleted successfully',
         ]);
     }
 }

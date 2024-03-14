@@ -3,7 +3,7 @@
         
         <div class="border-bottom pb-4 pt-4" v-for="post in Posts" :key="post.id">
             <div class="container-mf mobileQuestion row">
-                <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-center align-items-center">
+                <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-start align-items-center">
                     <img src="../../../assets/img/user.png" width="80px" alt="User">
                     <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
                         <router-link to="">
@@ -24,11 +24,11 @@
                     </div>
                     <router-link to="/user/Answers" class="nav-link questiondisplay">
                         <span class=" h3 fw-bold">{{post.title}}</span>
-                        <p class="text-secondary pt-3">{{post.content}}</p>  
+                        <p class="pt-3" style="height: 100px; overflow: hidden; width: 100%;" v-html="post.content"></p>  
                     </router-link>
                     <div class="Tages  d-flex gap-3 align-items-center flex-wrap">
                         <div  v-for="tag in post.tages" :key="tag" 
-                        class="user d-flex gap-2 justify-content-between align-items-center flex-wrap border mt-2 p-2">
+                        class="user d-flex gap-2 justify-content-between rounded-1 align-items-center flex-wrap border mt-2 p-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-tags" viewBox="0 0 16 16">
                                 <path d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z"/>
                                 <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1z"/>
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="statistiqueQuistion shadow d-flex flex-wrap gap-3 justify-content-between align-items-center p-3 mt-3 ">
+                    <div class="statistiqueQuistion border rounded-1 d-flex flex-wrap gap-3 justify-content-between align-items-center p-3 mt-3 ">
                         <div class="statiqueInfo d-flex gap-5 align-items-centerlign">
                             <span class="border bg-white p-1 rounded-1 text-secondary fw-bold d-flex gap-2 flex-wrap align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="pb-1 bi bi-reply" viewBox="0 0 16 16">

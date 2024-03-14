@@ -43,7 +43,7 @@
                         <input type="checkbox" class="form-check-input" > I agree and accept the <a  href="#" class="blueColor no-underline">terms and conditions</a> 
                     </label>
                     <button @click="createUser()" type="button" class="btn btn-primary">Create Account</button>
-                    <p class="text-secondary">Already have an account? <router-link to="/user/auth"  class="blueColor no-underline"> Log in</router-link></p>
+                    <p class="text-secondary">Already have an account? <router-link to="/user/auth/"  class="blueColor no-underline"> Log in</router-link></p>
                 </form>
             </div>
         </main>
