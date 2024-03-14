@@ -172,6 +172,9 @@ import { useStore } from '../../store';
             logout() {
                 localStorage.setItem('role_id', 3);
                 localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('badge');
+                localStorage.removeItem('user_id');
                 axios.get("http://127.0.0.1:8000/api/logout");
             }
             

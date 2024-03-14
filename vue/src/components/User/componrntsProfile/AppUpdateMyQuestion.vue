@@ -19,7 +19,7 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <input v-model="title" type="text" class="form-control mb-2" placeholder="Type Question Title ...">
+                                        <input v-model="title"  type="text" class="form-control mb-2" placeholder="Type Question Title ...">
                                         <span class="text-secondary">Please choose an appropriate title for the question so it can be answered easily.</span>
                                     </div>
                                 </div>
@@ -124,12 +124,20 @@ import { useStore } from '@/store';
  /* global tinymce */
     export default{
         name: 'AppAskQuesion',
+        props:{
+            poste: {
+                type: Object,
+                required: true
+            }
+        },
+        
         data(){
             return{
                 title: '',
                 category: '',
                 tages: [],
-                file: null
+                file: null,
+                
             }
             
         },
@@ -137,6 +145,7 @@ import { useStore } from '@/store';
             tinymce.init({
                 selector: '#mytextarea'
             });
+            console.log(this.poste);
         },
         methods:{
             onFileChange(e) {
@@ -152,6 +161,7 @@ import { useStore } from '@/store';
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
                 // console.log(formData.get('tages'));
+                
                 axios.post('http://localhost:8000/api/AddQuestions', formData)
                 .then(response => {
                     Swal.fire(

@@ -6,9 +6,9 @@ use App\Models\PermessionVue;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cookie;
-use App\Models\RolePermission;
+use App\Models\PermessionVue_Role;
+use App\Models\permession_vues_users;
+
 
 class AuthController extends Controller
 {
@@ -59,6 +59,15 @@ class AuthController extends Controller
             'points' => $request->points,
             'role_id' => $request->role_id,
         ]);
+        $permissions = PermessionVue_Role::where('role_id',$request->role_id)->pluck('permession_vue_id')->toArray();
+        foreach($permissions as $permission){
+            permession_vues_users::create([
+                'user_id' => $user->id,
+                'permession_vue_id' => $permission,
+                'is_active'=>1,
+                'is_deleted'=>0,
+            ]);
+        }
         return response()->json([
             'user' => $user,
         ]);
