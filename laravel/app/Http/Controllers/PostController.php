@@ -81,11 +81,16 @@ class PostController extends Controller
         $count = Post::count();
         foreach ($posts as $post) {
             $dataTage =[];
+            $dataTageId =[];
             $tages=DB::table('post_tage')->select('*')->where('post_id', $post->id)->get();
             $reating=DB::table('post_reatings')->select('*')->where('post_id', $post->id)->count();
             foreach ($tages as $tage) {
                 $tage = Tage::find($tage->tage_id);
                 $dataTage[] = $tage->name;
+            }
+            foreach ($tages as $tage) {
+                $tage = Tage::find($tage->tage_id);
+                $dataTageId[] = $tage->id;
             }
             $badge ='';
             if($post->user->points>=150) $badge = "Professional";
@@ -99,15 +104,42 @@ class PostController extends Controller
                 'views' => $post->views,
                 'badge' => $badge,
                 'name' => $post->user->name,
+                'category_id' => $post->category->id,
                 'category' => $post->category->name,
                 'created_at' => Carbon::parse($post->created_at)->format('F j, Y'),
                 'tages' => $dataTage,
+                'tages_id' => $dataTageId,
                 'reating' => $reating,
             ];
         }
         return response()->json([
             'data' => $data,
             'count' => $count,
+        ]);
+    }
+    public function UpdateQuestions(Request $request)
+    {
+        $post = Post::find($request->id);
+        $filename = $post->image;
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+        }
+        $post->title = $request->title;
+        $post->content = $request->description;
+        $post->image = $filename;
+        $post->category_id = $request->category;
+        $post->save();
+        $id = $request->id;
+        $tages = explode(',', $request->tages) ;
+        $post->tages()->detach();
+        foreach ($tages as $tage) {
+            $post->tages()->attach($tage);
+        }
+        return response()->json([
+            'message' => 'Post updated successfully',
+            'data' => $filename,
         ]);
     }
     public function DeletePost($id)

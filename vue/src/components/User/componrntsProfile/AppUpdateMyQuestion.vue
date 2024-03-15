@@ -19,7 +19,7 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <input v-model="title"  type="text" class="form-control mb-2" placeholder="Type Question Title ...">
+                                        <input v-model="title" type="text" class="form-control mb-2" placeholder="Type Question Title ...">
                                         <span class="text-secondary">Please choose an appropriate title for the question so it can be answered easily.</span>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                         </div>
                         <div class="d-flex justify-content-end gap-3 align-items-center">
                             <button type="reset" class="btn btn-secondary mt-3">Reste</button>
-                            <button type="button" @click="submitForm" class="btn btn-primary mt-3">Add Question</button>
+                            <button type="button" @click="submitForm" class="btn btn-primary mt-3">Update Question</button>
                         </div>
                     
                     </form>
@@ -120,60 +120,56 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { useStore } from '@/store';
  /* global tinymce */
     export default{
         name: 'AppAskQuesion',
-        props:{
-            poste: {
-                type: Object,
-                required: true
-            }
-        },
-        
+        props:['id','titlePoste', 'tages_id', 'category_id', 'content'],
         data(){
             return{
-                title: '',
-                category: '',
-                tages: [],
+                title: this.titlePoste,
+                category: this.category_id,
+                tages: this.tages_id,
                 file: null,
                 
             }
             
         },
         mounted(){
-            tinymce.init({
-                selector: '#mytextarea'
+            this.$nextTick(() => {
+                tinymce.init({
+                    selector: '#mytextarea',
+                    setup: (editor) => {
+                        editor.on('init', () => {
+                            editor.setContent(this.content);
+                        });
+                    }
+                });
             });
-            console.log(this.poste);
         },
         methods:{
             onFileChange(e) {
                 this.file = e.target.files[0];
             },
             submitForm(){
-                const store = new useStore();
                 let formData = new FormData();
-                formData.append('user_id', store.user_id);
                 formData.append('title', this.title);
                 formData.append('category', this.category);
                 formData.append('tages', this.tages);
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
-                // console.log(formData.get('tages'));
-                
-                axios.post('http://localhost:8000/api/AddQuestions', formData)
+                formData.append('id', this.id);
+                axios.post('http://localhost:8000/api/UpdateQuestions', formData)
                 .then(response => {
                     Swal.fire(
                         'Success',
-                        'Your question has been posted',
+                        'Post updated successfully',
                         'success'
                     )
                     console.log(response)
                 }).catch(error => {
                     Swal.fire(
                         'Error',
-                        'There was an error posting your question. Please try again.',
+                        'There was an error update your question. Please try again.',
                         'error'
                     );
                     console.log(error)
