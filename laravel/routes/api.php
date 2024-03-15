@@ -38,3 +38,4 @@ Route::post('/AddQuestions',[PostController::class,'AddQuestions']);
 Route::get('/allPost',[PostController::class,'allPost']);
 Route::get('/MyPost/{id}',[PostController::class,'MyPost']);
 Route::delete('/DeletePost/{id}',[PostController::class,'DeletePost']);
+Route::post('/UpdateQuestions',[PostController::class,'UpdateQuestions']);

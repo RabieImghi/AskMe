@@ -145,7 +145,14 @@
         },
         methods:{
             navigateToUpdate(post) {
-                this.$router.push({ name: 'UpdateMyQuestion', params: { poste: post } });
+                this.$router.push({ name: 'UpdateMyQuestion', params: { 
+                    id: post.id,
+                    titlePoste: post.title,
+                    content: post.content,
+                    category_id: post.category_id,
+                    tages_id: post.tages_id,
+
+                } });
             },
             fetchPosts() {
                 var store = new useStore();
