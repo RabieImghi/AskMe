@@ -3,21 +3,21 @@
         <section class="QuestionSection shadow pt-4  py-4 ">
             <div class="border-bottom d-flex justify-content-between  container-mf pt-4 pb-4">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
-                <span class="fw-bold text-primary">188 Question</span>
+                <span class="fw-bold text-primary">{{ this.CountAnswer }} Question</span>
             </div> 
             <section class="border-bottom">
                 <div class=" pb-4 pt-4" v-for="post in Posts" :key="post.id">
                     <div class="container-mf mobileQuestion row">
-                        <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-center align-items-center">
+                        <div class="imageInfoUser col-1 gap-3 d-flex flex-column align-items-center">
                             <img src="../../../assets/img/user.png" width="80px" alt="User">
                             <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
-                                <router-link to="">
+                                <span class="cursor-point" @click="ChangeReating('+',post.id)">
                                     <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
-                                </router-link>
-                                <span class="text-secondary fw-bold">123</span>
-                                <router-link to="">
+                                </span>
+                                <span class="text-secondary fw-bold">{{post.reating}}</span>
+                                <span class="cursor-point" @click="ChangeReating('-',post.id)">
                                     <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
-                                </router-link>
+                                </span>
                             </div>
                         </div>
                         <div class="infoQuestion col-11">
@@ -28,7 +28,7 @@
                                 <span class="text-secondary">In : <span class="text-danger">{{post.category}}</span></span>
                             </div>
                             <span class=" h3 fw-bold">{{post.question}}</span>
-                            <p class="text-secondary pt-3">{{post.questionDetail}}</p>
+                            <p class="text-secondary pt-3" v-html="post.questionDetail" ></p>
                             <img src="../../../assets/img/answer.png" width="80%" alt="Answer">
                         </div>
                     </div>
@@ -42,7 +42,7 @@
             <section class="border-bottom">
                 <div class=" pb-4 pt-4" v-for="answer in Answers" :key="answer.id">
                     <div class="container-mf mobileQuestion row">
-                        <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-center align-items-center">
+                        <div class="imageInfoUser col-1 gap-3 d-flex flex-column align-items-center">
                             <img src="../../../assets/img/user.png" width="80px" alt="User">
                         </div>
                         <div class="infoQuestion col-11">
@@ -51,7 +51,6 @@
                                 <button  :class='answer.badge'>{{answer.badge}}</button>
                                 <span class="text-secondary">Added an answer on : <span class="text-danger">{{answer.date}}</span></span>
                             </div>
-                            <span class=" h3 fw-bold">{{answer.question}}</span>
                             <p class="text-secondary pt-3">{{answer.questionDetail}}</p>
                             <div class="raitting d-flex  justify-content-start align-items-center gap-2">
                                 <router-link to="">
@@ -96,67 +95,38 @@
     </div>
 </template>
 <script>
+    import axios from 'axios';
+    import {useStore} from '../../../store';
     export default{
         name: 'AppAnswers',
         props:['id'],
         data(){
             return {
-                Posts : [
-                    {
-                        id:1,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        category : 'PHP',
-                        question: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        tages : ["tag1", "tag2", "tag3"],
-                        answor : 10,
-                        views : 20,
-                    }
-                ],
-                Answers : [
-                    {
-                        id:1,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        question: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        Reviews : 300,
-                    },
-                    {
-                        id:2,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        question: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        Reviews : 300,
-                    },
-                    {
-                        id:3,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        question: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        Reviews : 300,
-                    },
-                    {
-                        id:4,
-                        name: 'Rabie Imghi',
-                        badge: 'Professional',
-                        date:' April 19, 2023',
-                        question: 'Is this statement, “i see him last night” can be understood as “I saw him last night”?',
-                        questionDetail: 'Recently heard about Heap which seems pretty cool, but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using HubSpot/Marketo yet so Heap’s free but I’m not sure if it would really be valuable, or simply another tool that I need to check. We are not at the point of using',
-                        Reviews : 300,
-                    }
-                ],
+                Posts : [],
+                Answers : [],
+                CountAnswer: 0,
             };
         },
-        created(){
-            
+        mounted(){
+           this.fetchPosts();
+        },
+        methods:{
+            ChangeReating(type,id){ 
+                var store = new useStore();
+                var idUser = store.user_id
+                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`)
+                .then(() => {
+                    this.fetchPosts();
+                });
+            },
+            fetchPosts(){
+                axios.get(`http://127.0.0.1:8000/api/getPostAnswers/${this.id}`)
+                .then(response => {
+                    this.Posts = response.data.post;
+                    this.Answers = response.data.Answers;
+                    this.CountAnswer = response.data.countAnswer;
+                })
+            }
         }
     }
 </script>
