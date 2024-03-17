@@ -6,13 +6,13 @@
                 <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-start align-items-center">
                     <img src="../../../assets/img/user.png" width="80px" alt="User">
                     <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
-                        <router-link to="">
+                        <span class="cursor-point" @click="ChangeReating('+',post.id)">
                             <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
-                        </router-link>
+                        </span>
                         <span class="text-secondary fw-bold">{{post.reating}}</span>
-                        <router-link to="">
+                        <span class="cursor-point" @click="ChangeReating('-',post.id)">
                             <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
-                        </router-link>
+                        </span>
                     </div>
                 </div>
                 <div class="infoQuestion col-11">
@@ -22,10 +22,9 @@
                         <span class="text-secondary">Asked : <span class="text-danger">{{post.created_at}}</span></span>
                         <span class="text-secondary">In : <span class="text-danger">{{post.category}}</span></span>
                     </div>
-                    <router-link to="/user/Answers" class="nav-link questiondisplay">
-                        <span class=" h3 fw-bold">{{post.title}}</span>
-                        <p class="pt-3" style="height: 100px; overflow: hidden; width: 100%;" v-html="post.content"></p>  
-                    </router-link>
+                    <span class=" h3 fw-bold cursor-point" @click="navigateToAnswer(post.id)">{{post.title}}</span>
+                    <p class="pt-3  cursor-point" id="contentPost" style="height: 100px; overflow: hidden; " v-html="post.content" @click="navigateToAnswer(post.id)"></p>  
+                
                     <div class="Tages  d-flex gap-3 align-items-center flex-wrap">
                         <div  v-for="tag in post.tages" :key="tag" 
                         class="user d-flex gap-2 justify-content-between rounded-1 align-items-center flex-wrap border mt-2 p-2">
@@ -56,13 +55,13 @@
                             </span>
                         </div>
                         <div class="addAnswere">
-                            <router-link to="/user/Answers" class="btn btn-primary f-flex align-items-center">
+                            <button @click="navigateToAnswer(post.id)" class="btn btn-primary f-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2 bi bi-patch-plus" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5"/>
                                     <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
                                 </svg>
                                 Answer
-                            </router-link>
+                            </button>
                         </div>
                     </div>
 
@@ -80,6 +79,7 @@
 </template>
 <script>
     import axios from 'axios';
+    import {useStore} from '../../../store';
     export default{
         name: 'AppDisplayQuestion',
         data(){
@@ -95,6 +95,9 @@
             this.fetchPosts();
         },
         methods: {
+            navigateToAnswer(postId) {
+                this.$router.push({ name: 'userAnswers', params: { id: postId} });
+            },
             fetchPosts() {
                 axios.get(`http://127.0.0.1:8000/api/allPost?page=${this.nombrePost}`)
                     .then(response => {
@@ -133,11 +136,22 @@
                 this.$nextTick(() => {
                     document.querySelector('.sectionHome').scrollIntoView({ behavior: 'smooth' });
                 });
+            },
+            ChangeReating(type,id){ 
+                var store = new useStore();
+                var idUser = store.user_id
+                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`)
+                .then(() => {
+                    this.fetchPosts();
+                });
             }
         }
     }
 </script>
 <style>
+    #contentPost div:nth-child(2){
+        width: 100% !important;
+    }
     .activeClass{
         background: #0D6EFD;
         color: white;

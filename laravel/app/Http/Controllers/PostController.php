@@ -49,6 +49,12 @@ class PostController extends Controller
     }
     public function AddQuestions(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'category' => 'required',
+            'tages' => 'required',
+        ]);
         $filename = "";
         if($request->hasFile('image')) {
             $file = $request->file('image');
@@ -119,9 +125,19 @@ class PostController extends Controller
     }
     public function UpdateQuestions(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'category' => 'required',
+            'tages' => 'required',
+        ]);
         $post = Post::find($request->id);
         $filename = $post->image;
         if($request->hasFile('image')) {
+            $fileName = public_path('uploads/') . $post->image;
+            if (file_exists($fileName)) {
+                unlink($fileName);
+            }
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads'), $filename);
@@ -145,10 +161,41 @@ class PostController extends Controller
     public function DeletePost($id)
     {
         $post = Post::find($id);
+        $post->tages()->detach();
+        $fileName = public_path('uploads/') . $post->image;
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
         $post->delete();
         return response()->json([
             'message' => 'Post deleted successfully',
         ]);
+    }
+    public function ChangeReating($id,$userId,$type){
+        $reating = DB::table('post_reatings')->select('*')->where('post_id', $id)->where('user_id', $userId)->first();
+        if($reating){
+            if($type=='-'){
+                DB::table('post_reatings')->where('id', $reating->id)->delete();
+                return response()->json([
+                    'message' => 'Reating deleted successfully',
+                ]);
+            }else{
+                return response()->json([
+                    'message' => 'Reating already exists' ,
+                ]);
+            }
+        }else{
+            if($type=='+'){
+                $reating = DB::table('post_reatings')->insert(['post_id' => $id, 'user_id' => $userId]);
+                return response()->json([
+                    'message' => 'Reating created successfully',
+                ]);
+            }else{
+                return response()->json([
+                    'message' => 'Reating not found',
+                ]);
+            }
+        }
     }
 }
          
