@@ -46,7 +46,7 @@ const routes = [
             { path: 'profile', component: AppProfile },
             { path: 'settings', component: AppProfileSetting },
             { path: 'myQuestion', component: AppMyQuistion },
-            { path: 'Answers', component: AppAnswers },
+            { path: 'Answers', component: AppAnswers, name:'userAnswers', props: true },
             { path: 'aboutUs', component: AppAboutUs },
             { path: 'AskQuesion', component: AppAskQuesion },
             { path: 'UpdateMyQuestion', component: UpdateMyQuestion, name: 'UpdateMyQuestion', props: true}

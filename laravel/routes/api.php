@@ -39,3 +39,5 @@ Route::get('/allPost',[PostController::class,'allPost']);
 Route::get('/MyPost/{id}',[PostController::class,'MyPost']);
 Route::delete('/DeletePost/{id}',[PostController::class,'DeletePost']);
 Route::post('/UpdateQuestions',[PostController::class,'UpdateQuestions']);
+Route::get('/ChangeReating/{id}/{userId}/{type}',[PostController::class,'ChangeReating']);
+

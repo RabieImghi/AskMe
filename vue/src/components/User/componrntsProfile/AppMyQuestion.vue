@@ -32,13 +32,13 @@
                         <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-start align-items-center">
                             <img src="../../../assets/img/user.png" width="80px" alt="User">
                             <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
-                                <router-link to="">
+                                <span class="cursor-point" @click="ChangeReating('+',post.id)">
                                     <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
-                                </router-link>
+                                </span>
                                 <span class="text-secondary fw-bold">{{post.reating}}</span>
-                                <router-link to="">
+                                <span class="cursor-point" @click="ChangeReating('-',post.id)">
                                     <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
-                                </router-link>
+                                </span>
                             </div>
                         </div>
                         <div class="infoQuestion col-11">
@@ -50,7 +50,7 @@
                             </div>
                             <router-link to="/user/Answers" class="nav-link questiondisplay">
                                 <span class=" h3 fw-bold">{{post.title}}</span>
-                                <p class="pt-3" style="height: 100px; overflow: hidden; width: 100%;" v-html="post.content"></p>  
+                                <p class="pt-3" id="contentPost" style="height: 100px; overflow: hidden; width: 100%;" v-html="post.content"></p>  
                             </router-link>
                             <div class="Tages  d-flex gap-3 align-items-center flex-wrap">
                                 <div  v-for="tag in post.tages" :key="tag" 
@@ -144,6 +144,14 @@
             this.fetchPosts();
         },
         methods:{
+            ChangeReating(type,id){ 
+                var store = new useStore();
+                var idUser = store.user_id
+                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`)
+                .then(() => {
+                    this.fetchPosts();
+                });
+            },
             navigateToUpdate(post) {
                 this.$router.push({ name: 'UpdateMyQuestion', params: { 
                     id: post.id,
@@ -241,6 +249,9 @@
     }
 </script>
 <style>
+    #contentPost div:nth-child(2){
+        width: 100% !important;
+    }
     .row{
         width: 100%;
         margin: 0 !important;

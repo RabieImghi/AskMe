@@ -98,6 +98,7 @@
 <script>
     export default{
         name: 'AppAnswers',
+        props:['id'],
         data(){
             return {
                 Posts : [
@@ -154,6 +155,9 @@
                 ],
             };
         },
+        created(){
+            
+        }
     }
 </script>
 <style>
