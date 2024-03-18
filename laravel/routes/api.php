@@ -7,6 +7,7 @@ use App\Http\Controllers\CheckController;
 use App\Http\Controllers\PermissionController;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Controllers\TageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,9 +43,16 @@ Route::delete('/DeletePost/{id}',[PostController::class,'DeletePost']);
 Route::post('/UpdateQuestions',[PostController::class,'UpdateQuestions']);
 Route::get('/ChangeReating/{id}/{userId}/{type}',[PostController::class,'ChangeReating']);
 Route::get('/ChangeReatingAnswer/{id}/{userId}/{type}',[PostController::class,'ChangeReatingAnswer']);
+Route::get('/addViewsPost/{id}',[PostController::class,'addViewsPost']);
 
 
 Route::get('/getPostAnswers/{id}',[AnswerController::class,'getPostAnswers']);
 Route::post('/addAnswer', [AnswerController::class, 'addAnswer']);
 Route::post('/updateAnswer', [AnswerController::class, 'updateAnswer']);
 Route::get('/deleteAnswer/{id}', [AnswerController::class, 'deleteAnswer']);
+
+Route::get('/getAllTages', [TageController::class, 'getAllTages']);
+Route::post('/deleteTage', [TageController::class, 'deleteTage']);
+Route::post('/addNewTage', [TageController::class, 'addNewTage']);
+Route::post('/updateTage', [TageController::class, 'updateTage']);
+

@@ -14,9 +14,9 @@ class AnswerController extends Controller
     
     public function getPostAnswers($id)
     {
-        $postView = Post::find($id);
-        $postView->views = $postView->views + 1;
-        $postView->save();
+        // $postView = Post::find($id);
+        // $postView->views = $postView->views + 1;
+        // $postView->save();
         $data = [];
         $dataPost=[];
         $answers = Answer::with('user')->with('post')->where('post_id', $id)->orderBy('id', 'desc')->get();

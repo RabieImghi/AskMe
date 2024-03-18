@@ -143,6 +143,7 @@
             };
         },
         mounted(){
+            axios.get(`http://127.0.0.1:8000/api/addViewsPost/${this.id}`);
             const store = new useStore();
             this.idUser = store.user_id;
             if(this.id != undefined)

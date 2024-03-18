@@ -21,7 +21,8 @@ import AppAdmin from '../components/Admin/AppAdmin.vue';
 import AppAdminHome from '../components/Admin/AppAdminHome.vue';
 import AppAdminPermissions from '../components/Admin/AppAdminPermissions.vue';
 import AppAdminPermissionsUsers from '../components/Admin/AppAdminPermissionsUsers.vue';
-
+import AppAdminTages from '../components/Admin/AppAdminTages.vue';
+import AppAdminCategory  from '../components/Admin/AppAdminCategory.vue';
 
 import AppAuth from '../components/Auth/AppAuth.vue';
 import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
@@ -49,7 +50,7 @@ const routes = [
             { path: 'Answers', component: AppAnswers, name:'userAnswers', props: true },
             { path: 'aboutUs', component: AppAboutUs },
             { path: 'AskQuesion', component: AppAskQuesion },
-            { path: 'UpdateMyQuestion', component: UpdateMyQuestion, name: 'UpdateMyQuestion', props: true}
+            { path: 'UpdateMyQuestion', component: UpdateMyQuestion, name: 'UpdateMyQuestion', props: true},
             
         ]
     },
@@ -60,6 +61,8 @@ const routes = [
             { path: '', component: AppAdminHome },
             { path: 'Permissions', component: AppAdminPermissions },
             { path: 'Permissions/Users', component: AppAdminPermissionsUsers },
+            { path: 'tages', component: AppAdminTages },
+            { path: 'category', component: AppAdminCategory },
             
         ]
     },
@@ -141,7 +144,6 @@ router.beforeEach((to, from, next) => {
         dataUser: data
     })
     .then(response => {
-        console.log(response.data);
         if(response.data=='Auth' || to.path === '/user/Error404/'){
             next();
             return;

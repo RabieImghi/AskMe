@@ -57,9 +57,9 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'points' => $request->points,
-            'role_id' => $request->role_id,
+            'role_id' => 2,
         ]);
-        $permissions = PermessionVue_Role::where('role_id',$request->role_id)->pluck('permession_vue_id')->toArray();
+        $permissions = PermessionVue_Role::where('role_id',2)->pluck('permession_vue_id')->toArray();
         foreach($permissions as $permission){
             permession_vues_users::create([
                 'user_id' => $user->id,

@@ -229,5 +229,13 @@ class PostController extends Controller
             }
         }
     }
+    public function addViewsPost($id){
+        $post = Post::find($id);
+        $post->views = $post->views + 1;
+        $post->save();
+        return response()->json([
+            'message' => 'Views added successfully',
+        ]);
+    }
 }
          
