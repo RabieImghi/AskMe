@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\Post;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -73,6 +74,9 @@ class AnswerController extends Controller
         $answer->user_id = $request->user_id;
         $answer->post_id = $request->post_id;
         $answer->save();
+        $user = User::find($request->user_id);
+        $user->points = $user->points + 5;
+        $user->save();
         return response()->json([
             'message' => 'Answer added successfully!',
         ]);

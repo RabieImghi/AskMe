@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="container-mf butoonaddanswer d-flex justify-content-end mt-3 pb-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewAnswer">
+                    <button v-if="this.idUser != null" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewAnswer">
                         Add Answer
                     </button>
                 </div>
