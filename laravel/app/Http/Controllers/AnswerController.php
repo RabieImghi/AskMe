@@ -15,7 +15,7 @@ class AnswerController extends Controller
     {
         $data = [];
         $dataPost=[];
-        $answers = Answer::with('user')->with('post')->where('post_id', $id)->get();
+        $answers = Answer::with('user')->with('post')->where('post_id', $id)->orderBy('id', 'desc')->get();
         $post = Post::with('user', 'category')->where('id',$id)->first();
         $countAnswer =  Answer::with('user')->with('post')->where('post_id', $id)->count();
         foreach ($answers as $answer) {
@@ -28,6 +28,7 @@ class AnswerController extends Controller
                 'id' => $answer->id,
                 'questionDetail' => $answer->content,
                 'name' => $answer->user->name,
+                'user_id' => $answer->user->id,
                 'badge' => $badgeAnswers,
                 'date' => Carbon::parse($answer->created_at)->format('F j, Y'),
                 'Reviews'=>10,
@@ -40,7 +41,7 @@ class AnswerController extends Controller
         else if($post->user->points>=50) $badge = "Explainer";
         else if($post->user->points>=0) $badge = "Beginner";
         $reating=DB::table('post_reatings')->select('*')->where('post_id', $post->id)->count();
-        
+
         $dataPost[] = [
             'id' => $post->id,
             'question' => $post->title,
@@ -49,6 +50,7 @@ class AnswerController extends Controller
             'badge' => $badge,
             'name' => $post->user->name,
             'answor'=>10,
+            'image' => asset('uploads/'.$post->image) ,
             'category' => $post->category->name,
             'date' => Carbon::parse($post->created_at)->format('F j, Y'),
             'reating' => $reating,
@@ -57,6 +59,41 @@ class AnswerController extends Controller
             'Answers' => $data,
             'post' => $dataPost,  
             'countAnswer'=>$countAnswer 
+        ]);
+    }
+    public function addAnswer(Request $request)
+    {
+        $request->validate([
+            'answerDetails' => 'required',
+            'post_id' => 'required',
+            'user_id' => 'required'
+        ]);
+        $answer = new Answer();
+        $answer->content = $request->answerDetails;
+        $answer->user_id = $request->user_id;
+        $answer->post_id = $request->post_id;
+        $answer->save();
+        return response()->json([
+            'message' => 'Answer added successfully!',
+        ]);
+    }
+    public function deleteAnswer($id){
+        $answer = Answer::find($id);
+        $answer->delete();
+        return response()->json([
+            'message' => 'Answer deleted successfully!',
+        ]);
+    }
+    public function updateAnswer(Request $request){
+        $request->validate([
+            'answerDetails' => 'required',
+            'answerId' => 'required',
+        ]);
+        $answer = Answer::find($request->answerId);
+        $answer->content = $request->answerDetails;
+        $answer->save();
+        return response()->json([
+            'message' => 'Answer updated successfully!',
         ]);
     }
 }

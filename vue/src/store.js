@@ -9,6 +9,7 @@ export const useStore = defineStore('main', {
     badge: localStorage.getItem('badge') || null,
     token: localStorage.getItem('token') || null,
     PermissionsUser: localStorage.getItem('permissionsUser') || null,
+    post_id: localStorage.getItem('post_id') || null,
   }),
   actions: {
     storeRole_id(role_id) {
@@ -34,6 +35,10 @@ export const useStore = defineStore('main', {
     setPermissionsUser(permissionsUser) {
       localStorage.setItem('permissionsUser', permissionsUser)
       this.PermissionsUser = permissionsUser
+    },
+    setPost_id(post_id) {
+      this.post_id = post_id;
+      localStorage.setItem('post_id', post_id)
     },
     
   },

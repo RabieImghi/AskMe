@@ -197,5 +197,10 @@ class PostController extends Controller
             }
         }
     }
+    public function getImageUrl($image)
+    {
+        $imageUrl = asset('uploads/'.$image);
+        return response()->json(['imageUrl' => $imageUrl]);
+    }
 }
          

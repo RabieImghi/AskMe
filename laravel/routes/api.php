@@ -43,4 +43,6 @@ Route::post('/UpdateQuestions',[PostController::class,'UpdateQuestions']);
 Route::get('/ChangeReating/{id}/{userId}/{type}',[PostController::class,'ChangeReating']);
 
 Route::get('/getPostAnswers/{id}',[AnswerController::class,'getPostAnswers']);
-
+Route::post('/addAnswer', [AnswerController::class, 'addAnswer']);
+Route::post('/updateAnswer', [AnswerController::class, 'updateAnswer']);
+Route::get('/deleteAnswer/{id}', [AnswerController::class, 'deleteAnswer']);
