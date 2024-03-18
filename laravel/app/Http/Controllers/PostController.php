@@ -21,6 +21,7 @@ class PostController extends Controller
             $dataTage =[];
             $tages=DB::table('post_tage')->select('*')->where('post_id', $post->id)->get();
             $reating=DB::table('post_reatings')->select('*')->where('post_id', $post->id)->count();
+            $answers=DB::table('answers')->select('*')->where('post_id', $post->id)->count();
             foreach ($tages as $tage) {
                 $tage = Tage::find($tage->tage_id);
                 $dataTage[] = $tage->name;
@@ -35,6 +36,7 @@ class PostController extends Controller
                 'title' => $post->title,
                 'content' => $post->content,
                 'views' => $post->views,
+                'answers' => $answers,
                 'badge' => $badge,
                 'name' => $post->user->name,
                 'category' => $post->category->name,
@@ -191,6 +193,32 @@ class PostController extends Controller
         }else{
             if($type=='+'){
                 $reating = DB::table('post_reatings')->insert(['post_id' => $id, 'user_id' => $userId]);
+                return response()->json([
+                    'message' => 'Reating created successfully',
+                ]);
+            }else{
+                return response()->json([
+                    'message' => 'Reating not found',
+                ]);
+            }
+        }
+    }
+    public function ChangeReatingAnswer($id,$userId,$type){
+        $reating = DB::table('answer_reatings')->select('*')->where('answer_id', $id)->where('user_id', $userId)->first();
+        if($reating){
+            if($type=='-'){
+                DB::table('answer_reatings')->where('id', $reating->id)->delete();
+                return response()->json([
+                    'message' => 'Reating deleted successfully',
+                ]);
+            }else{
+                return response()->json([
+                    'message' => 'Reating already exists' ,
+                ]);
+            }
+        }else{
+            if($type=='+'){
+                $reating = DB::table('answer_reatings')->insert(['answer_id' => $id, 'user_id' => $userId]);
                 return response()->json([
                     'message' => 'Reating created successfully',
                 ]);

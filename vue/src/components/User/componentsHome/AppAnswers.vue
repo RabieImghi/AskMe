@@ -63,13 +63,13 @@
                             </div>
                             <p class="text-secondary pt-3">{{answer.questionDetail}}</p>
                             <div class="raitting d-flex  justify-content-start align-items-center gap-2">
-                                <router-link to="">
+                                <span class="cursor-point" @click="ChangeReatingAnswer('+',answer.id)">
                                     <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
-                                </router-link>
-                                <span class="text-secondary fw-bold">{{answer.Reviews}}</span>
-                                <router-link to="">
+                                </span>
+                                <span class="text-secondary fw-bold">{{answer.reating}}</span>
+                                <span class="cursor-point" @click="ChangeReatingAnswer('-',answer.id)">
                                     <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
-                                </router-link>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -155,6 +155,12 @@
                 var store = new useStore();
                 var idUser = store.user_id
                 axios.get(`http://127.0.0.1:8000/api/ChangeReating/${store.post_id}/${idUser}/${type}`)
+                .then(() => {
+                    this.fetchPosts();
+                });
+            },
+            ChangeReatingAnswer(type,id){ 
+                axios.get(`http://127.0.0.1:8000/api/ChangeReatingAnswer/${id}/${this.idUser}/${type}`)
                 .then(() => {
                     this.fetchPosts();
                 });

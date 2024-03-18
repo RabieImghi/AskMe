@@ -14,6 +14,9 @@ class AnswerController extends Controller
     
     public function getPostAnswers($id)
     {
+        $postView = Post::find($id);
+        $postView->views = $postView->views + 1;
+        $postView->save();
         $data = [];
         $dataPost=[];
         $answers = Answer::with('user')->with('post')->where('post_id', $id)->orderBy('id', 'desc')->get();
@@ -25,14 +28,15 @@ class AnswerController extends Controller
             else if($answer->user->points>=100) $badgeAnswers = "Enlightened";
             else if($answer->user->points>=50) $badgeAnswers = "Explainer";
             else if($answer->user->points>=0) $badgeAnswers = "Beginner";
+            $reatingAnswer = DB::table('answer_reatings')->select('*')->where('answer_id', $answer->id)->count();
             $data[] = [
                 'id' => $answer->id,
                 'questionDetail' => $answer->content,
                 'name' => $answer->user->name,
                 'user_id' => $answer->user->id,
                 'badge' => $badgeAnswers,
+                'reating' => $reatingAnswer,
                 'date' => Carbon::parse($answer->created_at)->format('F j, Y'),
-                'Reviews'=>10,
                 
             ];
         }
