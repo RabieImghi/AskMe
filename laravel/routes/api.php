@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CheckController;
@@ -41,3 +42,7 @@ Route::delete('/DeletePost/{id}',[PostController::class,'DeletePost']);
 Route::post('/UpdateQuestions',[PostController::class,'UpdateQuestions']);
 Route::get('/ChangeReating/{id}/{userId}/{type}',[PostController::class,'ChangeReating']);
 
+Route::get('/getPostAnswers/{id}',[AnswerController::class,'getPostAnswers']);
+Route::post('/addAnswer', [AnswerController::class, 'addAnswer']);
+Route::post('/updateAnswer', [AnswerController::class, 'updateAnswer']);
+Route::get('/deleteAnswer/{id}', [AnswerController::class, 'deleteAnswer']);

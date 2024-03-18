@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Tage;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -74,6 +75,9 @@ class PostController extends Controller
         foreach ($tages as $tage) {
             $post->tages()->attach($tage);
         }
+        $user = User::find($request->user_id);
+        $user->points = $user->points + 5;
+        $user->save();
         return response()->json([
             'message' => 'Post created successfully',
             'data' => $filename,
