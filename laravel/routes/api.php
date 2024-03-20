@@ -8,7 +8,9 @@ use App\Http\Controllers\PermissionController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TageController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +57,14 @@ Route::get('/getAllTages', [TageController::class, 'getAllTages']);
 Route::post('/deleteTage', [TageController::class, 'deleteTage']);
 Route::post('/addNewTage', [TageController::class, 'addNewTage']);
 Route::post('/updateTage', [TageController::class, 'updateTage']);
+
+Route::get('/getAllCategory', [CategoryController::class, 'getAllCategory']);
+Route::post('/addNewCategory', [CategoryController::class, 'addNewCategory']);
+Route::post('/updateCategory', [CategoryController::class, 'updateCategory']);
+Route::post('/deleteCategory', [CategoryController::class, 'deleteCategory']);
+
+Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);
+Route::get('/getStatisics', [UserController::class, 'getStatisics']);
+
+
 

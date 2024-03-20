@@ -35,8 +35,9 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <select name="category" class="form-select mb-2" v-model="category" id="">
-                                            <option value="1">PHP</option>
+                                        <select  name="category" class="form-select mb-2" v-model="category" id="">
+                                            <option value="" selected disabled>Choose Category</option>
+                                            <option v-for="categorys in categoryList" :key="categorys.id" :value="categorys.id" >{{ categorys.name }}</option>
                                         </select>
                                         <span class="text-secondary">Please choose the appropriate section so the question can be searched easily.</span>
                                     </div>
@@ -56,9 +57,9 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <select name="tages" class="form-select mb-2" id="" v-model="tages" multiple>
-                                            <option value="1">Programation</option>
-                                            <option value="2">Categorys</option>
+                                        <!-- <select2 class="form-select custom-select2" :options="tagesList"  @input="value => { selected = value }" :name="tableName" :multiple="true"></select2> -->
+                                        <select id="tags" multiple v-model="selectedItems">
+                                            <option v-for="tag in tags" :key="tag.id" :value="tag.id">{{ tag.text }}</option>
                                         </select>
                                         <span class="text-secondary">Please choose suitable Keywords.</span>
                                     </div>
@@ -120,6 +121,8 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import TomSelect from 'tom-select';
+import 'tom-select/dist/css/tom-select.css';
 import { useStore } from '@/store';
  /* global tinymce */
     export default{
@@ -128,17 +131,31 @@ import { useStore } from '@/store';
             return{
                 title: '',
                 category: '',
-                tages: [],
-                file: null
+                file: null,
+                tags: [],
+                selectedItems: [],
+                categoryList: [],
             }
             
         },
         mounted(){
+            axios.get('http://localhost:8000/api/getAllTagesCategory')
+            .then(response => {
+                this.tags = response.data.Tages;
+                this.categoryList = response.data.Categorys;
+                this.initTomSelect();
+            });
             tinymce.init({
                 selector: '#mytextarea'
             });
         },
         methods:{
+            initTomSelect() {
+                new TomSelect("#tags", {
+                options: this.tags.map(tag => ({ value: tag.id, text: tag.text })),
+                items: this.selectedItems
+                });
+            },
             onFileChange(e) {
                 this.file = e.target.files[0];
             },
@@ -148,7 +165,7 @@ import { useStore } from '@/store';
                 formData.append('user_id', store.user_id);
                 formData.append('title', this.title);
                 formData.append('category', this.category);
-                formData.append('tages', this.tages);
+                formData.append('tages', this.selectedItems);
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
                 // console.log(formData.get('tages'));

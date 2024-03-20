@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('answer_reatings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('answer_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('answer_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('answer_id')->references('id')->on('answers')->onDelete('cascade');
+            $table->enum('type', ['+', '-'])->default('+');
             $table->timestamps();
         });
     }

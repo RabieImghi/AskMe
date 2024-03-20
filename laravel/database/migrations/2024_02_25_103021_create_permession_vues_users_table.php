@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('permession_vues_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('permession_vue_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('permession_vue_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('permession_vue_id')->references('id')->on('permession_vues')->onDelete('cascade');
             $table->boolean('is_active')->default(1);
             $table->boolean('is_deleted')->default(0);
+            $table->engine="InnoDB";
             $table->timestamps();
         });
     }

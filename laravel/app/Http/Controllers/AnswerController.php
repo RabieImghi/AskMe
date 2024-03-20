@@ -11,59 +11,66 @@ use Illuminate\Support\Facades\DB;
 
 class AnswerController extends Controller
 {
+    public static function getBadge($points) {
+        if($points >= 150) return "Professional";
+        else if($points >= 100) return "Enlightened";
+        else if($points >= 50) return "Explainer";
+        else return "Beginner";
+    }
+    public static function getReating($id, $table,$champ) {
+        return DB::table($table)
+            ->select(DB::raw('SUM(case when type = "+" then 1 when type = "-" then -1 else 0 end) as reating'))
+            ->where($champ, $id)
+            ->first()
+            ->reating ?? 0;
+    }
+    public static function getIdUserVoted($table,$id,$champ) {
+        $listIdUserVoted = DB::table($table)->select('user_id','type')->where($champ, $id)->get();
+        $IdUserVoted = [];
+        foreach ($listIdUserVoted as $idUserVoted) {
+            $IdUserVoted[] = [ 'id' => $idUserVoted->user_id, 'type' => $idUserVoted->type,];
+        }
+        return $IdUserVoted;
+    }
     
-    public function getPostAnswers($id)
-    {
-        // $postView = Post::find($id);
-        // $postView->views = $postView->views + 1;
-        // $postView->save();
+    public function getPostAnswers($id) {
         $data = [];
-        $dataPost=[];
-        $answers = Answer::with('user')->with('post')->where('post_id', $id)->orderBy('id', 'desc')->get();
+        $dataPost = [];
+        $answers = Answer::with('user', 'post')->where('post_id', $id)->orderBy('id', 'desc')->get();
         $post = Post::with('user', 'category')->where('id',$id)->first();
-        $countAnswer =  Answer::with('user')->with('post')->where('post_id', $id)->count();
+        $countAnswer = Answer::with('user', 'post')->where('post_id', $id)->count();
+
         foreach ($answers as $answer) {
-            $badgeAnswers ='';
-            if($answer->user->points>=150) $badgeAnswers = "Professional";
-            else if($answer->user->points>=100) $badgeAnswers = "Enlightened";
-            else if($answer->user->points>=50) $badgeAnswers = "Explainer";
-            else if($answer->user->points>=0) $badgeAnswers = "Beginner";
-            $reatingAnswer = DB::table('answer_reatings')->select('*')->where('answer_id', $answer->id)->count();
             $data[] = [
                 'id' => $answer->id,
                 'questionDetail' => $answer->content,
                 'name' => $answer->user->name,
                 'user_id' => $answer->user->id,
-                'badge' => $badgeAnswers,
-                'reating' => $reatingAnswer,
+                'badge' => $this->getBadge($answer->user->points),
+                'reating' => $this->getReating($answer->id, 'answer_reatings', 'answer_id'),
+                'listIdUserVoted' => $this->getIdUserVoted('answer_reatings',$answer->id,'answer_id'),
                 'date' => Carbon::parse($answer->created_at)->format('F j, Y'),
-                
             ];
         }
-        $badge ='';
-        if($post->user->points>=150) $badge = "Professional";
-        else if($post->user->points>=100) $badge = "Enlightened";
-        else if($post->user->points>=50) $badge = "Explainer";
-        else if($post->user->points>=0) $badge = "Beginner";
-        $reating=DB::table('post_reatings')->select('*')->where('post_id', $post->id)->count();
 
         $dataPost[] = [
             'id' => $post->id,
             'question' => $post->title,
             'questionDetail' => $post->content,
             'views' => $post->views,
-            'badge' => $badge,
+            'badge' => $this->getBadge($post->user->points),
             'name' => $post->user->name,
-            'answor'=>10,
-            'image' => asset('uploads/'.$post->image) ,
+            'answor' => 10,
+            'image' => asset('uploads/'.$post->image),
             'category' => $post->category->name,
             'date' => Carbon::parse($post->created_at)->format('F j, Y'),
-            'reating' => $reating,
+            'reating' => $this->getReating($post->id, 'post_reatings', 'post_id'),
         ];
+
         return response()->json([
             'Answers' => $data,
             'post' => $dataPost,  
-            'countAnswer'=>$countAnswer 
+            'countAnswer' => $countAnswer 
         ]);
     }
     public function addAnswer(Request $request)
