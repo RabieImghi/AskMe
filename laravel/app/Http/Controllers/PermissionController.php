@@ -31,7 +31,7 @@ class PermissionController extends Controller
                 'id' => $permission->id,
             ];
         }
-        return response()->json(['permissions'=>$Data],200);
+        return response()->json(['permissions'=>$Data]);
     } 
     public function ChangeStatusPermissionsUser(Request $request){
         $permission = permession_vues_users::find($request->id);

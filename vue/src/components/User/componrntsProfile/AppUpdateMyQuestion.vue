@@ -36,7 +36,8 @@
                                     </div>
                                     <div class="input col pt-1">
                                         <select name="category" class="form-select mb-2" v-model="category" id="">
-                                            <option value="1">PHP</option>
+                                            <option value="" selected disabled>Choose Category</option>
+                                            <option v-for="categorys in categoryList" :key="categorys.id" :value="categorys.id" >{{ categorys.name }}</option>
                                         </select>
                                         <span class="text-secondary">Please choose the appropriate section so the question can be searched easily.</span>
                                     </div>
@@ -56,9 +57,8 @@
                                         </svg>
                                     </div>
                                     <div class="input col pt-1">
-                                        <select name="tages" class="form-select mb-2" id="" v-model="tages" multiple>
-                                            <option value="1">Programation</option>
-                                            <option value="2">Categorys</option>
+                                        <select id="tags" class="" multiple v-model="selectedItems">
+                                            <option v-for="tag in tags" :key="tag.id" :value="tag.id">{{ tag.text }}</option>
                                         </select>
                                         <span class="text-secondary">Please choose suitable Keywords.</span>
                                     </div>
@@ -120,6 +120,8 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import TomSelect from 'tom-select';
+import 'tom-select/dist/css/tom-select.css';
  /* global tinymce */
     export default{
         name: 'AppAskQuesion',
@@ -128,13 +130,22 @@ import Swal from 'sweetalert2';
             return{
                 title: this.titlePoste,
                 category: this.category_id,
-                tages: this.tages_id,
+                selected: this.tages_id,
+                selectedItems: this.tages_id,
                 file: null,
+                tags: [],
+                categoryList: [],
                 
             }
             
         },
         mounted(){
+            axios.get('http://localhost:8000/api/getAllTagesCategory')
+            .then(response => {
+                this.tags = response.data.Tages;
+                this.categoryList = response.data.Categorys;
+                this.initTomSelect();
+            });
             this.$nextTick(() => {
                 tinymce.init({
                     selector: '#mytextarea',
@@ -147,6 +158,12 @@ import Swal from 'sweetalert2';
             });
         },
         methods:{
+            initTomSelect() {
+                new TomSelect("#tags", {
+                options: this.tags.map(tag => ({ value: tag.id, text: tag.text })),
+                items: this.selectedItems
+                });
+            },
             onFileChange(e) {
                 this.file = e.target.files[0];
             },
@@ -154,7 +171,7 @@ import Swal from 'sweetalert2';
                 let formData = new FormData();
                 formData.append('title', this.title);
                 formData.append('category', this.category);
-                formData.append('tages', this.tages);
+                formData.append('tages', this.selectedItems);
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
                 formData.append('id', this.id);

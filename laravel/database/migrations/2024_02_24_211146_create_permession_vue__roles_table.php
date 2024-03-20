@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('permession_vue_id');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->foreign('permession_vue_id')->references('id')->on('permession_vues')->onDelete('cascade');
             $table->engine="InnoDB";
             $table->timestamps();
         });

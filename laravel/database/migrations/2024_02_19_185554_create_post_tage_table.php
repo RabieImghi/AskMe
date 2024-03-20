@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('tage_id');
-            $table->timestamps();
-        
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->foreign('tage_id')->references('id')->on('tages')->onDelete('cascade');
             $table->engine = 'InnoDB';
+            $table->timestamps();
         });
     }
 

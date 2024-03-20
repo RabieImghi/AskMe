@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permession_vues_users', function (Blueprint $table) {
+        Schema::create('answer_reatings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('permession_vue_id');
+            $table->unsignedBigInteger('answer_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('permession_vue_id')->references('id')->on('permession_vues')->onDelete('cascade');
-            $table->boolean('is_active')->default(1);
-            $table->boolean('is_deleted')->default(0);
-            $table->engine="InnoDB";
+            $table->foreign('answer_id')->references('id')->on('answers')->onDelete('cascade');
+            $table->enum('type', ['+', '-'])->default('+');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permession_vues_users');
+        Schema::dropIfExists('answer_reatings');
     }
 };

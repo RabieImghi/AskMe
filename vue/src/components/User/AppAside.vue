@@ -18,24 +18,24 @@
                     <div class="row">
                         <div class="col-6 pt-4 pb-4 border">
                             <div class="p-2 contentColumn text-secondary fw-bold d-flex flex-column gap-2 text-center border-left border-primary ">
-                                <span class="text-primary">Question</span>  1000
+                                <span class="text-primary">Question</span>   <span id="questionCount"></span>
                             </div>
                         </div>
                         <div class="col-6 pt-4 pb-4 border ">
                             <div class="p-2 contentColumn text-secondary fw-bold d-flex flex-column gap-2 text-center border-left border-danger">
-                                <span class="text-danger">Answers</span>  1999
+                                <span class="text-danger">Answers</span>   <span id="answersCount"></span>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 pt-4 pb-4 border ">
                             <div class="p-2 contentColumn text-secondary fw-bold d-flex flex-column gap-2 text-center border-left border-success">
-                                <span class="text-success">Best Answers</span>  783
+                                <span class="text-success">Views</span>   <span id="viewsCount"></span>
                             </div>
                         </div>
                         <div class="col-6 pt-4 pb-4 border ">
                             <div class="p-2 contentColumn text-secondary fw-bold d-flex flex-column gap-2 text-center border-left border-warning">
-                                <span class="text-warning">Users</span>  232
+                                <span class="text-warning">Users</span>    <span id="usersCount"></span>
                             </div>
                         </div>
                     </div>
@@ -90,24 +90,32 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
     export default{
         name: 'AppAside',
         data(){
             return{
-                TopUsers: [
-                    {id:1,name:"Rabie",question:9,level:"Explainer"},
-                    {id:2,name:"Hamza",question:21,level:"Professional"},
-                    {id:3,name:"Khalid",question:43,level:"Beginner"},
-                    {id:4,name:"Kamal",question:43,level:"Enlightened"},
-                ],
-                TopTages: [
-                    {id:1,name:"VueJs"},
-                    {id:2,name:"LARAVEL"},
-                    {id:3,name:"DEVELOPMMENT"},
-                    {id:4,name:"Langage"},
-                ],
+                TopUsers: [],
+                TopTages: [],
+                Statistiques:[],
             }
                 
+        },
+        mounted(){
+            this.getStatisics();
+        },
+        methods: {
+            async getStatisics() {
+                const response = await axios.get('http://localhost:8000/api/getStatisics');
+                this.TopUsers = response.data.TopUsers;
+                this.TopTages = response.data.TopTages;
+                this.Statistiques = response.data.Statistiques;
+                document.getElementById('questionCount').innerText = this.Statistiques.questions;
+                document.getElementById('answersCount').innerText = this.Statistiques.answers;
+                document.getElementById('viewsCount').innerText = this.Statistiques.views;
+                document.getElementById('usersCount').innerText = this.Statistiques.users;
+
+            },
         },
         computed: {
             tokenExists() {

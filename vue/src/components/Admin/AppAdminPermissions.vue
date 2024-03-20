@@ -173,7 +173,7 @@
 </style>
 <script>
 import axios from 'axios';
-import select2 from "./AppSelect2.vue"
+import select2 from "./AppSelect22.vue"
 export default {
     name: "AppAdminPermissions",
     data() {

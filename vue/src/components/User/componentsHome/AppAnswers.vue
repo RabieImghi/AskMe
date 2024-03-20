@@ -63,13 +63,17 @@
                             </div>
                             <p class="text-secondary pt-3">{{answer.questionDetail}}</p>
                             <div class="raitting d-flex  justify-content-start align-items-center gap-2">
-                                <router-link to="">
-                                    <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
-                                </router-link>
-                                <span class="text-secondary fw-bold">{{answer.Reviews}}</span>
-                                <router-link to="">
-                                    <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
-                                </router-link>
+                                <span  class="cursor-point" @click="ChangeReatingAnswer('+',answer.id)">
+                                    <svg :class="{ 'activeVote': isInArray(this.idUser, answer.listIdUserVoted) === 'Active+' }" id=plusVote xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                                    </svg>
+                                </span>
+                                <span class="text-secondary fw-bold">{{answer.reating}}</span>
+                                <span class="cursor-point" @click="ChangeReatingAnswer('-',answer.id)">
+                                    <svg :class="{ 'activeVote': isInArray(this.idUser, answer.listIdUserVoted) === 'Active-' }" id="moinVote" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                                    </svg>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -139,34 +143,40 @@
                 Answers : [],
                 CountAnswer: 0,
                 answerDetails: '',
-                idUser : null
+                idUser : null,
             };
         },
         mounted(){
+            
             const store = new useStore();
             this.idUser = store.user_id;
-            if(this.id != undefined)
+            if(this.id != undefined){
                 store.setPost_id(this.id);
+                axios.get(`http://127.0.0.1:8000/api/addViewsPost/${this.id}`);
+            }
             this.fetchPosts();
-          
         },
         methods:{
             ChangeReating(type,id){ 
                 var store = new useStore();
                 var idUser = store.user_id
-                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${store.post_id}/${idUser}/${type}`)
+                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`)
                 .then(() => {
                     this.fetchPosts();
                 });
             },
-            fetchPosts(){
+            ChangeReatingAnswer(type,id){ 
+                axios.get(`http://127.0.0.1:8000/api/ChangeReatingAnswer/${id}/${this.idUser}/${type}`)
+                .then(() => {
+                    this.fetchPosts();
+                });
+            },
+            async fetchPosts() {
                 var store = new useStore();
-                axios.get(`http://127.0.0.1:8000/api/getPostAnswers/${store.post_id}`)
-                .then(response => {
-                    this.Posts = response.data.post;
-                    this.Answers = response.data.Answers;
-                    this.CountAnswer = response.data.countAnswer;
-                })
+                const response = await axios.get(`http://127.0.0.1:8000/api/getPostAnswers/${store.post_id}`);
+                this.Posts = response.data.post;
+                this.Answers = response.data.Answers;
+                this.CountAnswer = response.data.countAnswer;
             },
             submitForm(){
                 var store = new useStore();
@@ -231,12 +241,30 @@
             updateAnswer(id,content){
                 document.getElementById('answerDetail').value = content;
                 document.getElementById('idAnswer').value = id;
-            }
+            },
+            isInArray(idUser,table) {
+                let idTable = table.map(item => String(item.id));
+                let idUserExists = idTable.includes(String(idUser));
+                if(idUserExists){
+                    var voteType = table.filter(item => item.id == idUser);
+                    if(voteType[0].type == '+'){
+                        return 'Active+'
+                    }else{
+                        return 'Active-'
+                    }
+                }else return '';
+            },
 
         }
     }
 </script>
 <style>
+    .activeVote{
+        padding: 1px !important;
+        border-radius: 50%;
+        background: blue !important;
+        color: white !important;
+    }
     .checkAuth{
         box-shadow: 0px -6px 10px lightgray;
     }
