@@ -66,5 +66,6 @@ Route::post('/deleteCategory', [CategoryController::class, 'deleteCategory']);
 Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);
 Route::get('/getStatisics', [UserController::class, 'getStatisics']);
 
+Route::post('/uploadImage', [UserController::class, 'uploadImage']);
 
 

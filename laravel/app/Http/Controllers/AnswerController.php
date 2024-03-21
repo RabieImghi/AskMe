@@ -47,6 +47,7 @@ class AnswerController extends Controller
                 'name' => $answer->user->name,
                 'user_id' => $answer->user->id,
                 'badge' => $this->getBadge($answer->user->points),
+                'imageUser' => asset('uploads/'.$post->user->avatar),
                 'reating' => $this->getReating($answer->id, 'answer_reatings', 'answer_id'),
                 'listIdUserVoted' => $this->getIdUserVoted('answer_reatings',$answer->id,'answer_id'),
                 'date' => Carbon::parse($answer->created_at)->format('F j, Y'),
@@ -62,8 +63,10 @@ class AnswerController extends Controller
             'name' => $post->user->name,
             'answor' => 10,
             'image' => asset('uploads/'.$post->image),
+            'imageUser' => asset('uploads/'.$post->user->avatar),
             'category' => $post->category->name,
             'date' => Carbon::parse($post->created_at)->format('F j, Y'),
+            'listIdUserVoted'=> $this->getIdUserVoted('post_reatings',$post->id,'post_id'),
             'reating' => $this->getReating($post->id, 'post_reatings', 'post_id'),
         ];
 

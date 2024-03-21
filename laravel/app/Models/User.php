@@ -25,7 +25,9 @@ class User extends Authenticatable
         'email',
         'password',
         'points',
-        'role_id'
+        'role_id',
+        'avatar',
+        'coverImage',
     ];
     public function permission()
     {

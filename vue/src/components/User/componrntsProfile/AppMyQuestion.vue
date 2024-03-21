@@ -30,7 +30,7 @@
                 <div class="border-bottom pb-4 pt-4" v-for="post in Posts" :key="post.id">
                     <div class="container-mf mobileQuestion row">
                         <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-start align-items-center">
-                            <img src="../../../assets/img/user.png" width="80px" alt="User">
+                            <img :src="post.imageUser" style="border-radius: 50%;" width="80px" alt="User">
                             <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
                                 <span class="cursor-point" @click="ChangeReating('+',post.id)">
                                     <svg :class="{ 'activeVote': isInArray(this.userId, post.listIdUserVoted) === 'Active+' }" id=plusVote xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">

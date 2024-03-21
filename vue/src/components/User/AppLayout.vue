@@ -62,7 +62,8 @@
                 <button :class="userBadge"  class="btnLevel">{{userBadge}}</button>
             </div>
             <div class="image-user dropdown-toggle" id="dropdown2" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../../assets/img/user.png" width="60px" alt="">
+                <img v-if="!tokenExists" src="../../assets/img/user.png" width="60px" alt="">
+                <img v-if="tokenExists" :src="avatar" width="60px" height="60px" class="rounded-5" alt="">
             </div>
             <div class="dropdown-menu profile-menu shadow-medium" aria-labelledby="dropdown2">
                 <div class="d-flex flex-column gap-3 jjustify-content-center">
@@ -165,7 +166,12 @@ import { useStore } from '../../store';
             userBadge(){
                 const store = useStore();
                 return store.badge;
+            },
+            avatar(){
+                const store = useStore();
+                return store.imageUser;
             }
+        
             
         },
         methods:{

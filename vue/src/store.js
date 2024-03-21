@@ -8,6 +8,8 @@ export const useStore = defineStore('main', {
     user: localStorage.getItem('user') || null,
     badge: localStorage.getItem('badge') || null,
     token: localStorage.getItem('token') || null,
+    imageUser: localStorage.getItem('imageUser') || null,
+    coverImage: localStorage.getItem('coverImage') || null,
     PermissionsUser: localStorage.getItem('permissionsUser') || null,
     post_id: localStorage.getItem('post_id') || null,
   }),
@@ -39,6 +41,14 @@ export const useStore = defineStore('main', {
     setPost_id(post_id) {
       this.post_id = post_id;
       localStorage.setItem('post_id', post_id)
+    },
+    setImageUser(imageUser) {
+      this.imageUser = imageUser;
+      localStorage.setItem('imageUser', imageUser)
+    },
+    setCoverImage(coverImage) {
+      this.coverImage = coverImage;
+      localStorage.setItem('coverImage', coverImage)
     },
     
   },
