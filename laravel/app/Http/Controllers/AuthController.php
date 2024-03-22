@@ -24,6 +24,8 @@ class AuthController extends Controller
             return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
         $token = $user->createToken('authToken')->plainTextToken;
         $dataUser = [
+            'firstName'=>$user->firstname,
+            'lastName'=>$user->lastname,
             'username'=>$user->name,
             'badge'=>AnswerController::getBadge($user->points),
             'points'=>$user->points,

@@ -10,7 +10,6 @@ export const useStore = defineStore('main', {
     token: localStorage.getItem('token') || null,
     imageUser: localStorage.getItem('imageUser') || null,
     coverImage: localStorage.getItem('coverImage') || null,
-    PermissionsUser: localStorage.getItem('permissionsUser') || null,
     post_id: localStorage.getItem('post_id') || null,
   }),
   actions: {

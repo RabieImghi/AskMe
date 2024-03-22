@@ -14,7 +14,7 @@
                         <div class="containName infoProfileHiden  m-1 rounded-1 d-flex justify-content-between align-items-center">
                             <btn class="btn btn-dark p-1 h4 mt-2 fw-bold mx-3">{{userName}}</btn>
                             <div class="buttons d-flex gap-4 ">
-                                <router-link to='/Settings'> <button class="btn btn-dark m-1">Edit</button></router-link>
+                                <router-link to='/user/settings'> <button class="btn btn-dark m-1">Edit</button></router-link>
                                 <button :class="userBadge" class="m-1">{{userBadge}}</button>
                             </div>
                         </div>

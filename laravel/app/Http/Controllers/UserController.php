@@ -72,4 +72,14 @@ class UserController extends Controller
             return response()->json(['image' => asset('uploads/'.$imageName)],200);
         }
     }
+    public function getUserInfo($id){
+        $user = User::find($id);
+        $userData = [
+            'id'=>$user->id,
+            'name'=>$user->name,
+            'firstName'=>$user->firstname,
+            'lastName'=>$user->lastname,
+            'email'=>$user->email,
+        ];
+    }
 }
