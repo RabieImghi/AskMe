@@ -7,6 +7,7 @@ use App\Models\Tage;
 use App\Models\Post;
 use App\Models\Answer;
 use Illuminate\Http\Request;
+use App\Models\SocialLink;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -73,13 +74,57 @@ class UserController extends Controller
         }
     }
     public function getUserInfo($id){
-        $user = User::find($id);
+        $user = User::with('SocialLink')->where('id',$id)->first();
         $userData = [
             'id'=>$user->id,
             'name'=>$user->name,
             'firstName'=>$user->firstname,
             'lastName'=>$user->lastname,
             'email'=>$user->email,
+            'about'=>$user->about ?? null,
+            'country'=>$user->country ?? null,
+            'phone'=>$user->phone ?? null,
+            'facebook'=> $user->SocialLink->facebook ?? null,
+            'whatsapp'=> $user->SocialLink->whatsapp ?? null,
+            'linkedin'=> $user->SocialLink->linkedin ?? null,
+            'Github'=> $user->SocialLink->Github ?? null,
+            'emailSosial'=> $user->SocialLink->email ?? null,
+            'WebSite'=> $user->SocialLink->WebSite ?? null,
         ];
+        return response()->json(['user'=>$userData]);
+    }
+    public function updateUserInfo(Request $request){
+        $request->validate([
+            'id' => 'required|integer',
+            'name' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'country' => 'nullable',
+            'phone' => 'nullable',
+            'facebook' => 'nullable',
+            'whatsapp' => 'nullable',
+            'linkedin' => 'nullable',
+            'Github' => 'nullable',
+            'emailSosial' => 'nullable|email',
+            'WebSite' => 'nullable',
+        ]);
+        $user = User::find($request->id);
+        $user->update([
+            'name' => $request->name,
+            'firstname' => $request->firstName,
+            'lastname' => $request->lastName,
+            'country' => $request->country,
+            'phone' => $request->phone,
+        ]);
+        $socialLink = SocialLink::firstOrCreate(['user_id' => $request->id]);
+        $socialLink->update([
+            'facebook' => $request->facebook,
+            'whatsapp' => $request->whatsapp,
+            'linkedin' => $request->linkedin,
+            'Github' => $request->Github,
+            'email' => $request->emailSosial,
+            'WebSite' => $request->WebSite,
+        ]);
+        return response()->json(['message'=>'User info updated successfully!']);
     }
 }

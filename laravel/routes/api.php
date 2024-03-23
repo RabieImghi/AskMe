@@ -69,5 +69,8 @@ Route::get('/getStatisics', [UserController::class, 'getStatisics']);
 Route::get('/getUserInfo/{id}', [UserController::class, 'getUserInfo']);
 Route::post('/uploadImage', [UserController::class, 'uploadImage']);
 Route::post('/verfyAnswer', [AnswerController::class, 'verfyAnswer']);
+Route::post('/updateUserInfo', [UserController::class, 'updateUserInfo']);
+
+
 
 

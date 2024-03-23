@@ -38,35 +38,35 @@
                     <div class="row">
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">Nickname <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="RabieImghi">
+                            <input type="text" class="form-control" :value="user.name" placeholder="RabieImghi">
                         </div>
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">First Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Rabe">
+                            <input type="text" class="form-control" :value="user.firstName" placeholder="Rabe">
                         </div>
                     </div>
                     <div class="row pt-4">
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">Last Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Ait Imghi">
+                            <input type="text" class="form-control" v-model="user.lastName" placeholder="Ait Imghi">
                         </div>
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">Country <span class="text-warning">(optionel)</span></label>
-                            <select name="country" id=""  class="form-control">
-                                <option value="ma">Maroc</option>
-                                <option value="ma">Maroc</option>
-                                <option value="ma">Maroc</option>
+                            <select name="country" id="" v-model="user.country" class="form-control">
+                                <option v-for="country in countries" :key="country.common" :value="country.name.common">
+                                    {{ country.name.common }}
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="row pt-4">
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">Phone <span class="text-warning">(optionel)</span></label>
-                            <input type="text" class="form-control" placeholder="+21263948-3932">
+                            <input type="text" class="form-control" v-model="user.phone" placeholder="+21260000-0000">
                         </div>
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">E-Mail </label>
-                            <input type="text" class="form-control" readonly value="rabieaitimghi@gmail.com">
+                            <input type="text" class="form-control"  readonly :value="user.email">
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 pt-4">
@@ -77,34 +77,34 @@
                     <div class="row">
                         <div class="col">
                             <label class="fw-bold h6 text-primary">Facebook (url) </label>
-                            <input type="text" class="form-control" placeholder="https://example.com">
+                            <input type="text" class="form-control" v-model="user.facebook" placeholder="https://example.com">
                         </div>
                         <div class="col">
                             <label class="fw-bold h6 text-dark">Github (url)</label>
-                            <input type="text" class="form-control" placeholder="https://example.com">
+                            <input type="text" class="form-control" v-model="user.Github" placeholder="https://example.com">
                         </div>
                     </div>
                     <div class="row pt-4">
                         <div class="col">
                             <label class="fw-bold h6 text-success">whatsapp (Num)</label>
-                            <input type="text" class="form-control" placeholder="+21260000-0000">
+                            <input type="text" class="form-control" v-model="user.whatsapp" placeholder="+21260000-0000">
                         </div>
                         <div class="col">
                             <label class="fw-bold h6 text-danger">Email (Email)</label>
-                            <input type="email" class="form-control" placeholder="example@gmail.com">
+                            <input type="email" class="form-control" v-model="user.emailSosial" placeholder="example@gmail.com">
                         </div>
                     </div>
                     <div class="row pt-4">
                         <div class="col">
                             <label class="fw-bold h6 text-primary ">LinkedIn (url)</label>
-                            <input type="text" class="form-control" placeholder="https://example.com">
+                            <input type="text" class="form-control" v-model="user.linkedin" placeholder="https://example.com">
                         </div>
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">Web Site (url)</label>
-                            <input type="text" class="form-control" placeholder="www.example.com">
+                            <input type="text" class="form-control" v-model="user.WebSite" placeholder="www.example.com">
                         </div>
                     </div>
-                    <button class="btn btn-primary w-100 mt-3">Save Your Info</button>
+                    <button type="button" class="btn btn-primary w-100 mt-3" @click="submitForm">Save Your Info</button>
                 </form>
             </section>
             <footer class="text-center text-secondary border-top mt-4 fw-bold pt-3">
@@ -123,7 +123,8 @@
             const store = useStore();
             return {
                 store,
-                user:[],
+                user: [],
+                countries: [],
             };
         },
         computed: {
@@ -142,6 +143,16 @@
             coverImage(){
                 return this.store.coverImage;
             },
+        },
+        mounted(){
+            this.getUserInfo();
+        },
+        created() {
+            axios.get('https://restcountries.com/v3.1/all')
+            .then(response => {
+                this.countries = response.data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+            })
+            .catch(error => console.error('Error:', error));
         },
         methods:{
             uploadsImageCover(){
@@ -176,8 +187,15 @@
                 } 
             },
             async getUserInfo(){
-                let response = axios.get(`http://localhost:8000/api/getUserInfo/${userId}`);
+                let response = await axios.get(`http://localhost:8000/api/getUserInfo/${this.userId}`);
                 this.user = response.data.user;
+                console.log(this.user)
+            },
+            async submitForm(){
+                let response = await axios.post(`http://localhost:8000/api/updateUserInfo`, this.user);
+                if(response.data.success){
+                    alert('Your information has been updated');
+                }
             }
         }
     }

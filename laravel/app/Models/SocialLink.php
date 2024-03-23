@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SocialLink extends Model
 {
     use HasFactory;
+    protected $fillable = ['facebook','whatsapp','linkedin','Github','email','WebSite','user_id '];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
