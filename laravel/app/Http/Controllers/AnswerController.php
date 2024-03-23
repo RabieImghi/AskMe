@@ -36,7 +36,7 @@ class AnswerController extends Controller
     public function getPostAnswers($id) {
         $data = [];
         $dataPost = [];
-        $answers = Answer::with('user', 'post')->where('post_id', $id)->orderBy('id', 'desc')->get();
+        $answers = Answer::with('user', 'post')->where('post_id', $id)->orderBy('isVerfy','asc')->orderBy('id','desc')->get();
         $post = Post::with('user', 'category')->where('id',$id)->first();
         $countAnswer = Answer::with('user', 'post')->where('post_id', $id)->count();
 
@@ -47,9 +47,11 @@ class AnswerController extends Controller
                 'name' => $answer->user->name,
                 'user_id' => $answer->user->id,
                 'badge' => $this->getBadge($answer->user->points),
+                'imageUser' => asset('uploads/'.$answer->user->avatar),
                 'reating' => $this->getReating($answer->id, 'answer_reatings', 'answer_id'),
                 'listIdUserVoted' => $this->getIdUserVoted('answer_reatings',$answer->id,'answer_id'),
                 'date' => Carbon::parse($answer->created_at)->format('F j, Y'),
+                'isVerfy'=> $answer->isVerfy,
             ];
         }
 
@@ -60,10 +62,13 @@ class AnswerController extends Controller
             'views' => $post->views,
             'badge' => $this->getBadge($post->user->points),
             'name' => $post->user->name,
+            'user_id' => $post->user->id,
             'answor' => 10,
             'image' => asset('uploads/'.$post->image),
+            'imageUser' => asset('uploads/'.$post->user->avatar),
             'category' => $post->category->name,
             'date' => Carbon::parse($post->created_at)->format('F j, Y'),
+            'listIdUserVoted'=> $this->getIdUserVoted('post_reatings',$post->id,'post_id'),
             'reating' => $this->getReating($post->id, 'post_reatings', 'post_id'),
         ];
 
@@ -109,6 +114,17 @@ class AnswerController extends Controller
         $answer->save();
         return response()->json([
             'message' => 'Answer updated successfully!',
+        ]);
+    }
+    public function verfyAnswer(Request $request){
+        $request->validate([
+            'answerId' => 'required',
+        ]);
+        $answer = Answer::find($request->answerId);
+        $answer->isVerfy ='verfy';
+        $answer->save();
+        return response()->json([
+            'message' => 'Answer verified successfully!',
         ]);
     }
 }

@@ -140,12 +140,7 @@ import 'tom-select/dist/css/tom-select.css';
             
         },
         mounted(){
-            axios.get('http://localhost:8000/api/getAllTagesCategory')
-            .then(response => {
-                this.tags = response.data.Tages;
-                this.categoryList = response.data.Categorys;
-                this.initTomSelect();
-            });
+           
             this.$nextTick(() => {
                 tinymce.init({
                     selector: '#mytextarea',
@@ -155,6 +150,12 @@ import 'tom-select/dist/css/tom-select.css';
                         });
                     }
                 });
+            });
+            axios.get('http://localhost:8000/api/getAllTagesCategory')
+            .then(response => {
+                this.tags = response.data.Tages;
+                this.categoryList = response.data.Categorys;
+                this.initTomSelect();
             });
         },
         methods:{

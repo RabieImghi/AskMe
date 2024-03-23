@@ -73,13 +73,13 @@
 
                     <div v-for="tage in TopTages" :key="tage.id" 
                         class="BodMembers d-flex flex-wrap justify-content-between  ">
-                        <div class=" d-flex gap-2 justify-content-between align-items-center flex-wrap border mt-2 p-2">
+                        <div class="tageLineare d-flex gap-2 justify-content-between rounded-1 align-items-center flex-wrap border mt-2 p-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-tags-fill" viewBox="0 0 16 16">
                             <path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                             <path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043z"/>
                             </svg>
                             <div class="infoUser fw-bold d-flex flex-column align-items-center">
-                                <span class="color-premary">{{tage.name}}</span>
+                                <span>{{tage.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -125,6 +125,15 @@ import axios from 'axios';
     }
 </script>
 <style>
+    .tageLineare{
+        background: linear-gradient(-30deg,#ac6bb2,#4C66DA);
+        cursor: pointer;
+        color: #ffffff;
+    }
+    .tageLineare:hover {
+        background: linear-gradient(-30deg,#4C66DA,#ac6bb2);
+        color: #ffffff;
+    }
     aside{
         height: calc(100vh - 80px);
         overflow-y: scroll;

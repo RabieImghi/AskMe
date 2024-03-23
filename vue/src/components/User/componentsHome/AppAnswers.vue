@@ -9,14 +9,18 @@
                 <div class=" pb-4 pt-4" v-for="post in Posts" :key="post.id">
                     <div class="container-mf mobileQuestion row">
                         <div class="imageInfoUser col-1 gap-3 d-flex flex-column align-items-center">
-                            <img src="../../../assets/img/user.png" width="80px" alt="User">
+                            <img :src="post.imageUser" style="border-radius: 50%;" width="80px" alt="User">
                             <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
                                 <span class="cursor-point" @click="ChangeReating('+',post.id)">
-                                    <img src="../../../assets/img/raitting.png" width="20px" class="rotate-180" alt="raitin">
+                                    <svg :class="{ 'activeVote': isInArray(this.idUser, post.listIdUserVoted) === 'Active+' }" id=plusVote xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                                    </svg>
                                 </span>
                                 <span class="text-secondary fw-bold">{{post.reating}}</span>
                                 <span class="cursor-point" @click="ChangeReating('-',post.id)">
-                                    <img src="../../../assets/img/raitting.png" width="20px" alt="raitin">
+                                    <svg :class="{ 'activeVote': isInArray(this.idUser, post.listIdUserVoted) === 'Active-' }" id="moinVote" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                                    </svg>
                                 </span>
                             </div>
                         </div>
@@ -43,13 +47,30 @@
                 <div class=" pb-4 pt-4" v-for="answer in Answers" :key="answer.id">
                     <div class="container-mf mobileQuestion row">
                         <div class="imageInfoUser col-1 gap-3 d-flex flex-column align-items-center">
-                            <img src="../../../assets/img/user.png" width="80px" alt="User">
+                            <div :class="{ 'verfyCover': answer.isVerfy == 'verfy' }">
+                                <img :src="answer.imageUser" style="border-radius: 50%;" width="80px" alt="User">
+                            </div>
                         </div>
                         <div class="infoQuestion col-11">
                             <div class="userInfo d-flex gap-5 pt-2 pb-3">
                                 <span class="color-premary fw-bold">{{answer.name}}</span>
                                 <button  :class='answer.badge'>{{answer.badge}}</button>
                                 <span class="text-secondary">Added an answer on : <span class="text-danger">{{answer.date}}</span></span>
+                                
+                                <span class="fw-bold text-success" v-if="answer.isVerfy == 'verfy'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check2-square" viewBox="0 0 16 16">
+                                            <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z"/>
+                                            <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0"/>
+                                    </svg>
+                                    Verifyed</span>
+                                <div v-if="Posts[0].user_id == this.idUser && answer.isVerfy == 'notVerfy'">
+                                    <span class="btn btn-success fw-bold" @click="verfyAnswer(answer.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-check2-square" viewBox="0 0 16 16">
+                                            <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z"/>
+                                            <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0"/>
+                                        </svg>
+                                    </span>
+                                </div>
                                 <div class="dropdown"  v-if="answer.user_id == this.idUser">
                                     <span class="text-secondary fw-bold dropdown-toggle" style="font-size: 24px;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         ...
@@ -254,11 +275,31 @@
                     }
                 }else return '';
             },
+            verfyAnswer(answerId){
+                var formData = new FormData();
+                formData.append('answerId', answerId);
+                axios.post('http://localhost:8000/api/verfyAnswer', formData)
+                .then(() => {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Answer has been verfy",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    this.fetchPosts();
+                })
+            }
 
         }
     }
 </script>
 <style>
+    .verfyCover{
+        padding: 2px;
+        border: 4px solid green;
+        border-radius: 50%;
+    }
     .activeVote{
         padding: 1px !important;
         border-radius: 50%;

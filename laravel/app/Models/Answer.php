@@ -12,6 +12,7 @@ class Answer extends Model
         'content',
         'user_id',
         'post_id',
+        'isVerfy',
     ];
     public function user()
     {

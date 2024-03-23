@@ -11,6 +11,7 @@ use App\Http\Controllers\TageController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\Answer;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,11 @@ Route::post('/deleteCategory', [CategoryController::class, 'deleteCategory']);
 
 Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);
 Route::get('/getStatisics', [UserController::class, 'getStatisics']);
+Route::get('/getUserInfo/{id}', [UserController::class, 'getUserInfo']);
+Route::post('/uploadImage', [UserController::class, 'uploadImage']);
+Route::post('/verfyAnswer', [AnswerController::class, 'verfyAnswer']);
+Route::post('/updateUserInfo', [UserController::class, 'updateUserInfo']);
+
 
 
 

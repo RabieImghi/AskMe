@@ -86,6 +86,8 @@ import { useStore } from '../../store'
                 store.setBadge(user.badge);
                 store.setToken(response.data.token);
                 store.storeUser_id(response.data.user_id);
+                store.setImageUser(user.avatar);
+                store.setCoverImage(user.coverImage);
                 if(user.role_id === 2) router.push('/user/');
                 if(user.role_id === 1) router.push('/admin/');
             })
@@ -111,7 +113,6 @@ import { useStore } from '../../store'
                     if(error.response.data.error === 'NotAuthorized'){
                         alert('NotAuthorized');
                     }
-                    
                     else passwordError.value = false;
                 }
             });
@@ -128,7 +129,7 @@ import { useStore } from '../../store'
             }
         },
         data() {
-      
+            
         },
         methods: {
             togleInputPassword(){
@@ -142,43 +143,6 @@ import { useStore } from '../../store'
                     svg.style.fill = 'currentColor';
                 }
             },
-            // login() {
-            //     this.errorsTest = false;
-            //     this.emailErroe= false;
-            //     this.passwordErroe= false;
-            //     axios.post('http://127.0.0.1:8000/api/login', {
-            //         email: this.email,
-            //         password: this.password,
-            //         count: this.count
-            //     }).then(response => {
-            //         // localStorage.setItem('token', response.data.token);
-            //         // localStorage.setItem('token', response.data.user);
-            //         let usre = response.data.user;
-            //         alert(response.data.TEST)
-            //         // this.$router.push('/user/');
-            //     })
-            //     .catch(error => {
-            //         if(error.response.status === 422){
-            //             this.emailErroe = true;
-            //             this.passwordErroe = true;
-            //             this.errorsRequire = "Email and password are required";
-            //             this.errorsTest = true;
-            //         }
-            //         if (error.response.status === 401) {
-            //             if(error.response.data.error === 'email'){
-            //                 this.emailErroe = true;
-            //                 this.errorsRequire = "Email is invalid or not exist";
-            //                 this.errorsTest = true;
-            //             }else this.emailErroe = false;
-            //             if(error.response.data.error === 'password'){
-            //                 this.passwordErroe = true;
-            //                 this.errorsRequire = "Password is invalid";
-            //                 this.errorsTest = true;
-            //             }
-            //             else this.passwordErroe = false;
-            //         }
-            //     });
-            // },
         }
     }
 </script>

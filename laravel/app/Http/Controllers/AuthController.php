@@ -23,16 +23,15 @@ class AuthController extends Controller
         if (!Hash::check($request->password, $user->password)) 
             return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
         $token = $user->createToken('authToken')->plainTextToken;
-        $badge ='';
-        if($user->points>=150) $badge = "Professional";
-        else if($user->points>=100) $badge = "Enlightened";
-        else if($user->points>=50) $badge = "Explainer";
-        else if($user->points>=5) $badge = "Beginner";
         $dataUser = [
+            'firstName'=>$user->firstname,
+            'lastName'=>$user->lastname,
             'username'=>$user->name,
-            'badge'=>$badge,
+            'badge'=>AnswerController::getBadge($user->points),
             'points'=>$user->points,
             'role_id'=>$user->role_id,
+            'avatar'=>asset('uploads/'.$user->avatar),
+            'coverImage'=>asset('uploads/'.$user->coverImage),
         ];
         return response()->json(['user' => $dataUser, 'token' => $token, "user_id"=>$user->id],200);
     }
