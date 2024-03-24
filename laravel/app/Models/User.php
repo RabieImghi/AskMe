@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'points',
         'role_id',
+        'about',
         'avatar',
         'coverImage',
     ];
@@ -45,8 +46,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Answer::class);
     }
-    public function SocialLink(){
-        return $this->belongsTo(SocialLink::class);
+    public function socialLinks(){
+        return $this->hasOne(SocialLink::class);
     }
 
     /**

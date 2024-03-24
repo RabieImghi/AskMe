@@ -74,7 +74,8 @@ class UserController extends Controller
         }
     }
     public function getUserInfo($id){
-        $user = User::with('SocialLink')->where('id',$id)->first();
+        $user = User::with('socialLinks')->where('id',$id)->first();
+        if(!$user){return response()->json(['message'=>'errore']);}
         $userData = [
             'id'=>$user->id,
             'name'=>$user->name,
@@ -82,14 +83,21 @@ class UserController extends Controller
             'lastName'=>$user->lastname,
             'email'=>$user->email,
             'about'=>$user->about ?? null,
+            'badge'=> AnswerController::getBadge($user->points),
             'country'=>$user->country ?? null,
             'phone'=>$user->phone ?? null,
-            'facebook'=> $user->SocialLink->facebook ?? null,
-            'whatsapp'=> $user->SocialLink->whatsapp ?? null,
-            'linkedin'=> $user->SocialLink->linkedin ?? null,
-            'Github'=> $user->SocialLink->Github ?? null,
-            'emailSosial'=> $user->SocialLink->email ?? null,
-            'WebSite'=> $user->SocialLink->WebSite ?? null,
+            'facebook'=> $user->socialLinks->facebook ?? null,
+            'whatsapp'=> $user->socialLinks->whatsapp ?? null,
+            'linkedin'=> $user->socialLinks->linkedin ?? null,
+            'Github'=> $user->socialLinks->Github ?? null,
+            'emailSosial'=> $user->socialLinks->email ?? null,
+            'WebSite'=> $user->socialLinks->WebSite ?? null,
+            'imageProfile'=>asset('uploads/'.$user->avatar),
+            'imageCover'=>asset('uploads/'.$user->coverImage),
+            'countQuesions' => Post::where('user_id',$id)->count(),
+            'countReponse' => Answer::where('user_id',$id)->count(),
+            'Point'=>$user->points,
+            'Review' => AnswerController::getReatingStatics($id,'post_reatings','user_id') + AnswerController::getReatingStatics($id,'answer_reatings','user_id'),
         ];
         return response()->json(['user'=>$userData]);
     }
@@ -100,6 +108,7 @@ class UserController extends Controller
             'firstName' => 'required',
             'lastName' => 'required',
             'country' => 'nullable',
+            'about' => 'nullable',
             'phone' => 'nullable',
             'facebook' => 'nullable',
             'whatsapp' => 'nullable',
@@ -115,6 +124,7 @@ class UserController extends Controller
             'lastname' => $request->lastName,
             'country' => $request->country,
             'phone' => $request->phone,
+            'about'=>$request->about
         ]);
         $socialLink = SocialLink::firstOrCreate(['user_id' => $request->id]);
         $socialLink->update([

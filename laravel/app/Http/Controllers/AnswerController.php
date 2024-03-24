@@ -24,6 +24,13 @@ class AnswerController extends Controller
             ->first()
             ->reating ?? 0;
     }
+    public static function getReatingStatics($id, $table,$champ) {
+        return DB::table($table)
+            ->select(DB::raw('SUM(case when type = "+" then 1 when type = "-" then 1 else 0 end) as reating'))
+            ->where($champ, $id)
+            ->first()
+            ->reating ?? 0;
+    }
     public static function getIdUserVoted($table,$id,$champ) {
         $listIdUserVoted = DB::table($table)->select('user_id','type')->where($champ, $id)->get();
         $IdUserVoted = [];

@@ -1,28 +1,28 @@
 <template>
     <div class="sectionBadge pe-4">
         <div class="bg-white shadow">
-            <section class="cover" :style="{ backgroundImage: `url(${coverImage})`, backgroundSize: 'cover' }">
+            <section class="cover" :style="{ backgroundImage: `url(${user.imageCover})`, backgroundSize: 'cover' }">
                 <div class="coverInfo row p-3">
                     <div class="profile col-2 d-flex flex-column justify-content-end">
                         <input type="file" @change="changeImage('Profil')" class="d-none" id="fileinputProfil">
-                        <img @click="uploadsImageProfile" class="cursor-point imageProfil" :src="avatar" alt="image" height="140px" width="140px">
+                        <img @click="uploadsImageProfile" class="cursor-point imageProfil" :src="user.imageProfile" alt="image" height="140px" width="140px">
                     </div>
                     <div class="infoProfile col pt-4 pe-4">
                         <input type="file" class="d-none" @change="changeImage('Cover')" id="fileinputCover">
                         <div @click="uploadsImageCover" class="fw-bold h1 text-white text-end cursor-point">Tap Upload Your <br>
                             Cover Photo</div>
                         <div class="containName infoProfileHiden  m-1 rounded-1 d-flex justify-content-between align-items-center">
-                            <btn class="btn btn-dark p-1 h4 mt-2 fw-bold mx-3">{{userName}}</btn>
+                            <btn class="btn btn-dark p-1 h4 mt-2 fw-bold mx-3">{{user.name}}</btn>
                             <div class="buttons d-flex gap-4 ">
                                 <router-link to='/user/settings'> <button class="btn btn-dark m-1">Edit</button></router-link>
-                                <button :class="userBadge" class="m-1">{{userBadge}}</button>
+                                <button :class="user.badge" class="m-1">{{user.badge}}</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </section> 
             <div class="border-bottom container-mf pt-4 pb-4 d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> RabieImghi</span></span>  
+                <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> {{user.firstName}} {{user.lastName}}</span></span>  
                 <router-link to="/user/myQuestion" >
                     <button class="btn btn-light shadow fw-bold text-secondary">Show All Your Question</button>
                 </router-link> 
@@ -67,6 +67,12 @@
                         <div class="col">
                             <label class="fw-bold h6 text-secondary">E-Mail </label>
                             <input type="text" class="form-control"  readonly :value="user.email">
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col">
+                            <label class="fw-bold h6 text-secondary">About <span class="text-warning">(optionel)</span></label>
+                            <textarea type="text" rows="10" class="form-control" v-model="user.about"></textarea>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 pt-4">
@@ -117,6 +123,7 @@
 <script>
     import axios from 'axios';
     import { useStore } from '../../../store';
+    import Swal from 'sweetalert2';
     export default{
         name: 'AppProfileSetting',
         data() {
@@ -193,8 +200,14 @@
             },
             async submitForm(){
                 let response = await axios.post(`http://localhost:8000/api/updateUserInfo`, this.user);
-                if(response.data.success){
-                    alert('Your information has been updated');
+                if(response.data.message){
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "User info updated successfully!",
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
                 }
             }
         }
