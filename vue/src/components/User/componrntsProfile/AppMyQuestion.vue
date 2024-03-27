@@ -30,7 +30,9 @@
                 <div class="border-bottom pb-4 pt-4" v-for="post in Posts" :key="post.id">
                     <div class="container-mf mobileQuestion row">
                         <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-start align-items-center">
-                            <img :src="post.imageUser" style="border-radius: 50%;" width="80px" alt="User">
+                            <router-link :to="{ name: 'UserProfile', params: { idUser: post.user_id } }">
+                                <img :src="post.imageUser" style="border-radius: 50%;" width="80px" alt="User">
+                            </router-link>
                             <div class="raitting d-flex flex-column  justify-content-center align-items-center gap-2">
                                 <span class="cursor-point" @click="ChangeReating('+',post.id)">
                                     <svg :class="{ 'activeVote': isInArray(this.userId, post.listIdUserVoted) === 'Active+' }" id=plusVote xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
@@ -152,13 +154,15 @@
             navigateToAnswer(postId) {
                 this.$router.push({ name: 'userAnswers', params: { id: postId} });
             },
-            ChangeReating(type,id){ 
+            async ChangeReating(type,id){ 
                 var store = new useStore();
                 var idUser = store.user_id
-                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`)
-                .then(() => {
-                    this.fetchPosts();
+                let response = await axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
                 });
+                if(response == 200){
+                    this.fetchPosts();
+                }
             },
             navigateToUpdate(post) {
                 this.$router.push({ name: 'UpdateMyQuestion', params: { 
@@ -170,18 +174,16 @@
 
                 } });
             },
-            fetchPosts() {
+            async fetchPosts() {
                 var store = new useStore();
-                axios.get(`http://127.0.0.1:8000/api/MyPost/${store.user_id}?page=${this.nombrePost}`)
-                    .then(response => {
-                        this.Posts = response.data.data;
-                        this.count= response.data.count;
-                        console.log(this.count);
-                        this.nbPage = Math.ceil(this.count / 6);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                let response= await axios.get(`http://127.0.0.1:8000/api/MyPost/${store.user_id}?page=${this.nombrePost}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                });
+                if(response.status == 200){
+                    this.Posts = response.data.data;
+                    this.count= response.data.count;
+                    this.nbPage = Math.ceil(this.count / 6);
+                }
             },
             next(){
                 if(this.nombrePost < this.count - 6){
@@ -233,25 +235,26 @@
                     }
                 })
             },
-            deletePost(postId) {
-                axios.delete(`http://127.0.0.1:8000/api/DeletePost/${postId}`)
-                    .then(response => {
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        )
-                        this.fetchPosts();
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        Swal.fire(
-                            'Error!',
-                            'Your file has not been deleted.',
-                            'error'
-                        )
-                        console.log(error);
-                    });
+            async deletePost(postId) {
+                let store = new useStore();
+                let response= await axios.delete(`http://127.0.0.1:8000/api/DeletePost/${postId}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                });
+                if(response.status == 200){
+                    Swal.fire(
+                        'Deleted!',
+                        'Your post has been deleted.',
+                        'success'
+                    )
+                    this.fetchPosts();
+                    console.log(response);
+                }else{
+                    Swal.fire(
+                        'Error!',
+                        'Your post has not been deleted.',
+                        'error'
+                    )
+                }
             },
             isInArray(idUser,table) {
                 let idTable = table.map(item => String(item.id));

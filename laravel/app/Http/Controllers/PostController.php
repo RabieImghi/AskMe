@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    public function allPost(Request $request)
-    {
+    public function allPost(Request $request){
         $data = [];
         $page = $request->query('page', 1);
         $posts = Post::with('user', 'category')->skip($page)->take(6)->orderBy('id', 'desc')->get();
@@ -33,6 +32,7 @@ class PostController extends Controller
                 'answers' => $answers,
                 'badge' => AnswerController::getBadge($post->user->points),
                 'name' => $post->user->name,
+                'user_id' => $post->user->id,
                 'imageUser' => asset('uploads/'.$post->user->avatar),
                 'category' => $post->category->name,
                 'created_at' => Carbon::parse($post->created_at)->format('F j, Y'),
@@ -43,8 +43,8 @@ class PostController extends Controller
         }
         return response()->json([ 'data' => $data, 'count' => $count, ]);
     }
-    public function AddQuestions(Request $request)
-    {
+    public function AddQuestions(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -78,8 +78,8 @@ class PostController extends Controller
             'data' => $filename,
         ]);
     }
-    public function MyPost(Request $request,$id)
-    {
+    public function MyPost(Request $request,$id){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $data = [];
         $page = $request->query('page', 1);
         $posts = Post::with('user', 'category')->where('user_id',$id)->skip($page)->take(6)->orderBy('updated_at', 'desc')->get();
@@ -103,6 +103,7 @@ class PostController extends Controller
                 'views' => $post->views,
                 'badge' =>  AnswerController::getBadge($post->user->points),
                 'name' => $post->user->name,
+                'user_id' => $post->user->id,
                 'category_id' => $post->category->id,
                 'category' => $post->category->name,
                 'created_at' => Carbon::parse($post->created_at)->format('F j, Y'),
@@ -115,8 +116,8 @@ class PostController extends Controller
         }
         return response()->json([ 'data' => $data, 'count' => $count, ]);
     }
-    public function UpdateQuestions(Request $request)
-    {
+    public function UpdateQuestions(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -150,8 +151,8 @@ class PostController extends Controller
             'data' => $filename,
         ]);
     }
-    public function DeletePost($id)
-    {
+    public function DeletePost(Request $request,$id) {
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $post = Post::find($id);
         $post->tages()->detach();
         $fileName = public_path('uploads/') . $post->image;
@@ -163,7 +164,8 @@ class PostController extends Controller
             'message' => 'Post deleted successfully',
         ]);
     }
-    public function ChangeReating($id,$userId,$type){
+    public function ChangeReating(Request $request,$id,$userId,$type){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $reating = DB::table('post_reatings')->select('*')->where('post_id', $id)->where('user_id', $userId)->first();
         if($reating){
             if($type == '+'){
@@ -205,7 +207,8 @@ class PostController extends Controller
             }
         }
     }
-    public function ChangeReatingAnswer($id,$userId,$type){
+    public function ChangeReatingAnswer(Request $request,$id,$userId,$type){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $reating = DB::table('answer_reatings')->select('*')->where('answer_id', $id)->where('user_id', $userId)->first();
         if($reating){
             if($type == '+'){

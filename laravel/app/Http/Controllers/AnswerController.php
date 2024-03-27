@@ -24,6 +24,13 @@ class AnswerController extends Controller
             ->first()
             ->reating ?? 0;
     }
+    public static function getReatingStatics($id, $table,$champ) {
+        return DB::table($table)
+            ->select(DB::raw('SUM(case when type = "+" then 1 when type = "-" then 1 else 0 end) as reating'))
+            ->where($champ, $id)
+            ->first()
+            ->reating ?? 0;
+    }
     public static function getIdUserVoted($table,$id,$champ) {
         $listIdUserVoted = DB::table($table)->select('user_id','type')->where($champ, $id)->get();
         $IdUserVoted = [];
@@ -78,8 +85,8 @@ class AnswerController extends Controller
             'countAnswer' => $countAnswer 
         ]);
     }
-    public function addAnswer(Request $request)
-    {
+    public function addAnswer(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'answerDetails' => 'required',
             'post_id' => 'required',
@@ -97,7 +104,8 @@ class AnswerController extends Controller
             'message' => 'Answer added successfully!',
         ]);
     }
-    public function deleteAnswer($id){
+    public function deleteAnswer(Request $request,$id){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $answer = Answer::find($id);
         $answer->delete();
         return response()->json([
@@ -105,6 +113,7 @@ class AnswerController extends Controller
         ]);
     }
     public function updateAnswer(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'answerDetails' => 'required',
             'answerId' => 'required',
@@ -117,6 +126,7 @@ class AnswerController extends Controller
         ]);
     }
     public function verfyAnswer(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'answerId' => 'required',
         ]);

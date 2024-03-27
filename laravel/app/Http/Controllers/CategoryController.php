@@ -26,13 +26,14 @@ class CategoryController extends Controller
             'Categorys' => $dataCategory,
         ]);
     }
-    public function deleteCategory(Request $request)
-    {
+    public function deleteCategory(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $Category = Category::find($request->id);
         $Category->delete();
         return response()->json(['message' => 'Tage deleted']);
     }
     public function addNewCategory(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'name' => 'required|unique:categorys',
         ]);
@@ -42,6 +43,7 @@ class CategoryController extends Controller
         return response()->json(['message' => 'Category added']);
     }
     public function updateCategory(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'name' => 'required|unique:categorys',
             'id' => 'required',

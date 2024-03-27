@@ -44,7 +44,7 @@ const routes = [
             { path: 'Servises/Users', component: AppUsers },
             { path: 'Servises/Tages', component: AppTages },
             { path: 'contactUs', component: AppContact },
-            { path: 'profile', component: AppProfile },
+            { path: 'profile', component: AppProfile, name:'UserProfile', props: true },
             { path: 'settings', component: AppProfileSetting },
             { path: 'myQuestion', component: AppMyQuistion },
             { path: 'Answers', component: AppAnswers, name:'userAnswers', props: true },

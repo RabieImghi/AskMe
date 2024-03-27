@@ -82,7 +82,10 @@ export default {
     },  
     methods: {
         getPermissions() {
-            axios.get('http://127.0.0.1:8000/api/getRolePemissionsUsers')
+            const store = new useStore();
+            axios.get('http://127.0.0.1:8000/api/getRolePemissionsUsers',{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(response => {
                 this.permissions = response.data.permissions;
                 console.log(this.permissions);
@@ -94,19 +97,13 @@ export default {
             const store = new useStore();
             var is_active = 1;
             if(isActive === 1) is_active = 0;
-            axios.post('http://127.0.0.1:8000/api/ChangeStatusPermissions', {
-                id: id,
-                is_active: is_active
-            }).then(response => { 
-                console.log(response);
-                axios.post('http://127.0.0.1:8000/api/CheckPermissionUser',{
-                    user_id: store.user_id
-                })
-                .then(response => {
-                    store.setPermissionsUser(JSON.stringify(response.data.permissionsUser));
-                }).catch(error => {
-                    console.log(error.response);
-                });
+            let formData = new FormData();
+            formData.append('id', id);
+            formData.append('is_active', is_active);
+            axios.post('http://127.0.0.1:8000/api/ChangeStatusPermissions',formData,{
+                headers: { 'Authorization': `Bearer ${store.token}` },
+            })
+            .then(() => {
                 this.getPermissions();
             }).catch(error => {
                 console.log(error);

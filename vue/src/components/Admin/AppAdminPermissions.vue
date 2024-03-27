@@ -174,6 +174,7 @@
 <script>
 import axios from 'axios';
 import select2 from "./AppSelect22.vue"
+import { useStore } from '@/store';
 export default {
     name: "AppAdminPermissions",
     data() {
@@ -192,8 +193,11 @@ export default {
     },
     components: { select2 },
     mounted() {
+        const store = useStore();
         this.getPermissions();
-        axios.get('http://127.0.0.1:8000/api/getPemissionsAndRole')
+        axios.get('http://127.0.0.1:8000/api/getPemissionsAndRole',{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+        })
         .then(response =>{
             this.options=response.data.permsissions;
             this.Roles=response.data.roles;
@@ -203,7 +207,10 @@ export default {
     },  
     methods: {
         getPermissions() {
-            axios.get('http://127.0.0.1:8000/api/getRolePemissions')
+            const store = useStore();
+            axios.get('http://127.0.0.1:8000/api/getRolePemissions',{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(response => {
                 this.permissions = response.data.permissions;
                 console.log(this.permissions);
@@ -212,11 +219,14 @@ export default {
             })
         },
         submitForm() {
+            const store = useStore();
             let formData = {
                 role_id: this.role_id,
                 permissions_id: this.selected,
             };
-            axios.post('http://127.0.0.1:8000/api/addNewPermissions',{formData: formData})
+            axios.post('http://127.0.0.1:8000/api/addNewPermissions',{formData: formData},{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(response => {
                 console.log(response.data.data);
                 this.getPermissions();
@@ -231,7 +241,10 @@ export default {
             this.showConfirmModal = !this.showConfirmModal;
         },
         confirmDelete(){
-            axios.post('http://127.0.0.1:8000/api/deleteNewPermissions',{id: this.toBeDeleted})
+            const store = useStore();
+            axios.post('http://127.0.0.1:8000/api/deleteNewPermissions',{id: this.toBeDeleted},{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(response => {
                 this.getPermissions();
                 console.log(response.data)

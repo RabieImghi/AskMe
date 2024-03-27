@@ -63,11 +63,11 @@
             </div>
             <div class="image-user dropdown-toggle" id="dropdown2" data-bs-toggle="dropdown" aria-expanded="false">
                 <img v-if="!tokenExists" src="../../assets/img/user.png" width="60px" alt="">
-                <img v-if="tokenExists" :src="avatar" width="60px" height="60px" class="rounded-5" alt="">
+                <img v-if="tokenExists" :src="avatar" width="60px"  style="border-radius: 50%;" alt="">
             </div>
             <div class="dropdown-menu profile-menu shadow-medium" aria-labelledby="dropdown2">
                 <div class="d-flex flex-column gap-3 jjustify-content-center">
-                    <router-link v-if="tokenExists" class="nav-link d-flex gap-2 align-items-center px-2" to="/user/profile">
+                    <router-link v-if="tokenExists" class="nav-link d-flex gap-2 align-items-center px-2" :to="{ name: 'UserProfile', params: { idUser: userId } }">
                         <img src="../../assets/img/user.png" width="40px" alt="Profile"> Profile
                     </router-link>
                     <router-link v-if="!tokenExists" class="nav-link d-flex gap-2 align-items-center px-2" to="/user/auth/">
@@ -149,38 +149,37 @@ import axios from 'axios';
 import { useStore } from '../../store';
     export default{
         name: 'AppLayout',
-        
+        data(){
+            const store = useStore();
+            return{
+                store,
+            }
+        },
         computed: {
             tokenExists() {
-                const store = useStore();
-                return store.token;
+                return this.store.token;
+            },
+            userId(){
+                return this.store.user_id;
             },
             userRole() {
-                const store = useStore();
-                return store.role_id;
+                return this.store.role_id;
             },
             userName(){
-                const store = useStore();
-                return store.user;
+                return this.store.user;
             },
             userBadge(){
-                const store = useStore();
-                return store.badge;
+                return this.store.badge;
             },
             avatar(){
-                const store = useStore();
-                return store.imageUser;
+                return this.store.imageUser;
             }
         
             
         },
         methods:{
             logout() {
-                localStorage.setItem('role_id', 3);
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                localStorage.removeItem('badge');
-                localStorage.removeItem('user_id');
+                localStorage.clear();
                 axios.get("http://127.0.0.1:8000/api/logout");
             }
             

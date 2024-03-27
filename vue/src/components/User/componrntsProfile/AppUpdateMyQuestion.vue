@@ -122,6 +122,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import TomSelect from 'tom-select';
 import 'tom-select/dist/css/tom-select.css';
+import { useStore } from '@/store';
  /* global tinymce */
     export default{
         name: 'AppAskQuesion',
@@ -168,7 +169,8 @@ import 'tom-select/dist/css/tom-select.css';
             onFileChange(e) {
                 this.file = e.target.files[0];
             },
-            submitForm(){
+            async submitForm(){
+                let store = useStore();
                 let formData = new FormData();
                 formData.append('title', this.title);
                 formData.append('category', this.category);
@@ -176,22 +178,22 @@ import 'tom-select/dist/css/tom-select.css';
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
                 formData.append('id', this.id);
-                axios.post('http://localhost:8000/api/UpdateQuestions', formData)
-                .then(response => {
+                let response = await axios.post('http://localhost:8000/api/UpdateQuestions', formData,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                });
+                if(response.status == 200){
                     Swal.fire(
                         'Success',
                         'Post updated successfully',
                         'success'
                     )
-                    console.log(response)
-                }).catch(error => {
+                }else{
                     Swal.fire(
                         'Error',
                         'There was an error update your question. Please try again.',
                         'error'
                     );
-                    console.log(error)
-                })
+                }
             },
         }
     }

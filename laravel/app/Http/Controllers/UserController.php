@@ -43,6 +43,7 @@ class UserController extends Controller
         
     }
     public function uploadImage(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'type'=>'required|string',
@@ -74,7 +75,8 @@ class UserController extends Controller
         }
     }
     public function getUserInfo($id){
-        $user = User::with('SocialLink')->where('id',$id)->first();
+        $user = User::with('socialLink')->where('id',$id)->first();
+        if(!$user){return response()->json(['message'=>'errore']);}
         $userData = [
             'id'=>$user->id,
             'name'=>$user->name,
@@ -82,24 +84,33 @@ class UserController extends Controller
             'lastName'=>$user->lastname,
             'email'=>$user->email,
             'about'=>$user->about ?? null,
+            'badge'=> AnswerController::getBadge($user->points),
             'country'=>$user->country ?? null,
             'phone'=>$user->phone ?? null,
-            'facebook'=> $user->SocialLink->facebook ?? null,
-            'whatsapp'=> $user->SocialLink->whatsapp ?? null,
-            'linkedin'=> $user->SocialLink->linkedin ?? null,
-            'Github'=> $user->SocialLink->Github ?? null,
-            'emailSosial'=> $user->SocialLink->email ?? null,
-            'WebSite'=> $user->SocialLink->WebSite ?? null,
+            'facebook'=> $user->socialLink->facebook ?? null,
+            'whatsapp'=> $user->socialLink->whatsapp ?? null,
+            'linkedin'=> $user->socialLink->linkedin ?? null,
+            'Github'=> $user->socialLink->Github ?? null,
+            'emailSosial'=> $user->socialLink->email ?? null,
+            'WebSite'=> $user->socialLink->WebSite ?? null,
+            'imageProfile'=>asset('uploads/'.$user->avatar),
+            'imageCover'=>asset('uploads/'.$user->coverImage),
+            'countQuesions' => Post::where('user_id',$id)->count(),
+            'countReponse' => Answer::where('user_id',$id)->count(),
+            'Point'=>$user->points,
+            'Review' => AnswerController::getReatingStatics($id,'post_reatings','user_id') + AnswerController::getReatingStatics($id,'answer_reatings','user_id'),
         ];
         return response()->json(['user'=>$userData]);
     }
     public function updateUserInfo(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'id' => 'required|integer',
             'name' => 'required',
             'firstName' => 'required',
             'lastName' => 'required',
             'country' => 'nullable',
+            'about' => 'nullable',
             'phone' => 'nullable',
             'facebook' => 'nullable',
             'whatsapp' => 'nullable',
@@ -115,6 +126,7 @@ class UserController extends Controller
             'lastname' => $request->lastName,
             'country' => $request->country,
             'phone' => $request->phone,
+            'about'=>$request->about
         ]);
         $socialLink = SocialLink::firstOrCreate(['user_id' => $request->id]);
         $socialLink->update([

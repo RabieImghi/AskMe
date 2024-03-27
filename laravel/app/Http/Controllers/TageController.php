@@ -25,13 +25,14 @@ class TageController extends Controller
             'tages' => $dataTage,
         ]);
     }
-    public function deleteTage(Request $request)
-    {
+    public function deleteTage(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $tage = Tage::find($request->id);
         $tage->delete();
         return response()->json(['message' => 'Tage deleted']);
     }
     public function addNewTage(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'name' => 'required|unique:tages',
         ]);
@@ -41,6 +42,7 @@ class TageController extends Controller
         return response()->json(['message' => 'Tage added']);
     }
     public function updateTage(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'name' => 'required|unique:tages',
             'id' => 'required',

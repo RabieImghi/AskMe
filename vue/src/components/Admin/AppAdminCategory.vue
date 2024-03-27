@@ -195,6 +195,7 @@
 </style>
 <script>
 import axios from 'axios';
+import { useStore } from '@/store';
 // import select2 from "./AppSelect2.vue"
 export default {
     name: "AppAdminPermissions",
@@ -214,27 +215,33 @@ export default {
     },  
     methods: {
         getTages() {
-            axios.get('http://127.0.0.1:8000/api/getAllCategory')
-            .then(response =>{
-                this.Categorys=response.data.Categorys;
-            }).catch(error =>{
-                console.log(error)
+            const store = useStore();
+            axios.get('http://127.0.0.1:8000/api/getAllCategory', {
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            }).then(response => {
+                this.Categorys = response.data.Categorys;
             });
         },
         submitForm() {
+            const store = useStore();
             var formData = new FormData();
             formData.append('name', this.categoryName);
-            axios.post('http://127.0.0.1:8000/api/addNewCategory',formData)
-            .then(() => {
+            let response = axios.post('http://127.0.0.1:8000/api/addNewCategory',formData,{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            });
+            if(response.status == 200){
                 this.getTages();
                 this.showModal = !this.showModal;
-            });
+            }
         },
         submitFormUpdate() {
+            const store = useStore();
             var formData = new FormData();
             formData.append('name', this.categoryName);
             formData.append('id', this.categoryId);
-            axios.post('http://127.0.0.1:8000/api/updateCategory',formData)
+            axios.post('http://127.0.0.1:8000/api/updateCategory',formData,{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(() => {
                 this.getTages();
                 this.showModal2 = !this.showModal2;
@@ -251,9 +258,12 @@ export default {
         },
         
         confirmDelete(){
+            const store = useStore();
             var formData = new FormData();
             formData.append('id', this.categoryId);
-            axios.post('http://127.0.0.1:8000/api/deleteCategory',formData)
+            axios.post('http://127.0.0.1:8000/api/deleteCategory',formData,{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(() => {
                 this.getTages();
                 this.categoryName = null;
