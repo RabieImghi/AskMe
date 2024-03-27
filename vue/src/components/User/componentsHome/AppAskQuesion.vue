@@ -159,8 +159,8 @@ import { useStore } from '@/store';
             onFileChange(e) {
                 this.file = e.target.files[0];
             },
-            submitForm(){
-                const store = new useStore();
+            async submitForm(){
+                let store = new useStore();
                 let formData = new FormData();
                 formData.append('user_id', store.user_id);
                 formData.append('title', this.title);
@@ -168,23 +168,22 @@ import { useStore } from '@/store';
                 formData.append('tages', this.selectedItems);
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
-                // console.log(formData.get('tages'));
-                axios.post('http://localhost:8000/api/AddQuestions', formData)
-                .then(response => {
+                let response = await axios.post('http://localhost:8000/api/AddQuestions', formData, {
+                    headers: { 'Authorization': `Bearer ${store.token}` }
+                });
+                if(response.status == 200){
                     Swal.fire(
                         'Success',
                         'Your question has been posted',
                         'success'
                     )
-                    console.log(response)
-                }).catch(error => {
+                }else{
                     Swal.fire(
                         'Error',
                         'There was an error posting your question. Please try again.',
                         'error'
                     );
-                    console.log(error)
-                })
+                }
             },
         }
     }

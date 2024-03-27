@@ -146,13 +146,15 @@
                     document.querySelector('.sectionHome').scrollIntoView({ behavior: 'smooth' });
                 });
             },
-            ChangeReating(type,id){ 
+            async ChangeReating(type,id){ 
                 var store = new useStore();
                 var idUser = store.user_id
-                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`)
-                .then(() => {
-                    this.fetchPosts();
+                let response = await axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`, {
+                    headers: { 'Authorization': `Bearer ${store.token}` }
                 });
+                if(response.status == 200){
+                    this.fetchPosts();
+                }
             },
             isInArray(idUser,table) {
                 let idTable = table.map(item => String(item.id));

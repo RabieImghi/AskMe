@@ -18,7 +18,7 @@
                                         <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
                                     </svg>
                                 </span>
-                                <span class="text-secondary fw-bold">{{post.reating}}</span>
+                                <span class="text-secondary fw-bold" >{{post.reating}}</span>
                                 <span class="cursor-point" @click="ChangeReating('-',post.id)">
                                     <svg :class="{ 'activeVote': isInArray(this.idUser, post.listIdUserVoted) === 'Active-' }" id="moinVote" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
@@ -172,7 +172,6 @@
             };
         },
         mounted(){
-            
             const store = new useStore();
             this.idUser = store.user_id;
             if(this.id != undefined){
@@ -182,35 +181,46 @@
             this.fetchPosts();
         },
         methods:{
-            ChangeReating(type,id){ 
+            async ChangeReating(type,id){ 
                 var store = new useStore();
                 var idUser = store.user_id
-                axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`)
-                .then(() => {
+                let response = await axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                })
+                if(response.status == 200){
                     this.fetchPosts();
-                });
+                }
             },
-            ChangeReatingAnswer(type,id){ 
-                axios.get(`http://127.0.0.1:8000/api/ChangeReatingAnswer/${id}/${this.idUser}/${type}`)
-                .then(() => {
+            async ChangeReatingAnswer(type,id){ 
+                const store = new useStore();
+                let response= await axios.get(`http://127.0.0.1:8000/api/ChangeReatingAnswer/${id}/${this.idUser}/${type}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                });
+                if(response.status == 200){
                     this.fetchPosts();
-                });
+                }
             },
-            async fetchPosts() {
+            fetchPosts() {
                 var store = new useStore();
-                const response = await axios.get(`http://127.0.0.1:8000/api/getPostAnswers/${store.post_id}`);
-                this.Posts = response.data.post;
-                this.Answers = response.data.Answers;
-                this.CountAnswer = response.data.countAnswer;
+                axios.get(`http://127.0.0.1:8000/api/getPostAnswers/${store.post_id}`)
+                .then(response => {
+                    if(response.status == 200){
+                        this.Posts = response.data.post;
+                        this.Answers = response.data.Answers;
+                        this.CountAnswer = response.data.countAnswer;
+                    }
+                });
             },
-            submitForm(){
+            async submitForm(){
                 var store = new useStore();
                 let formData = new FormData();
                 formData.append('answerDetails', this.answerDetails);
                 formData.append('post_id', store.post_id);
                 formData.append('user_id', store.user_id);
-                axios.post('http://localhost:8000/api/addAnswer', formData)
-                .then(() => {
+                let response = await axios.post('http://localhost:8000/api/addAnswer', formData ,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                });
+                if(response.status == 200){
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
@@ -220,9 +230,10 @@
                     });
                     this.fetchPosts();
                     this.answerDetails = '';
-                })
+                }
             },
             deleteAnswer(id){
+                const store = new useStore();
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -233,8 +244,10 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        axios.get(`http://localhost:8000/api/deleteAnswer/${id}`)
-                        .then(() =>{
+                        let response = axios.get(`http://localhost:8000/api/deleteAnswer/${id}`,{
+                            headers: {'Authorization': `Bearer ${store.token}` }
+                        });
+                        if(response.status == 200){
                             Swal.fire({
                                 position: "top-end",
                                 icon: "success",
@@ -243,25 +256,29 @@
                                 timer: 1500
                             });
                             this.fetchPosts();
-                        })
+                        }
                     }
                 });
             },
             submitFormUpdate(){
+                const store = new useStore();
                 let formData = new FormData();
                 formData.append('answerDetails', document.getElementById('answerDetail').value);
                 formData.append('answerId', document.getElementById('idAnswer').value);
-                axios.post('http://localhost:8000/api/updateAnswer', formData)
-                .then(() => {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Your Answer has been update",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    this.fetchPosts();
-                })
+                axios.post('http://localhost:8000/api/updateAnswer', formData,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                }).then(response => {
+                    if(response.status == 200){
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Your Answer has been update",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        this.fetchPosts();
+                    }
+                });
             },
             updateAnswer(id,content){
                 document.getElementById('answerDetail').value = content;
@@ -279,11 +296,14 @@
                     }
                 }else return '';
             },
-            verfyAnswer(answerId){
+            async verfyAnswer(answerId){
+                const store = new useStore();
                 var formData = new FormData();
                 formData.append('answerId', answerId);
-                axios.post('http://localhost:8000/api/verfyAnswer', formData)
-                .then(() => {
+                let response =  await axios.post('http://localhost:8000/api/verfyAnswer', formData,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                });
+                if(response.status == 200)  {
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
@@ -292,7 +312,7 @@
                         timer: 1500
                     });
                     this.fetchPosts();
-                })
+                }
             }
 
         }

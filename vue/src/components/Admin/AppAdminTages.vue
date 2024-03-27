@@ -195,7 +195,7 @@
 </style>
 <script>
 import axios from 'axios';
-// import select2 from "./AppSelect2.vue"
+import {useStore} from '../../store'
 export default {
     name: "AppAdminPermissions",
     data() {
@@ -208,13 +208,15 @@ export default {
             tageName:null,
         }
     },
-    // components: { select2 },
     mounted() {
         this.getTages();
     },  
     methods: {
         getTages() {
-            axios.get('http://127.0.0.1:8000/api/getAllTages')
+            const store = useStore();
+            axios.get('http://127.0.0.1:8000/api/getAllTages',{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(response =>{
                 this.tages=response.data.tages;
             }).catch(error =>{
@@ -222,19 +224,25 @@ export default {
             });
         },
         submitForm() {
+            const store = useStore();
             var formData = new FormData();
             formData.append('name', this.tageName);
-            axios.post('http://127.0.0.1:8000/api/addNewTage',formData)
+            axios.post('http://127.0.0.1:8000/api/addNewTage',formData,{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(() => {
                 this.getTages();
                 this.showModal = !this.showModal;
             });
         },
         submitFormUpdate() {
+            const store = useStore();
             var formData = new FormData();
             formData.append('name', this.tageName);
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/updateTage',formData)
+            axios.post('http://127.0.0.1:8000/api/updateTage',formData,{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(() => {
                 this.getTages();
                 this.showModal2 = !this.showModal2;
@@ -251,9 +259,12 @@ export default {
         },
         
         confirmDelete(){
+            const store = useStore();
             var formData = new FormData();
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/deleteTage',formData)
+            axios.post('http://127.0.0.1:8000/api/deleteTage',formData,{
+                headers: { 'Authorization': `Bearer ${store.token}` }
+            })
             .then(() => {
                 this.getTages();
                 this.tageName = null;

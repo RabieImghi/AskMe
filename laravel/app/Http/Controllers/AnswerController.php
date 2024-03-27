@@ -85,8 +85,8 @@ class AnswerController extends Controller
             'countAnswer' => $countAnswer 
         ]);
     }
-    public function addAnswer(Request $request)
-    {
+    public function addAnswer(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'answerDetails' => 'required',
             'post_id' => 'required',
@@ -104,7 +104,8 @@ class AnswerController extends Controller
             'message' => 'Answer added successfully!',
         ]);
     }
-    public function deleteAnswer($id){
+    public function deleteAnswer(Request $request,$id){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $answer = Answer::find($id);
         $answer->delete();
         return response()->json([
@@ -112,6 +113,7 @@ class AnswerController extends Controller
         ]);
     }
     public function updateAnswer(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'answerDetails' => 'required',
             'answerId' => 'required',
@@ -124,6 +126,7 @@ class AnswerController extends Controller
         ]);
     }
     public function verfyAnswer(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'answerId' => 'required',
         ]);

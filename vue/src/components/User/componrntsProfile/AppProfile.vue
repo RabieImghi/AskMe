@@ -156,6 +156,7 @@
                 document.getElementById('fileinputProfil').click();
             },
             async changeImage(type){
+                let store = new useStore();
                 const file = document.getElementById(`fileinput${type}`).files[0];
                 if (file.length === 0) {
                     console.log("No file selected");
@@ -167,7 +168,9 @@
                 formData.append('image', file);
                 formData.append('type', type);
                 formData.append('id', this.userId);
-                const response = await axios.post(`http://localhost:8000/api/uploadImage`, formData);
+                const response = await axios.post(`http://localhost:8000/api/uploadImage`, formData,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                });
                 if(type ==  'Profil'){
                     reader.onload = (e) => {
                         this.store.imageUser = e.target.result;

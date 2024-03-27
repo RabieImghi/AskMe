@@ -43,6 +43,7 @@ class UserController extends Controller
         
     }
     public function uploadImage(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'type'=>'required|string',
@@ -74,7 +75,7 @@ class UserController extends Controller
         }
     }
     public function getUserInfo($id){
-        $user = User::with('socialLinks')->where('id',$id)->first();
+        $user = User::with('socialLink')->where('id',$id)->first();
         if(!$user){return response()->json(['message'=>'errore']);}
         $userData = [
             'id'=>$user->id,
@@ -86,12 +87,12 @@ class UserController extends Controller
             'badge'=> AnswerController::getBadge($user->points),
             'country'=>$user->country ?? null,
             'phone'=>$user->phone ?? null,
-            'facebook'=> $user->socialLinks->facebook ?? null,
-            'whatsapp'=> $user->socialLinks->whatsapp ?? null,
-            'linkedin'=> $user->socialLinks->linkedin ?? null,
-            'Github'=> $user->socialLinks->Github ?? null,
-            'emailSosial'=> $user->socialLinks->email ?? null,
-            'WebSite'=> $user->socialLinks->WebSite ?? null,
+            'facebook'=> $user->socialLink->facebook ?? null,
+            'whatsapp'=> $user->socialLink->whatsapp ?? null,
+            'linkedin'=> $user->socialLink->linkedin ?? null,
+            'Github'=> $user->socialLink->Github ?? null,
+            'emailSosial'=> $user->socialLink->email ?? null,
+            'WebSite'=> $user->socialLink->WebSite ?? null,
             'imageProfile'=>asset('uploads/'.$user->avatar),
             'imageCover'=>asset('uploads/'.$user->coverImage),
             'countQuesions' => Post::where('user_id',$id)->count(),
@@ -102,6 +103,7 @@ class UserController extends Controller
         return response()->json(['user'=>$userData]);
     }
     public function updateUserInfo(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'id' => 'required|integer',
             'name' => 'required',
