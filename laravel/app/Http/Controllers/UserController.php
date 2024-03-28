@@ -88,10 +88,10 @@ class UserController extends Controller
             'country'=>$user->country ?? null,
             'phone'=>$user->phone ?? null,
             'facebook'=> $user->socialLink->facebook ?? null,
-            'whatsapp'=> $user->socialLink->whatsapp ?? null,
+            'twitter'=> $user->socialLink->twitter ?? null,
             'linkedin'=> $user->socialLink->linkedin ?? null,
             'Github'=> $user->socialLink->Github ?? null,
-            'emailSosial'=> $user->socialLink->email ?? null,
+            'instagram'=> $user->socialLink->instagram ?? null,
             'WebSite'=> $user->socialLink->WebSite ?? null,
             'imageProfile'=>asset('uploads/'.$user->avatar),
             'imageCover'=>asset('uploads/'.$user->coverImage),
@@ -131,10 +131,10 @@ class UserController extends Controller
         $socialLink = SocialLink::firstOrCreate(['user_id' => $request->id]);
         $socialLink->update([
             'facebook' => $request->facebook,
-            'whatsapp' => $request->whatsapp,
+            'twitter' => $request->twitter,
             'linkedin' => $request->linkedin,
             'Github' => $request->Github,
-            'email' => $request->emailSosial,
+            'instagram' => $request->instagram,
             'WebSite' => $request->WebSite,
         ]);
         return response()->json(['message'=>'User info updated successfully!']);
