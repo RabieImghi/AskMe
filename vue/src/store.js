@@ -12,6 +12,7 @@ export const useStore = defineStore('main', {
     coverImage: localStorage.getItem('coverImage') || null,
     post_id: localStorage.getItem('post_id') || null,
     userProfileId : sessionStorage.getItem('userProfileId') || null,
+    skip: localStorage.getItem('skip') || null,
   }),
   actions: {
     storeRole_id(role_id) {

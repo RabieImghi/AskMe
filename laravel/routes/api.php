@@ -58,7 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/verfyAnswer', [AnswerController::class, 'verfyAnswer']);
     Route::post('/updateUserInfo', [UserController::class, 'updateUserInfo']);
     Route::post('/follow', [UserController::class, 'follow']);
-    Route::get('/getusers', [UserController::class, 'getusers']);
+    Route::get('/getusers/{skip}', [UserController::class, 'getusers']);
+    Route::get('/searchusers/{search}', [UserController::class, 'searchUser']);
     
 });
 Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);

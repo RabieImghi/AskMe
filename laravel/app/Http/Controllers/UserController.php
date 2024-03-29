@@ -15,22 +15,17 @@ class UserController extends Controller
 {
     public function getStatisics(){
         $tages = Tage::orderBy('id', 'desc')->take(4)->get();
-        $users = User::with('posts')->orderBy('points', 'asc')->take(4)->get();
+        $users = User::with('posts')->orderBy('points', 'desc')->take(4)->get();
         $userIndfo = [];
         $lastTages = [];
         foreach($tages as $tage){
             $lastTages[] = [ 'id' => $tage->id, 'name' => $tage->name, ];
         }
         foreach($users as $user){
-            $badge = '';
-            if($user->points>=150) $badge = "Professional";
-            else if($user->points>=100) $badge = "Enlightened";
-            else if($user->points>=50) $badge = "Explainer";
-            else if($user->points>=0) $badge = "Beginner";
             $userIndfo[] = [
                 'id' => $user->id,
                 'name' => $user->name,
-                'level' => $badge,
+                'level' => AnswerController::getBadge($user->points),
                 'question' => $user->posts->count(),
             ];
         }
@@ -161,8 +156,30 @@ class UserController extends Controller
             return response()->json(['message'=>'Unfollowed successfully!']);
         }
     }
-    public function getusers(Request $request){
-        $users = User::get();
+    public function getusers(Request $request,$skip){
+        $users = User::skip($skip)->take(12)->orderBy('id', 'desc')->get();
+        $usersData = [];
+        foreach($users as $user){
+            $usersData[] = [
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'firstName'=>$user->firstname,
+                'lastName'=>$user->lastname,
+                'about'=>$user->about ?? null,
+                'country'=>$user->country,
+                'phone'=>$user->phone ?? null,
+                'followers' => User::find($user->id)->followers->count(),
+                'following' => Follower::where('follower_id',$user->id)->count(),
+                'avatar'=>asset('uploads/'.$user->avatar),
+                'coverImage'=>asset('uploads/'.$user->coverImage),
+                'Level'=> AnswerController::getBadge($user->points),
+                
+            ];
+        }
+        return response()->json(['users'=>$usersData,'userCount'=> User::count(),]);
+    }
+    public function searchUser(Request $request, $search){
+        $users = User::where('name', 'like', '%'.$search.'%')->get();
         $usersData = [];
         foreach($users as $user){
             $usersData[] = [
@@ -174,8 +191,9 @@ class UserController extends Controller
                 'avatar'=>asset('uploads/'.$user->avatar),
                 'coverImage'=>asset('uploads/'.$user->coverImage),
                 'Level'=> AnswerController::getBadge($user->points),
+                
             ];
         }
-        return response()->json(['users'=>$usersData]);
+        return response()->json(['users'=>$usersData,'userCount'=> $users->count(),]);
     }
 }
