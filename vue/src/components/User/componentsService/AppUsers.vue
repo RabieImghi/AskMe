@@ -1,31 +1,137 @@
 <template>
-    <div class="contentPage pe-4">
+    <div class="contentPage padding-none pe-4">
         <div class="bg-white sectionUser shadow">
             <div class="border-bottom container-mf pt-4 pb-4 d-flex align-items-center justify-content-between">
-                <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>  
+                <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>
                 <div class="search">
-                    <input  v-model="searchQuery" style="width:400px" type="search" name="search" id="saerchUesr" class="form-control" placeholder="Search Users">
+                    <input v-model="searchQuery" @keyup="filteredUsers()" style="width:400px" type="search" name="search" id="saerchUesr"
+                        class="form-control" placeholder="Search Users">
                 </div>
-            </div> 
-            <section class="userList container-mf border-bottom pb-4 pt-4  ">
-                <div class="d-flex flex-wrap gap-3 justify-content-between">
-                    <div v-for="user in filteredUsers" :key="user.id"
-                        class="user translateEffect cursor-point border d-flex align-items-start gap-3 p-2">
-                        <div class="leftInfo d-flex flex-column gap-3 align-items-center">
-                            <img src="../../../assets/img/user.png" width="60px" alt="">
-                            <span class="color-premary fw-bold">{{user.name}}</span>
-                            <button  :class="user.Level">{{user.Level}}</button>
-                        </div>
-                        <div class="rightInfo d-flex flex-column">
-                            <div class='color-premary fw-bold h4'>Total Questions</div>
-                            <div class="fw-bold h5">{{user.question}}</div>
-                            <p class="text-secondary fw-bold">
-                                {{user.description}}
-                            </p>
+            </div>
+           <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
+                <Loader/>
+            </section>
+           
+            <section class="userList container-mf border-bottom pb-4 pt-4 ">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 gutters-sm">
+                    <div v-for="user in users" :key="user.id" class="col mb-3">
+                        <div class="card" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        @click="aficheDetailModel(user.name,user.firstName,user.lastName,user.about,
+                        user.country,user.phone,user.followers,user.following,user.avatar)" > 
+                            <img :src="user.coverImage" alt="Cover" class="card-img-top">
+                            <div class="card-body text-center"> 
+                                <img :src="user.avatar" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
+                                <h5 class="card-title">{{user.name}}</h5>
+                                
+                                <p class="text-secondary mb-1" v-if="user.country">{{user.country}}</p>
+                                <p class="text-secondary mb-1" v-else>Null</p>
+                                <p class="text-muted font-size-sm">{{user.followers}} Follower | {{ user.following }} following</p>
+                            </div>
+                            <div class="border rounded-1 d-flex justify-content-between"> 
+                                <!-- <router-link :to="{ name: 'UserProfile', params: { idUser: user.id } }" class="nav-link"> -->
+                                    <button  :class="user.Level">{{user.Level}}</button>
+                                <!-- </router-link> -->
+                                <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle">
+                                        <path
+                                            d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+                    <button @click="previewsPage()" class="btn btn-primary fw-bold">&lt;</button>
+                    <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
+                    <button @click="nextPage()" class="btn btn-primary fw-bold">></button>
+                </div>
             </section>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column align-items-center text-center">
+                                        <img  :src="this.imageProfile" alt="Admin"
+                                            class="rounded-circle" width="150">
+                                        <div class="mt-3">
+                                            <h4>{{this.name}}</h4>
+                                            <p class="text-secondary mb-1 fw-bold h6">{{this.followers}} Follower | {{ this.following }} Following</p>
+                                            <p class="text-muted font-size-sm" v-if="this.country">{{ this.country }}</p>
+                                            <p class="text-muted font-size-sm" v-else>Null</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-left">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Full Name</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            {{ this.name }}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">first Name</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            {{this.firstName}}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Last Name</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            {{this.lastName}}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Email</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                                data-cfemail="03656a73436976686e766b2d626f">[email&#160;protected]</a>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Phone</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary" v-if="this.phone"> {{this.phone}} </div>
+                                        <div class="col-sm-9 text-secondary" v-else>
+                                            Null
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">About</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary" v-if="this.phone"> {{this.about}} </div>
+                                        <div class="col-sm-9 text-secondary" v-else> Null</div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <footer class="text-center text-secondary fw-bold pt-3">
                 © Copyright AskMe. All Rights Reserved <br>
                 Designed by Rabie Ait Imghi
@@ -34,38 +140,105 @@
     </div>
 </template>
 <script>
+    import axios from 'axios';
+    import {useStore} from '@/store';
+    import Loader from "../AppLoader"
     export default{
         name: 'AppBadge',
         data(){
+            const store = new useStore();
             return{
-                users : [
-                    {id:1, name:'Rabie_Imghi',Level:'Explainer',question:2043,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:2, name:'Hamza_Bnk',Level:'Beginner',question:3782,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:3, name:'KamalMni',Level:'Enlightened',question:4738,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:4, name:'KhalidFkd',Level:'Beginner',question:1293,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:5, name:'YassirLonu',Level:'Professional',question:4321,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:6, name:'YassinInou',Level:'Enlightened',question:2311,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:7, name:'HakmiBodgal',Level:'Explainer',question:1903,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:8, name:'KarimaAmdgh',Level:'Beginner',question:1092,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:9, name:'SamirUkd',Level:'Professional',question:2343,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:10,name:'HassanHJK',Level:'Explainer',question:5043,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:11,name:'JamalJBL',Level:'Enlightened',question:5043,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:12, name:'Hamza_Bnk',Level:'Beginner',question:3782,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:13, name:'KamalMni',Level:'Enlightened',question:4738,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:14, name:'KhalidFkd',Level:'Beginner',question:1293,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:15, name:'YassirLonu',Level:'Professional',question:4321,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:16, name:'YassinInou',Level:'Enlightened',question:2311,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:17, name:'HakmiBodgal',Level:'Explainer',question:1903,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                    {id:18, name:'KarimaAmdgh',Level:'Beginner',question:1092,description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Lorem Ipsum has been the  industry's standard dummy"},
-                ],
-                searchQuery: ''
+                users : [],
+                searchQuery: '',
+                skip: store.skip,
+                count:0,
+                page:1,
+                nbPage:1,
+                isLoading: true,
+                name: null,
+                firstName:null,
+                lastName:null,
+                about:null,
+                imageProfile:null,
+                country:null,
+                following:null,
+                followers:null,
+                phone:null,
+
             };
         },
-        computed: {
-            filteredUsers() {
-                return this.users.filter(user => {
-                    return user.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+        mounted(){
+            this.fetchUsers();
+        },
+        components:{
+            Loader, 
+        },
+        methods: {
+            fetchUsers(){
+                const store = useStore();
+                axios.get(`http://localhost:8000/api/getusers/${this.skip}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                }).then(response => {
+                    this.isLoading = false;
+                    this.users = response.data.users;
+                    this.count = response.data.userCount;
+                    this.nbPage = Math.ceil(this.count / 12);
+                    console.log(this.users);
                 });
+            },
+            nextPage(){
+                if(this.skip < this.count - 12){
+                    this.skip += 12;
+                    this.page += 1;
+                    this.fetchUsers(); 
+                    this.$nextTick(() => {
+                        document.querySelector('.sectionUser').scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+            },
+            previewsPage(){
+                if(this.skip >= 12){
+                    this.skip -= 12;
+                    this.page -= 1;
+                    this.fetchUsers();
+                    this.$nextTick(() => {
+                        document.querySelector('.sectionUser').scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+            },
+            getPage(page){
+                this.skip = page * 12 - 12;
+                this.page = page;
+                this.fetchUsers();
+                this.$nextTick(() => {
+                    document.querySelector('.sectionUser').scrollIntoView({ behavior: 'smooth' });
+                });
+            },
+            filteredUsers() {
+                const store = useStore();
+                if(this.searchQuery === ''){
+                    this.fetchUsers();
+                    return;
+                }
+                axios.get(`http://localhost:8000/api/searchusers/${this.searchQuery}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                }).then(response => {
+                    this.isLoading = false;
+                    this.users = response.data.users;
+                    this.count = response.data.userCount;
+                    this.nbPage = Math.ceil(this.count / 12);
+                });
+            },
+            aficheDetailModel(name,firstName,lastName,about,country,phone,followers,following,avatar){
+                this.name = name;
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.about = about;
+                this.imageProfile = avatar;
+                this.country = country;
+                this.following = followers;
+                this.followers = following;
+                this.phone = phone;
             }
         }
         
@@ -78,5 +251,15 @@
     .user{
         min-width: 360px;
         max-width: 360px;
+    }
+    .w-60 {
+        width: 80px;
+    }
+    h1,h2,h3,h4,h5,h6 {
+        margin: 0 0 10px;
+        font-weight: 600;
+    }
+    a{
+        color: #707070;
     }
 </style>

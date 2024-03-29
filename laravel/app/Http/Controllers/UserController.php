@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Tage;
 use App\Models\Post;
 use App\Models\Answer;
+use App\Models\Follower;
 use Illuminate\Http\Request;
 use App\Models\SocialLink;
 use Illuminate\Support\Facades\Hash;
@@ -14,22 +15,17 @@ class UserController extends Controller
 {
     public function getStatisics(){
         $tages = Tage::orderBy('id', 'desc')->take(4)->get();
-        $users = User::with('posts')->orderBy('points', 'asc')->take(4)->get();
+        $users = User::with('posts')->orderBy('points', 'desc')->take(4)->get();
         $userIndfo = [];
         $lastTages = [];
         foreach($tages as $tage){
             $lastTages[] = [ 'id' => $tage->id, 'name' => $tage->name, ];
         }
         foreach($users as $user){
-            $badge = '';
-            if($user->points>=150) $badge = "Professional";
-            else if($user->points>=100) $badge = "Enlightened";
-            else if($user->points>=50) $badge = "Explainer";
-            else if($user->points>=0) $badge = "Beginner";
             $userIndfo[] = [
                 'id' => $user->id,
                 'name' => $user->name,
-                'level' => $badge,
+                'level' => AnswerController::getBadge($user->points),
                 'question' => $user->posts->count(),
             ];
         }
@@ -74,7 +70,7 @@ class UserController extends Controller
             return response()->json(['image' => asset('uploads/'.$imageName)],200);
         }
     }
-    public function getUserInfo($id){
+    public function getUserInfo($id,$followerId){
         $user = User::with('socialLink')->where('id',$id)->first();
         if(!$user){return response()->json(['message'=>'errore']);}
         $userData = [
@@ -88,16 +84,19 @@ class UserController extends Controller
             'country'=>$user->country ?? null,
             'phone'=>$user->phone ?? null,
             'facebook'=> $user->socialLink->facebook ?? null,
-            'whatsapp'=> $user->socialLink->whatsapp ?? null,
+            'twitter'=> $user->socialLink->twitter ?? null,
             'linkedin'=> $user->socialLink->linkedin ?? null,
             'Github'=> $user->socialLink->Github ?? null,
-            'emailSosial'=> $user->socialLink->email ?? null,
+            'instagram'=> $user->socialLink->instagram ?? null,
             'WebSite'=> $user->socialLink->WebSite ?? null,
             'imageProfile'=>asset('uploads/'.$user->avatar),
             'imageCover'=>asset('uploads/'.$user->coverImage),
             'countQuesions' => Post::where('user_id',$id)->count(),
             'countReponse' => Answer::where('user_id',$id)->count(),
             'Point'=>$user->points,
+            'followers' => User::find($id)->followers->count(),
+            'following' => Follower::where('follower_id',$id)->count(),
+            'isFollowed' => Follower::where('user_id',$id)->where('follower_id',$followerId)->count(),
             'Review' => AnswerController::getReatingStatics($id,'post_reatings','user_id') + AnswerController::getReatingStatics($id,'answer_reatings','user_id'),
         ];
         return response()->json(['user'=>$userData]);
@@ -131,12 +130,70 @@ class UserController extends Controller
         $socialLink = SocialLink::firstOrCreate(['user_id' => $request->id]);
         $socialLink->update([
             'facebook' => $request->facebook,
-            'whatsapp' => $request->whatsapp,
+            'twitter' => $request->twitter,
             'linkedin' => $request->linkedin,
             'Github' => $request->Github,
-            'email' => $request->emailSosial,
+            'instagram' => $request->instagram,
             'WebSite' => $request->WebSite,
         ]);
         return response()->json(['message'=>'User info updated successfully!']);
+    }
+    public function follow(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
+        $request->validate([
+            'user_id' => 'required|integer',
+            'follower_id' => 'required|integer',
+        ]);
+        $follower = Follower::where('user_id',$request->user_id)->where('follower_id',$request->follower_id)->first();
+        if($follower == null){
+            Follower::create([
+                'user_id' => $request->user_id,
+                'follower_id' => $request->follower_id,
+            ]);
+            return response()->json(['message'=>'Followed successfully!']);
+        }else{
+            $follower->delete();
+            return response()->json(['message'=>'Unfollowed successfully!']);
+        }
+    }
+    public function getusers(Request $request,$skip){
+        $users = User::skip($skip)->take(12)->orderBy('id', 'desc')->get();
+        $usersData = [];
+        foreach($users as $user){
+            $usersData[] = [
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'firstName'=>$user->firstname,
+                'lastName'=>$user->lastname,
+                'about'=>$user->about ?? null,
+                'country'=>$user->country,
+                'phone'=>$user->phone ?? null,
+                'followers' => User::find($user->id)->followers->count(),
+                'following' => Follower::where('follower_id',$user->id)->count(),
+                'avatar'=>asset('uploads/'.$user->avatar),
+                'coverImage'=>asset('uploads/'.$user->coverImage),
+                'Level'=> AnswerController::getBadge($user->points),
+                
+            ];
+        }
+        return response()->json(['users'=>$usersData,'userCount'=> User::count(),]);
+    }
+    public function searchUser(Request $request, $search){
+        $users = User::where('name', 'like', '%'.$search.'%')->get();
+        $usersData = [];
+        foreach($users as $user){
+            $usersData[] = [
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'country'=>$user->country,
+                'followers' => User::find($user->id)->followers->count(),
+                'following' => Follower::where('follower_id',$user->id)->count(),
+                'avatar'=>asset('uploads/'.$user->avatar),
+                'coverImage'=>asset('uploads/'.$user->coverImage),
+                'Level'=> AnswerController::getBadge($user->points),
+                
+            ];
+        }
+        return response()->json(['users'=>$usersData,'userCount'=> $users->count(),]);
     }
 }

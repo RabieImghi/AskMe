@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('social_links', function (Blueprint $table) {
             $table->id();
             $table->string('facebook')->nullable();
-            $table->string('whatsapp')->nullable();
+            $table->string('twitter')->nullable();
             $table->string('linkedin')->nullable();
             $table->string('Github')->nullable();
-            $table->string('email')->nullable();
+            $table->string('instagram')->nullable();
             $table->string('WebSite')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->engine = 'InnoDB';

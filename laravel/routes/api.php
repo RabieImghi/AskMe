@@ -57,6 +57,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/uploadImage', [UserController::class, 'uploadImage']);
     Route::post('/verfyAnswer', [AnswerController::class, 'verfyAnswer']);
     Route::post('/updateUserInfo', [UserController::class, 'updateUserInfo']);
+    Route::post('/follow', [UserController::class, 'follow']);
+    Route::get('/getusers/{skip}', [UserController::class, 'getusers']);
+    Route::get('/searchusers/{search}', [UserController::class, 'searchUser']);
+    
 });
 Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);
 Route::get('/allPost',[PostController::class,'allPost']);
@@ -65,4 +69,4 @@ Route::get('/getPostAnswers/{id}',[AnswerController::class,'getPostAnswers']);
 Route::get('/getAllTages', [TageController::class, 'getAllTages']);
 Route::get('/getAllCategory', [CategoryController::class, 'getAllCategory']);
 Route::get('/getStatisics', [UserController::class, 'getStatisics']);
-Route::get('/getUserInfo/{id}', [UserController::class, 'getUserInfo']);
+Route::get('/getUserInfo/{id}/{followerId}', [UserController::class, 'getUserInfo']);

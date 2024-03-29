@@ -1,6 +1,8 @@
 <template>
     <div>
-        
+        <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
+                <Loader/>
+            </section>
         <div class="border-bottom pb-4 pt-4" v-for="post in Posts" :key="post.id">
             <div class="container-mf mobileQuestion row">
                 <div class="imageInfoUser col-1 gap-3 d-flex flex-column justify-content-start align-items-center">
@@ -86,6 +88,7 @@
 <script>
     import axios from 'axios';
     import {useStore} from '../../../store';
+    import Loader from "../AppLoader"
     export default{
         name: 'AppDisplayQuestion',
         data(){
@@ -96,12 +99,16 @@
                 count:0,
                 nbPage:1,
                 userId:null,
+                isLoading: true 
             };
         },
         mounted() {
             const store = new useStore();
             this.userId = store.user_id;
             this.fetchPosts();
+        },
+        components:{
+            Loader, 
         },
         methods: {
             navigateToAnswer(postId) {
@@ -113,9 +120,7 @@
                         this.Posts = response.data.data;
                         this.count= response.data.count;
                         this.nbPage = Math.ceil(this.count / 6);
-                    })
-                    .catch(error => {
-                        console.log(error);
+                        this.isLoading = false;
                     });
             },
             next(){
