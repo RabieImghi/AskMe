@@ -34,6 +34,9 @@ hr{color: lightgray !important;}
     .sectionHome{
         padding: 0 !important;
     }
+    .padding-none.pe-4{
+        padding: 0 !important;
+    }
     .contentApp{
         display: grid !important;
         grid-template-columns: 1fr !important;

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class AnswerController extends Controller
 {
     public static function getBadge($points) {
-        if($points >= 150) return "Professional";
+        if($points >= 250) return "Professional";
         else if($points >= 100) return "Enlightened";
         else if($points >= 50) return "Explainer";
         else return "Beginner";

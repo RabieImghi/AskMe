@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Tage;
 use App\Models\Post;
 use App\Models\Answer;
+use App\Models\Follower;
 use Illuminate\Http\Request;
 use App\Models\SocialLink;
 use Illuminate\Support\Facades\Hash;
@@ -74,7 +75,7 @@ class UserController extends Controller
             return response()->json(['image' => asset('uploads/'.$imageName)],200);
         }
     }
-    public function getUserInfo($id){
+    public function getUserInfo($id,$followerId){
         $user = User::with('socialLink')->where('id',$id)->first();
         if(!$user){return response()->json(['message'=>'errore']);}
         $userData = [
@@ -98,6 +99,9 @@ class UserController extends Controller
             'countQuesions' => Post::where('user_id',$id)->count(),
             'countReponse' => Answer::where('user_id',$id)->count(),
             'Point'=>$user->points,
+            'followers' => User::find($id)->followers->count(),
+            'following' => Follower::where('follower_id',$id)->count(),
+            'isFollowed' => Follower::where('user_id',$id)->where('follower_id',$followerId)->count(),
             'Review' => AnswerController::getReatingStatics($id,'post_reatings','user_id') + AnswerController::getReatingStatics($id,'answer_reatings','user_id'),
         ];
         return response()->json(['user'=>$userData]);
@@ -138,5 +142,40 @@ class UserController extends Controller
             'WebSite' => $request->WebSite,
         ]);
         return response()->json(['message'=>'User info updated successfully!']);
+    }
+    public function follow(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
+        $request->validate([
+            'user_id' => 'required|integer',
+            'follower_id' => 'required|integer',
+        ]);
+        $follower = Follower::where('user_id',$request->user_id)->where('follower_id',$request->follower_id)->first();
+        if($follower == null){
+            Follower::create([
+                'user_id' => $request->user_id,
+                'follower_id' => $request->follower_id,
+            ]);
+            return response()->json(['message'=>'Followed successfully!']);
+        }else{
+            $follower->delete();
+            return response()->json(['message'=>'Unfollowed successfully!']);
+        }
+    }
+    public function getusers(Request $request){
+        $users = User::get();
+        $usersData = [];
+        foreach($users as $user){
+            $usersData[] = [
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'country'=>$user->country,
+                'followers' => User::find($user->id)->followers->count(),
+                'following' => Follower::where('follower_id',$user->id)->count(),
+                'avatar'=>asset('uploads/'.$user->avatar),
+                'coverImage'=>asset('uploads/'.$user->coverImage),
+                'Level'=> AnswerController::getBadge($user->points),
+            ];
+        }
+        return response()->json(['users'=>$usersData]);
     }
 }

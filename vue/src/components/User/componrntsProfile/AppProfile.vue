@@ -1,5 +1,5 @@
 <template>
-    <div class="pe-4">
+    <div class=" padding-none pe-4">
         <div class="bg-white shadow main-body">
             <section class="cover" :style="{ backgroundImage: `url(${user.imageCover})`, backgroundSize: 'cover' }">
                 <div class="coverInfo row p-3">
@@ -8,11 +8,11 @@
                         <div @click="uploadsImageCover" class="fw-bold h1 text-white text-end cursor-point"
                         :class="{ 'textProfileOpacity': this.userId != this.store.user_id }">Tap Upload Your <br>
                             Cover Photo</div>
-                        <div class="containName infoProfileHiden  m-1 rounded-1 d-flex justify-content-between align-items-center">
+                        <div class="containName infoProfileHiden  m-1 rounded-1 d-flex flex-wrap justify-content-between align-items-center">
                             <btn class="btn btn-dark p-1 h4 mt-2 fw-bold mx-3">Home / profile</btn>
                             <div class="buttons d-flex gap-4 ">
                                 <router-link to="/user/myQuestion"> 
-                                    <button class="btn btn-dark m-1"> My Question </button>
+                                    <button class="btn btn-dark m-1" v-if="this.userId == this.store.user_id"> My Question </button>
                                 </router-link>
                                 <router-link to='/user/settings' v-if="this.userId == this.store.user_id"> <button class="btn btn-dark m-1">Edit</button></router-link>
                                 <button :class="user.badge" class="m-1">{{user.badge}}</button>
@@ -31,10 +31,15 @@
                                     class="rounded-circle" width="150">
                                 <div class="mt-3">
                                     <h4>{{user.name}}</h4>
-                                    <p class="text-secondary mb-1">Full Stack Developer</p>
+                                    <p class="text-secondary mb-1 fw-bold h6">{{user.followers}} Follower | {{ user.following }} Following</p>
                                     <p class="text-muted font-size-sm">{{ user.country }}</p>
-                                    <button class="btn btn-primary me-2">Follow</button>
-                                    <button class="btn btn-outline-primary">Message</button>
+                                    <button v-if="this.userId != this.store.user_id && user.isFollowed == 0" @click="follow()" class="btn btn-primary me-2">
+                                        <span>Follow</span>
+                                    </button>
+                                    <button v-if="user.isFollowed !=0 " @click="follow()" class="btn btn-outline-primary me-2">
+                                        <span>Following</span>
+                                    </button>
+                                    <button v-if="this.userId != this.store.user_id" class="btn btn-outline-primary">Message</button>
                                 </div>
                             </div>
                         </div>
@@ -366,7 +371,11 @@
                 } 
             },
             async getUserInfo(){
-                let response = await axios.get(`http://localhost:8000/api/getUserInfo/${this.userId}`);
+                var followerId =null;
+                if(this.store.user_id != null){
+                    followerId = this.store.user_id;
+                }
+                let response = await axios.get(`http://localhost:8000/api/getUserInfo/${this.userId}/${followerId}`);
                 if(response.data.message == 'errore'){
                     this.$router.push('/user/');
                 }
@@ -376,6 +385,16 @@
                 var porsentage = (data / 100) * 100;
                 return `${porsentage}%` ;
             },
+            follow(){
+                var formData = new FormData();
+                formData.append('user_id', this.userId);
+                formData.append('follower_id', this.store.user_id);
+                axios.post(`http://localhost:8000/api/follow`,formData,{
+                    headers: {'Authorization': `Bearer ${this.store.token}` }
+                }).then(() => {
+                    this.getUserInfo();
+                });
+            }
         }
     }
 </script>

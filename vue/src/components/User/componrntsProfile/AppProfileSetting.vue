@@ -1,5 +1,5 @@
 <template>
-    <div class="sectionBadge pe-4">
+    <div class="sectionBadge padding-none  pe-4">
         <div class="bg-white shadow">
             <section class="cover" :style="{
                 backgroundImage: `url(${user.imageCover})`,
@@ -219,9 +219,11 @@ export default {
             }
         },
         async getUserInfo() {
-            let response = await axios.get(
-                `http://localhost:8000/api/getUserInfo/${this.userId}`
-            );
+            var followerId =null;
+            if(this.store.user_id != null){
+                followerId = this.store.user_id;
+            }
+            let response = await axios.get(`http://localhost:8000/api/getUserInfo/${this.userId}/${followerId}`);
             this.user = response.data.user;
             console.log(this.user);
         },

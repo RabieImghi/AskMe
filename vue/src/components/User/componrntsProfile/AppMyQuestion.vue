@@ -1,5 +1,5 @@
 <template>
-    <div class="sectionBadge pe-4">
+    <div class="sectionBadge padding-none pe-4">
         <div class="bg-white shadow">
             <div class="border-bottom container-mf pt-4 pb-4 d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-secondary">Home /<span class="text-secondary-500"> My Question</span></span>  

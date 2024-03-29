@@ -49,6 +49,10 @@ class User extends Authenticatable
     public function socialLink(){
         return $this->hasOne(SocialLink::class);
     }
+    public function followers(){
+        return $this->hasMany(Follower::class);
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
