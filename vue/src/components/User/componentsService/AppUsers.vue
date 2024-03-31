@@ -17,7 +17,7 @@
                     <div v-for="user in users" :key="user.id" class="col mb-3">
                         <div class="card" data-bs-toggle="modal" data-bs-target="#exampleModal"
                         @click="aficheDetailModel(user.name,user.firstName,user.lastName,user.about,
-                        user.country,user.phone,user.followers,user.following,user.avatar)" > 
+                        user.country,user.phone,user.followers,user.following,user.avatar, user.id)" > 
                             <img :src="user.coverImage" alt="Cover" class="card-img-top">
                             <div class="card-body text-center"> 
                                 <img :src="user.avatar" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
@@ -28,9 +28,7 @@
                                 <p class="text-muted font-size-sm">{{user.followers}} Follower | {{ user.following }} following</p>
                             </div>
                             <div class="border rounded-1 d-flex justify-content-between"> 
-                                <!-- <router-link :to="{ name: 'UserProfile', params: { idUser: user.id } }" class="nav-link"> -->
-                                    <button  :class="user.Level">{{user.Level}}</button>
-                                <!-- </router-link> -->
+                                <button  :class="user.Level">{{user.Level}}</button>
                                 <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle">
                                         <path
@@ -50,82 +48,91 @@
             </section>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex flex-column align-items-center text-center">
-                                        <img  :src="this.imageProfile" alt="Admin"
-                                            class="rounded-circle" width="150">
-                                        <div class="mt-3">
-                                            <h4>{{this.name}}</h4>
-                                            <p class="text-secondary mb-1 fw-bold h6">{{this.followers}} Follower | {{ this.following }} Following</p>
-                                            <p class="text-muted font-size-sm" v-if="this.country">{{ this.country }}</p>
-                                            <p class="text-muted font-size-sm" v-else>Null</p>
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content" style="width: 80%;">
+                        <div class="row pt-4 gutters-sm">
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-column align-items-center text-center">
+                                            <img  :src="this.imageProfile" alt="Admin"
+                                                class="rounded-circle" width="150">
+                                            <div class="mt-3">
+                                                <h4>{{this.name}}</h4>
+                                                <p class="text-secondary mb-1 fw-bold h6">{{this.followers}} Follower | {{ this.following }} Following</p>
+                                                <p class="text-muted font-size-sm" v-if="this.country">{{ this.country }}</p>
+                                                <p class="text-muted font-size-sm" v-else>Null</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="border-left">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Full Name</h6>
+                            <div class="col-md-8 border-left">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Full Name</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                {{ this.name }}
+                                            </div>
                                         </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            {{ this.name }}
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">first Name</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                {{this.firstName}}
+                                            </div>
                                         </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Last Name</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                {{this.lastName}}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Email</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                                    data-cfemail="03656a73436976686e766b2d626f">[email&#160;protected]</a>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Phone</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary" v-if="this.phone"> {{this.phone}} </div>
+                                            <div class="col-sm-9 text-secondary" v-else>
+                                                Null
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">About</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary" v-if="this.phone"> {{this.about}} </div>
+                                            <div class="col-sm-9 text-secondary" v-else> Null</div>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-center">
+                                            <router-link :to="{ name: 'UserProfile', params: { idUser: this.Detailid } }" class="nav-link">
+                                                <button data-bs-dismiss="modal" aria-label="Close" class="btn btn-light" >Details</button>
+                                            </router-link>
+                                        </div>
+                                        <hr>
+                                        
                                     </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">first Name</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            {{this.firstName}}
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Last Name</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            {{this.lastName}}
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Email</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                                data-cfemail="03656a73436976686e766b2d626f">[email&#160;protected]</a>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">Phone</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary" v-if="this.phone"> {{this.phone}} </div>
-                                        <div class="col-sm-9 text-secondary" v-else>
-                                            Null
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h6 class="mb-0">About</h6>
-                                        </div>
-                                        <div class="col-sm-9 text-secondary" v-if="this.phone"> {{this.about}} </div>
-                                        <div class="col-sm-9 text-secondary" v-else> Null</div>
-                                    </div>
-                                    <hr>
                                 </div>
                             </div>
                         </div>
@@ -164,6 +171,7 @@
                 following:null,
                 followers:null,
                 phone:null,
+                Detailid:null,
 
             };
         },
@@ -183,7 +191,6 @@
                     this.users = response.data.users;
                     this.count = response.data.userCount;
                     this.nbPage = Math.ceil(this.count / 12);
-                    console.log(this.users);
                 });
             },
             nextPage(){
@@ -229,7 +236,7 @@
                     this.nbPage = Math.ceil(this.count / 12);
                 });
             },
-            aficheDetailModel(name,firstName,lastName,about,country,phone,followers,following,avatar){
+            aficheDetailModel(name,firstName,lastName,about,country,phone,followers,following,avatar,id){
                 this.name = name;
                 this.firstName = firstName;
                 this.lastName = lastName;
@@ -239,6 +246,7 @@
                 this.following = followers;
                 this.followers = following;
                 this.phone = phone;
+                this.Detailid = id;
             }
         }
         

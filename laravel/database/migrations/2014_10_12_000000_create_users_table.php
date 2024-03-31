@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('phone')->nullable();
             $table->string('about')->nullable();
+            $table->enum('isBanne', ['0','1'])->default('0');
             $table->string('avatar')->default('default.png');
             $table->string('coverImage')->default('default.jpg');
             $table->unsignedBigInteger('role_id');

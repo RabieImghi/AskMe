@@ -49,9 +49,10 @@
                     <span class="h3 text-color-primary fw-bold">Top Users</span>   
                 </div>
                 <div class="BodMembers px-2 mt-3">
-                    <div v-for="user in TopUsers" :key="user.id" 
-                        class="d-flex justify-content-between align-items-center flex-wrap border mt-2 p-2">
-                        <img src="../../assets/img/user.png" width="60px" alt="">
+                    <div v-for="user in TopUsers" :key="user.id" class="d-flex justify-content-between align-items-center flex-wrap border mt-2 p-2">
+                        <router-link :to="{ name: 'UserProfile', params: { idUser: user.id } }" class="nav-link">
+                            <img :src="user.avatar" width="60px" style="border-radius: 50%" alt="">
+                        </router-link>
                         <div class="infoUser fw-bold d-flex flex-column align-items-center">
                             <span class="color-premary">{{user.name}}</span>
                             <span class="text-secondary">{{ user.question }} Question</span>

@@ -57,6 +57,7 @@
 </style>
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { useStore } from '../../store'
@@ -99,7 +100,6 @@ import { useStore } from '../../store'
                     errorsTest.value = true;
                 }
                 if (error.response.status === 401) {
-                    alert('ok3');
                     if(error.response.data.error === 'email'){
                         emailError.value = true;
                         errorsRequire.value = "Email is invalid or not exist";
@@ -110,8 +110,12 @@ import { useStore } from '../../store'
                         errorsRequire.value = "Password is invalid";
                         errorsTest.value = true;
                     }
-                    if(error.response.data.error === 'NotAuthorized'){
-                        alert('NotAuthorized');
+                    if(error.response.data.message === 'You Are Banned'){
+                        Swal.fire(
+                            'error',
+                            'You Are Banned',
+                            'error'
+                        )
                     }
                     else passwordError.value = false;
                 }

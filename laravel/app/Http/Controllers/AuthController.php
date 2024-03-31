@@ -22,6 +22,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'Email not exist or not correct!','error'=>"email"], 401);
         if (!Hash::check($request->password, $user->password)) 
             return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
+        if($user->isBanne == "1")
+            return response()->json(['message' => "You Are Banned"],401);
         $token = $user->createToken('API Token')->plainTextToken;
         $dataUser = [
             'firstName'=>$user->firstname,
