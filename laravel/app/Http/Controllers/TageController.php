@@ -19,6 +19,7 @@ class TageController extends Controller
             $dataTage[]=[
                 'id'=>$tage->id,
                 'name'=>$tage->name,
+                'descriprtion'=>$tage->descriprtion,
             ];
         }
         return response()->json([
@@ -35,9 +36,11 @@ class TageController extends Controller
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'name' => 'required|unique:tages',
+            'descriprtion' => 'required',
         ]);
         Tage::create([
             'name' => $request->name,
+            'descriprtion' => $request->descriprtion,
         ]);
         return response()->json(['message' => 'Tage added']);
     }
@@ -45,6 +48,7 @@ class TageController extends Controller
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
             'name' => 'required|unique:tages',
+            'descriprtion'=>'required',
             'id' => 'required',
         ]);
         $tage = Tage::find($request->id);

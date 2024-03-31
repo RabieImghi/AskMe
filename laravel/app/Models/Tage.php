@@ -10,6 +10,7 @@ class Tage extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'descriprtion'
     ];
     public function posts()
     {

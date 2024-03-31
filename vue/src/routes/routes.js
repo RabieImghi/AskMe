@@ -23,6 +23,8 @@ import AppAdminPermissions from '../components/Admin/AppAdminPermissions.vue';
 import AppAdminPermissionsUsers from '../components/Admin/AppAdminPermissionsUsers.vue';
 import AppAdminTages from '../components/Admin/AppAdminTages.vue';
 import AppAdminCategory  from '../components/Admin/AppAdminCategory.vue';
+import ManageUsers  from '../components/Admin/AppManageUsers.vue';
+
 
 import AppAuth from '../components/Auth/AppAuth.vue';
 import AppAuthLogin from '../components/Auth/AppAuthLogin.vue';
@@ -63,6 +65,8 @@ const routes = [
             { path: 'Permissions/Users', component: AppAdminPermissionsUsers },
             { path: 'tages', component: AppAdminTages },
             { path: 'category', component: AppAdminCategory },
+            { path: 'Manage/Users', component: ManageUsers },
+            
             
         ]
     },

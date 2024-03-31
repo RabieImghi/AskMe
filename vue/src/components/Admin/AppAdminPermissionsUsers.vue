@@ -8,8 +8,8 @@
             <table class="">
                 <thead class="">
                     <tr>
-                    <th class="px-3">Role</th>
-                    <th class="px-3">Permissions</th>
+                        <th class="px-3">Role</th>
+                        <th class="px-3">Permissions</th>
                     </tr>
                 </thead>
                 <tbody>

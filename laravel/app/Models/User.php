@@ -29,6 +29,7 @@ class User extends Authenticatable
         'about',
         'avatar',
         'coverImage',
+        'isBanne'
     ];
     public function permission()
     {

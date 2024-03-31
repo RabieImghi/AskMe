@@ -7,9 +7,12 @@ use App\Models\Tage;
 use App\Models\Post;
 use App\Models\Answer;
 use App\Models\Follower;
+use App\Models\permession_vues_users;
 use Illuminate\Http\Request;
+use App\Models\PermessionVue_Role;
 use App\Models\SocialLink;
 use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -27,6 +30,7 @@ class UserController extends Controller
                 'name' => $user->name,
                 'level' => AnswerController::getBadge($user->points),
                 'question' => $user->posts->count(),
+                'avatar'=> asset('uploads/'.$user->avatar),
             ];
         }
         $Statistique=  [
@@ -157,7 +161,7 @@ class UserController extends Controller
         }
     }
     public function getusers(Request $request,$skip){
-        $users = User::skip($skip)->take(12)->orderBy('id', 'desc')->get();
+        $users = User::with('role')->skip($skip)->take(12)->orderBy('id', 'desc')->get();
         $usersData = [];
         foreach($users as $user){
             $usersData[] = [
@@ -167,6 +171,9 @@ class UserController extends Controller
                 'lastName'=>$user->lastname,
                 'about'=>$user->about ?? null,
                 'country'=>$user->country,
+                'email' => $user->email,
+                'role'=> $user->role->name,
+                'isBanne'=> $user->isBanne,
                 'phone'=>$user->phone ?? null,
                 'followers' => User::find($user->id)->followers->count(),
                 'following' => Follower::where('follower_id',$user->id)->count(),
@@ -195,5 +202,42 @@ class UserController extends Controller
             ];
         }
         return response()->json(['users'=>$usersData,'userCount'=> $users->count(),]);
+    }
+    public function deleteUser(Request $request){
+        if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
+        $user = User::find($request->id);
+        if(!$user) return response()->json(['message'=> 'User not found !!']);
+        $user->delete();
+        return response()->json(['message', 'user deleted successfully']);
+    }
+    public function banneUser(Request $request){
+        if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
+        $user = User::find($request->id);
+        if($user->isBanne == "0") $user->update(['isBanne'=>"1"]);
+        else $user->update(['isBanne'=>"0"]);
+        return response()->json(['message'=>"ok"]);
+    }
+    public function changeUser(Request $request){
+        if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
+        $user = User::find($request->id);
+        permession_vues_users::where('user_id',$request->id)->delete();
+        $permission=[];
+        if($user->role_id == 1){
+            $permissions = PermessionVue_Role::where('role_id',2)->pluck('permession_vue_id')->toArray();
+            $user->update(['role_id'=>2]);
+        }
+        else {
+            $permissions = PermessionVue_Role::where('role_id',1)->pluck('permession_vue_id')->toArray();
+            $user->update(['role_id'=>1]);
+        }
+        foreach($permissions as $permission){
+            permession_vues_users::create([
+                'user_id' => $request->id,
+                'permession_vue_id' => $permission,
+                'is_active'=>1,
+                'is_deleted'=>0,
+            ]);
+        }
+        return response()->json(['message'=>"ok"]);
     }
 }

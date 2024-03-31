@@ -60,6 +60,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/follow', [UserController::class, 'follow']);
     Route::get('/getusers/{skip}', [UserController::class, 'getusers']);
     Route::get('/searchusers/{search}', [UserController::class, 'searchUser']);
+    Route::post('/deleteUser', [UserController::class, 'deleteUser']);
+    Route::post('/banneUser', [UserController::class, 'banneUser']);
+    Route::post('/changeUser', [UserController::class, 'changeUser']);
     
 });
 Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);
