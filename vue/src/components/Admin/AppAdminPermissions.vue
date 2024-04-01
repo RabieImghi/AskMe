@@ -8,7 +8,7 @@
             <div class="text-end">
                 <button class="btn btn-primary" @click="showModal = !showModal">Add Permission</button>
             </div>
-            <table class="">
+            <table class="table">
                 <thead >
                     <tr class="itemsPermission">
                         <th class="px-3">Role</th>
@@ -28,6 +28,9 @@
                     </tr>
                 </tbody>
             </table>   
+            <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
+                <Loader/>
+            </section>  
         </div>
         <div class="overlay" @click="showModal = !showModal" v-bind:class="{ 'show': !showModal }"></div>
         <div class="model addpermission"  v-bind:class="{ 'show': !showModal }">
@@ -175,6 +178,7 @@
 import axios from 'axios';
 import select2 from "./AppSelect22.vue"
 import { useStore } from '@/store';
+import Loader  from '../User/AppLoader';
 export default {
     name: "AppAdminPermissions",
     data() {
@@ -189,9 +193,10 @@ export default {
             tableName:'permissions_id[]',
             options: [],
             Roles: [],
+            isLoading: true
         }
     },
-    components: { select2 },
+    components: { select2,Loader },
     mounted() {
         const store = useStore();
         this.getPermissions();
@@ -213,10 +218,8 @@ export default {
             })
             .then(response => {
                 this.permissions = response.data.permissions;
-                console.log(this.permissions);
-            }).catch(error => {
-                console.log(error);
-            })
+                this.isLoading = false;
+            });
         },
         submitForm() {
             const store = useStore();

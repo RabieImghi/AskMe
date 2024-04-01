@@ -5,9 +5,6 @@
         </div>
         <hr>
         <div class="container-mf">
-            <div class="text-end">
-                <button class="btn btn-primary" @click="showModal = !showModal">Add Tages</button>
-            </div>
             <table class="w-100">
                 <thead >
                     <tr class="itemsPermission">
@@ -57,9 +54,9 @@
                 <Loader/>
             </section>  
             <div class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
-                <button @click="previewsPage()" class="btn btn-primary fw-bold">&lt;</button>
+                <button @click="previewsPage()" class="btn btn-dark fw-bold">&lt;</button>
                 <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
-                <button @click="nextPage()" class="btn btn-primary fw-bold">></button>
+                <button @click="nextPage()" class="btn btn-dark fw-bold">></button>
             </div> 
         </div>
         <div v-if="showConfirmModal" class="modal shad show d-block" tabindex="-1">
@@ -177,6 +174,11 @@
         position: fixed;
         bottom: 5vh;
         right: 20px;
+    }
+    .activeClass{
+        background-color: black !important;
+        color: white;
+    
     }
 </style>
 <script>

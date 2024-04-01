@@ -35,7 +35,7 @@ Route::post('/CheckPermissionUser',[CheckController::class,'CheckPermissionUser'
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getPemissionsAndRole',[PermissionController::class,'getPemissionsAndRole']);
     Route::get('/getRolePemissions',[PermissionController::class,'getRolePemissions']);
-    Route::get('/getRolePemissionsUsers',[PermissionController::class,'getRolePemissionsUsers']);
+    Route::get('/getRolePemissionsUsers/{skip}',[PermissionController::class,'getRolePemissionsUsers']);
     Route::post('/ChangeStatusPermissions',[PermissionController::class,'ChangeStatusPermissionsUser']);
     Route::post('/addNewPermissions',[PermissionController::class,'addNewPermissions']);
     Route::post('/deleteNewPermissions',[PermissionController::class,'deleteNewPermissions']);
@@ -63,7 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/deleteUser', [UserController::class, 'deleteUser']);
     Route::post('/banneUser', [UserController::class, 'banneUser']);
     Route::post('/changeUser', [UserController::class, 'changeUser']);
-    
+    Route::get('/getAllTagesAdmin/{skip}', [TageController::class, 'getAllTagesAdmin']);
 });
 Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);
 Route::get('/allPost',[PostController::class,'allPost']);
