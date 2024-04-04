@@ -98,7 +98,7 @@ export default {
     methods: {
         getPermissions() {
             const store = new useStore();
-            axios.get(`http://127.0.0.1:8000/api/getRolePemissionsUsers/${this.skip}`,{
+            axios.get(`${store.URL}getRolePemissionsUsers/${this.skip}`,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response => {
@@ -115,7 +115,7 @@ export default {
             let formData = new FormData();
             formData.append('id', id);
             formData.append('is_active', is_active);
-            axios.post('http://127.0.0.1:8000/api/ChangeStatusPermissions',formData,{
+            axios.post(`${store.URL}ChangeStatusPermissions`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` },
             })
             .then(() => {

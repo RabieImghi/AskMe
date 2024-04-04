@@ -176,7 +176,7 @@
             this.idUser = store.user_id;
             if(this.id != undefined){
                 store.setPost_id(this.id);
-                axios.get(`http://127.0.0.1:8000/api/addViewsPost/${this.id}`);
+                axios.get(`${store.URL}addViewsPost/${this.id}`);
             }
             this.fetchPosts();
         },
@@ -184,7 +184,7 @@
             async ChangeReating(type,id){ 
                 var store = new useStore();
                 var idUser = store.user_id
-                let response = await axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`,{
+                let response = await axios.get(`${store.URL}ChangeReating/${id}/${idUser}/${type}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 })
                 if(response.status == 200){
@@ -193,7 +193,7 @@
             },
             async ChangeReatingAnswer(type,id){ 
                 const store = new useStore();
-                let response= await axios.get(`http://127.0.0.1:8000/api/ChangeReatingAnswer/${id}/${this.idUser}/${type}`,{
+                let response= await axios.get(`${store.URL}ChangeReatingAnswer/${id}/${this.idUser}/${type}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200){
@@ -202,7 +202,7 @@
             },
             fetchPosts() {
                 var store = new useStore();
-                axios.get(`http://127.0.0.1:8000/api/getPostAnswers/${store.post_id}`)
+                axios.get(`${store.URL}getPostAnswers/${store.post_id}`)
                 .then(response => {
                     if(response.status == 200){
                         this.Posts = response.data.post;
@@ -217,7 +217,7 @@
                 formData.append('answerDetails', this.answerDetails);
                 formData.append('post_id', store.post_id);
                 formData.append('user_id', store.user_id);
-                let response = await axios.post('http://localhost:8000/api/addAnswer', formData ,{
+                let response = await axios.post(`${store.URL}addAnswer`, formData ,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200){
@@ -244,7 +244,7 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        let response = axios.get(`http://localhost:8000/api/deleteAnswer/${id}`,{
+                        let response = axios.get(`${store.URL}deleteAnswer/${id}`,{
                             headers: {'Authorization': `Bearer ${store.token}` }
                         });
                         if(response.status == 200){
@@ -265,7 +265,7 @@
                 let formData = new FormData();
                 formData.append('answerDetails', document.getElementById('answerDetail').value);
                 formData.append('answerId', document.getElementById('idAnswer').value);
-                axios.post('http://localhost:8000/api/updateAnswer', formData,{
+                axios.post(`${store.URL}updateAnswer`, formData,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 }).then(response => {
                     if(response.status == 200){
@@ -300,7 +300,7 @@
                 const store = new useStore();
                 var formData = new FormData();
                 formData.append('answerId', answerId);
-                let response =  await axios.post('http://localhost:8000/api/verfyAnswer', formData,{
+                let response =  await axios.post(`${store.URL}verfyAnswer`, formData,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200)  {

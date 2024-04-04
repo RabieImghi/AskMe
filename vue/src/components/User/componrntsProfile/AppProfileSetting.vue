@@ -170,8 +170,7 @@ export default {
         this.getUserInfo();
     },
     created() {
-        axios
-            .get("https://restcountries.com/v3.1/all")
+        axios.get("https://restcountries.com/v3.1/all")
             .then((response) => {
                 this.countries = response.data.sort((a, b) =>
                     a.name.common.localeCompare(b.name.common)
@@ -199,10 +198,7 @@ export default {
             formData.append("image", file);
             formData.append("type", type);
             formData.append("id", this.userId);
-            const response = await axios.post(
-                `http://localhost:8000/api/uploadImage`,
-                formData,
-                {
+            const response = await axios.post(`${store.URL}uploadImage`,formData,{
                     headers: { Authorization: `Bearer ${store.token}` },
                 }
             );
@@ -219,18 +215,19 @@ export default {
             }
         },
         async getUserInfo() {
+            const store = useStore();
             var followerId =null;
             if(this.store.user_id != null){
                 followerId = this.store.user_id;
             }
-            let response = await axios.get(`http://localhost:8000/api/getUserInfo/${this.userId}/${followerId}`);
+            let response = await axios.get(`${store.URL}getUserInfo/${this.userId}/${followerId}`);
             this.user = response.data.user;
             console.log(this.user);
         },
         async submitForm() {
             let store = useStore();
             let response = await axios.post(
-                `http://localhost:8000/api/updateUserInfo`,
+                `${store.URL}updateUserInfo`,
                 this.user,
                 {
                     headers: { Authorization: `Bearer ${store.token}` },

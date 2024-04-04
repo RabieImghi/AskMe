@@ -34,7 +34,7 @@ class TageController extends Controller
             $dataTage[]=[
                 'id'=>$tage->id,
                 'name'=>$tage->name,
-                'descriprtion'=>$tage->descriprtion,
+                 'descriprtion'=>$tage->descriprtion,
             ];
         }
         return response()->json([

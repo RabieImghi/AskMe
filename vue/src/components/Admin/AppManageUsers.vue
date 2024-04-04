@@ -211,7 +211,7 @@ export default {
     methods: {
         getUsers() {
             const store = useStore();
-            axios.get(`http://localhost:8000/api/getusers/${this.skip}`,{
+            axios.get(`${store.URL}getusers/${this.skip}`,{
                 headers: {'Authorization': `Bearer ${store.token}` }
             })
             .then(response =>{
@@ -228,7 +228,7 @@ export default {
             var formData = new FormData();
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
-            axios.post('http://127.0.0.1:8000/api/addNewTage',formData,{
+            axios.post(`${store.URL}addNewTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -242,7 +242,7 @@ export default {
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/updateTage',formData,{
+            axios.post(`${store.URL}updateTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -259,7 +259,7 @@ export default {
             const store = useStore();
             var formData = new FormData();
             formData.append('id', this.userId);
-            axios.post('http://127.0.0.1:8000/api/deleteUser',formData,{
+            axios.post(`${store.URL}deleteUser`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -300,7 +300,7 @@ export default {
             const store = new useStore();
             var formData = new FormData();
             formData.append('id', id);
-            axios.post('http://127.0.0.1:8000/api/banneUser',formData,{
+            axios.post(`${store.URL}banneUser`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             }).then(response=>{
                 console.log(response.data.message)
@@ -311,7 +311,7 @@ export default {
             const store = new useStore();
             var formData = new FormData();
             formData.append('id', id);
-            axios.post('http://127.0.0.1:8000/api/changeUser',formData,{
+            axios.post(`${store.URL}changeUser`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             }).then(response=>{
                 console.log(response.data.message)

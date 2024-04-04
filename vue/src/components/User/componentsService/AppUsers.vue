@@ -184,7 +184,7 @@
         methods: {
             fetchUsers(){
                 const store = useStore();
-                axios.get(`http://localhost:8000/api/getusers/${this.skip}`,{
+                axios.get(`${store.URL}getusers/${this.skip}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 }).then(response => {
                     this.isLoading = false;
@@ -227,7 +227,7 @@
                     this.fetchUsers();
                     return;
                 }
-                axios.get(`http://localhost:8000/api/searchusers/${this.searchQuery}`,{
+                axios.get(`${store.URL}searchusers/${this.searchQuery}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 }).then(response => {
                     this.isLoading = false;

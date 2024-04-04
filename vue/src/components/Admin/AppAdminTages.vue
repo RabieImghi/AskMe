@@ -244,7 +244,7 @@ export default {
     methods: {
         getTages() {
             const store = useStore();
-            axios.get(`http://127.0.0.1:8000/api/getAllTagesAdmin/${this.skip}`,{
+            axios.get(`${store.URL}getAllTagesAdmin/${this.skip}`,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response =>{
@@ -261,7 +261,7 @@ export default {
             var formData = new FormData();
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
-            axios.post('http://127.0.0.1:8000/api/addNewTage',formData,{
+            axios.post(`${store.URL}addNewTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -275,7 +275,7 @@ export default {
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/updateTage',formData,{
+            axios.post(`${store.URL}updateTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -297,7 +297,7 @@ export default {
             const store = useStore();
             var formData = new FormData();
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/deleteTage',formData,{
+            axios.post(`${store.URL}deleteTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {

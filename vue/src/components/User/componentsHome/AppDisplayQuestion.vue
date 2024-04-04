@@ -115,7 +115,8 @@
                 this.$router.push({ name: 'userAnswers', params: { id: postId} });
             },
             fetchPosts() {
-                axios.get(`http://127.0.0.1:8000/api/allPost?page=${this.nombrePost}`)
+                const store = new useStore();
+                axios.get(`${store.URL}allPost?page=${this.nombrePost}`)
                     .then(response => {
                         this.Posts = response.data.data;
                         this.count= response.data.count;
@@ -154,7 +155,7 @@
             async ChangeReating(type,id){ 
                 var store = new useStore();
                 var idUser = store.user_id
-                let response = await axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`, {
+                let response = await axios.get(`${store.URL}ChangeReating/${id}/${idUser}/${type}`, {
                     headers: { 'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200){

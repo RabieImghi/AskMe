@@ -200,7 +200,7 @@ export default {
     mounted() {
         const store = useStore();
         this.getPermissions();
-        axios.get('http://127.0.0.1:8000/api/getPemissionsAndRole',{
+        axios.get(`${store.URL}getPemissionsAndRole`,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
         })
         .then(response =>{
@@ -213,7 +213,7 @@ export default {
     methods: {
         getPermissions() {
             const store = useStore();
-            axios.get('http://127.0.0.1:8000/api/getRolePemissions',{
+            axios.get(`${store.URL}getRolePemissions`,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response => {
@@ -227,7 +227,7 @@ export default {
                 role_id: this.role_id,
                 permissions_id: this.selected,
             };
-            axios.post('http://127.0.0.1:8000/api/addNewPermissions',{formData: formData},{
+            axios.post(`${store.URL}addNewPermissions`,{formData: formData},{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response => {
@@ -245,7 +245,7 @@ export default {
         },
         confirmDelete(){
             const store = useStore();
-            axios.post('http://127.0.0.1:8000/api/deleteNewPermissions',{id: this.toBeDeleted},{
+            axios.post(`${store.URL}deleteNewPermissions`,{id: this.toBeDeleted},{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response => {
