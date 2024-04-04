@@ -26,6 +26,22 @@ class TageController extends Controller
             'tages' => $dataTage,
         ]);
     }
+    public function getAllTagesAdmin(Request $request,$skip){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
+        $tages = Tage::skip($skip)->take(6)->get();
+        $dataTage=[];
+        foreach($tages as $tage){
+            $dataTage[]=[
+                'id'=>$tage->id,
+                'name'=>$tage->name,
+                 'descriprtion'=>$tage->descriprtion,
+            ];
+        }
+        return response()->json([
+            'tages' => $dataTage,
+            'count' => Tage::count(),
+        ]);
+    }
     public function deleteTage(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $tage = Tage::find($request->id);

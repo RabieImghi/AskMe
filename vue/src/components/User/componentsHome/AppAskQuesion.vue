@@ -139,7 +139,8 @@ import { useStore } from '@/store';
             
         },
         mounted(){
-            axios.get('http://localhost:8000/api/getAllTagesCategory')
+            const store = new useStore();
+            axios.get(`${store.URL}getAllTagesCategory`)
             .then(response => {
                 this.tags = response.data.Tages;
                 this.categoryList = response.data.Categorys;
@@ -168,7 +169,7 @@ import { useStore } from '@/store';
                 formData.append('tages', this.selectedItems);
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
-                let response = await axios.post('http://localhost:8000/api/AddQuestions', formData, {
+                let response = await axios.post(`${store.URL}AddQuestions`, formData, {
                     headers: { 'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200){

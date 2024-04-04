@@ -108,11 +108,12 @@ function extractURIs(routes, parentPath = '') {
     return URIs;
 }
 const routerURIs = extractURIs(routes);
-axios.post('http://127.0.0.1:8000/api/PermissionVueJs', {router: routerURIs});
+
+axios.post(`http://127.0.0.1:8000/api/PermissionVueJs`, {router: routerURIs});
 
 // router.beforeEach((to, from, next) => {
 //     const store = useStore();
-//     axios.post('http://127.0.0.1:8000/api/CheckPermission', {
+//     axios.post(store.URL+'CheckPermission', {
 //       uri: to.path,
 //       role_id: store.role_id
 //     })
@@ -144,7 +145,7 @@ router.beforeEach((to, from, next) => {
             uri: to.path
         }
     }
-    axios.post('http://127.0.0.1:8000/api/CheckPermissionUser',{
+    axios.post(`${store.URL}CheckPermissionUser`,{
         dataUser: data
     })
     .then(response => {

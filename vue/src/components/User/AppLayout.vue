@@ -180,7 +180,7 @@ import { useStore } from '../../store';
         methods:{
             logout() {
                 localStorage.clear();
-                axios.get("http://127.0.0.1:8000/api/logout");
+                axios.get(`${this.store.URL}logout`);
             }
             
         }

@@ -34,12 +34,14 @@
 </template>
 <script>
 import axios from 'axios';
+import { useStore } from '@/store';
     export default{
         methods:{
             logout() {
+                const store = useStore();
                 localStorage.setItem('role_id', 3);
                 localStorage.removeItem('token');
-                axios.get("http://127.0.0.1:8000/api/logout");
+                axios.get(`${store.URL}logout`);
             }
             
         }

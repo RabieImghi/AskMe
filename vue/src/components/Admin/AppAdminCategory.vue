@@ -216,7 +216,7 @@ export default {
     methods: {
         getTages() {
             const store = useStore();
-            axios.get('http://127.0.0.1:8000/api/getAllCategory', {
+            axios.get(`${store.URL}getAllCategory`, {
                 headers: { 'Authorization': `Bearer ${store.token}` }
             }).then(response => {
                 this.Categorys = response.data.Categorys;
@@ -226,7 +226,7 @@ export default {
             const store = useStore();
             var formData = new FormData();
             formData.append('name', this.categoryName);
-            let response = axios.post('http://127.0.0.1:8000/api/addNewCategory',formData,{
+            let response = axios.post(`${store.URL}addNewCategory`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             });
             if(response.status == 200){
@@ -239,7 +239,7 @@ export default {
             var formData = new FormData();
             formData.append('name', this.categoryName);
             formData.append('id', this.categoryId);
-            axios.post('http://127.0.0.1:8000/api/updateCategory',formData,{
+            axios.post(`${store.URL}updateCategory`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -261,7 +261,7 @@ export default {
             const store = useStore();
             var formData = new FormData();
             formData.append('id', this.categoryId);
-            axios.post('http://127.0.0.1:8000/api/deleteCategory',formData,{
+            axios.post(`${store.URL}deleteCategory`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {

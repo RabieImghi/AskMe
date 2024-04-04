@@ -161,7 +161,7 @@ class UserController extends Controller
         }
     }
     public function getusers(Request $request,$skip){
-        $users = User::with('role')->skip($skip)->take(12)->orderBy('id', 'desc')->get();
+        $users = User::with('role')->skip($skip)->take(12)->get();
         $usersData = [];
         foreach($users as $user){
             $usersData[] = [

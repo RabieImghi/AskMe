@@ -76,7 +76,7 @@ import { useStore } from '../../store'
             errorsTest.value = false;
             emailError.value = false;
             passwordError.value = false;
-            axios.post('http://127.0.0.1:8000/api/login', {
+            axios.post(`${store.URL}login`, {
                 email: email.value,
                 password: password.value,
                 role_id: store.role_id

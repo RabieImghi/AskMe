@@ -137,7 +137,7 @@
             async ChangeReating(type,id){ 
                 var store = new useStore();
                 var idUser = store.user_id
-                let response = await axios.get(`http://127.0.0.1:8000/api/ChangeReating/${id}/${idUser}/${type}`,{
+                let response = await axios.get(`${store.URL}ChangeReating/${id}/${idUser}/${type}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(response == 200){
@@ -156,7 +156,7 @@
             },
             async fetchPosts() {
                 var store = new useStore();
-                let response= await axios.get(`http://127.0.0.1:8000/api/MyPost/${store.user_id}?page=${this.nombrePost}`,{
+                let response= await axios.get(`${store.URL}MyPost/${store.user_id}?page=${this.nombrePost}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200){
@@ -217,7 +217,7 @@
             },
             async deletePost(postId) {
                 let store = new useStore();
-                let response= await axios.delete(`http://127.0.0.1:8000/api/DeletePost/${postId}`,{
+                let response= await axios.delete(`${store.URL}DeletePost/${postId}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200){
