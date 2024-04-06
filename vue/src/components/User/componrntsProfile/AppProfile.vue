@@ -39,7 +39,6 @@
                                     <button v-if="user.isFollowed !=0 " @click="follow()" class="btn btn-outline-primary me-2">
                                         <span>Following</span>
                                     </button>
-                                    <button v-if="this.userId != this.store.user_id" class="btn btn-outline-primary">Message</button>
                                 </div>
                             </div>
                         </div>

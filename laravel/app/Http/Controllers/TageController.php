@@ -7,8 +7,7 @@ use App\Models\Tage;
 
 class TageController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         $tages = Tage::with('posts')->get();
         return response()->json($tages);
     }
@@ -27,14 +26,17 @@ class TageController extends Controller
         ]);
     }
     public function getAllTagesAdmin(Request $request,$skip){
-        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        $tages = Tage::skip($skip)->take(6)->get();
+        $take=6;
+        if($request->type && $request->type=="user" ){
+           $take=9; 
+        }
+        $tages = Tage::skip($skip)->take($take)->get();
         $dataTage=[];
         foreach($tages as $tage){
             $dataTage[]=[
                 'id'=>$tage->id,
                 'name'=>$tage->name,
-                 'descriprtion'=>$tage->descriprtion,
+                'descriprtion'=>$tage->descriprtion,
             ];
         }
         return response()->json([
