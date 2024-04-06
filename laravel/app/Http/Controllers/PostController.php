@@ -12,9 +12,19 @@ use Illuminate\Support\Facades\DB;
 class PostController extends Controller
 {
     public function allPost(Request $request){
+        
         $data = [];
         $page = $request->query('page', 1);
-        $posts = Post::with('user', 'category')->skip($page)->take(6)->orderBy('id', 'desc')->get();
+        if($request->tageId){
+            $tageId = $request->tageId;
+            $posts = Post::with('user', 'category')
+            ->whereHas('tages', function($query) use ($tageId) {
+                $query->where('tage_id', $tageId);
+            })
+            ->skip($page)->take(6)->orderBy('id', 'desc')->get();
+        }else{
+            $posts = Post::with('user', 'category')->skip($page)->take(6)->orderBy('id', 'desc')->get();
+        }
         $count = Post::count();
         foreach ($posts as $post) {
             $dataTage =[];

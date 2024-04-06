@@ -107,6 +107,7 @@
             const store = new useStore();
             this.userId = store.user_id;
             this.fetchPosts();
+            console.log(store.tageId);
         },
         components:{
             Loader, 
@@ -117,7 +118,9 @@
             },
             fetchPosts() {
                 const store = new useStore();
-                axios.get(`${store.URL}allPost?page=${this.nombrePost}`)
+                let formData = new FormData();
+                formData.append('tageId', store.tageId);
+                axios.post(`${store.URL}allPost?page=${this.nombrePost}`,formData)
                     .then(response => {
                         this.Posts = response.data.data;
                         this.count= response.data.count;

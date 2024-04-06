@@ -43,7 +43,7 @@
             <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
                 <Loader/>
             </section>  
-            <div class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+            <div v-if="nbPage > 1" class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
                 <button @click="previewsPage()" class="btn btn-dark fw-bold">&lt;</button>
                 <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
                 <button @click="nextPage()" class="btn btn-dark fw-bold">></button>

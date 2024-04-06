@@ -93,7 +93,7 @@
                     </div>
                     
                 </div>
-                <div class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+                <div v-if="nbPage > 1" class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
                     <button @click="previews()" class="btn btn-primary fw-bold">&lt;</button>
                     <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
                     <button @click="next()" class="btn btn-primary fw-bold">></button>

@@ -8,6 +8,9 @@ import AppBadge from '../components/User/componentsService/AppBadge.vue';
 import AppUsers from '../components/User/componentsService/AppUsers.vue';
 import AppTages from '../components/User/componentsService/AppTages.vue';
 import AppContact from '../components/User/componentsService/AppContact.vue';
+import AppTagePost from '../components/User/componentsService/AppTagePost.vue';
+
+
 import AppProfile from '../components/User/componrntsProfile/AppProfile.vue';
 import AppProfileSetting from '../components/User/componrntsProfile/AppProfileSetting.vue';
 import AppMyQuistion from '../components/User/componrntsProfile/AppMyQuestion.vue';
@@ -45,6 +48,8 @@ const routes = [
             { path: 'Servises/Badges', component: AppBadge },
             { path: 'Servises/Users', component: AppUsers },
             { path: 'Servises/Tages', component: AppTages },
+            { path: 'Servises/Posts', component: AppTagePost },
+            
             { path: 'contactUs', component: AppContact },
             { path: 'profile', component: AppProfile, name:'UserProfile', props: true },
             { path: 'settings', component: AppProfileSetting },

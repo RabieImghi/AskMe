@@ -19,7 +19,7 @@
                                     </svg>
                                 </span>
                                 <span class="text-secondary fw-bold" >{{post.reating}}</span>
-                                <span class="cursor-point" @click="ChangeReating('-',post.id)">
+                                <span  class="cursor-point" @click="ChangeReating('-',post.id)">
                                     <svg :class="{ 'activeVote': isInArray(this.idUser, post.listIdUserVoted) === 'Active-' }" id="moinVote" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
                                     </svg>
@@ -159,6 +159,7 @@
     import axios from 'axios';
     import {useStore} from '../../../store';
     import Swal from 'sweetalert2';
+import router from '@/routes/routes';
     export default{
         name: 'AppAnswers',
         props:['id'],
@@ -182,22 +183,30 @@
         },
         methods:{
             async ChangeReating(type,id){ 
-                var store = new useStore();
-                var idUser = store.user_id
-                let response = await axios.get(`${store.URL}ChangeReating/${id}/${idUser}/${type}`,{
-                    headers: {'Authorization': `Bearer ${store.token}` }
-                })
-                if(response.status == 200){
-                    this.fetchPosts();
+                if(this.idUser== null){
+                    router.push("/user/auth/")
+                } else{
+                    var store = new useStore();
+                    var idUser = store.user_id
+                    let response = await axios.get(`${store.URL}ChangeReating/${id}/${idUser}/${type}`,{
+                        headers: {'Authorization': `Bearer ${store.token}` }
+                    })
+                    if(response.status == 200){
+                        this.fetchPosts();
+                    }
                 }
             },
             async ChangeReatingAnswer(type,id){ 
-                const store = new useStore();
-                let response= await axios.get(`${store.URL}ChangeReatingAnswer/${id}/${this.idUser}/${type}`,{
-                    headers: {'Authorization': `Bearer ${store.token}` }
-                });
-                if(response.status == 200){
-                    this.fetchPosts();
+                if(this.idUser== null){
+                    router.push("/user/auth/")
+                } else{
+                    const store = new useStore();
+                    let response= await axios.get(`${store.URL}ChangeReatingAnswer/${id}/${this.idUser}/${type}`,{
+                        headers: {'Authorization': `Bearer ${store.token}` }
+                    });
+                    if(response.status == 200){
+                        this.fetchPosts();
+                    }
                 }
             },
             fetchPosts() {
@@ -232,8 +241,23 @@
                     this.answerDetails = '';
                 }
             },
-            deleteAnswer(id){
+            confirmDeleteAnswer(id){
                 const store = new useStore();
+                axios.get(`${store.URL}deleteAnswer/${id}`,{
+                    headers: {'Authorization': `Bearer ${store.token}` }
+                }).then(()=>{
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your Answer has been Deleted",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    this.fetchPosts(); 
+                });
+               
+            },
+            deleteAnswer(id){
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -244,19 +268,7 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        let response = axios.get(`${store.URL}deleteAnswer/${id}`,{
-                            headers: {'Authorization': `Bearer ${store.token}` }
-                        });
-                        if(response.status == 200){
-                            Swal.fire({
-                                position: "top-end",
-                                icon: "success",
-                                title: "Your Answer has been Deleted",
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                            this.fetchPosts();
-                        }
+                        this.confirmDeleteAnswer(id);
                     }
                 });
             },
