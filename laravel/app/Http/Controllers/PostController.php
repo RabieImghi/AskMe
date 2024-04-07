@@ -17,13 +17,27 @@ class PostController extends Controller
         $page = $request->query('page', 1);
         if($request->tageId){
             $tageId = $request->tageId;
-            $posts = Post::with('user', 'category')
+            $posts = Post::with('user', 'category')->where('isArchive','0')
             ->whereHas('tages', function($query) use ($tageId) {
                 $query->where('tage_id', $tageId);
             })
             ->skip($page)->take(6)->orderBy('id', 'desc')->get();
-        }else{
-            $posts = Post::with('user', 'category')->skip($page)->take(6)->orderBy('id', 'desc')->get();
+        }else
+        if($request->serchType){
+            $type =$request->serchType;
+            $value = $request->searchQuery;
+            if($type=='Post')
+                $posts = Post::with('user', 'category')->where('isArchive','0')->where('title','like',"%$value%")
+                ->orWhere('content','like',"%$value%")->skip($page)->take(6)->orderBy('id', 'desc')->get();
+            else if($type == "Category")
+                $posts = Post::with('user', 'category')->where('isArchive','0')
+                ->whereHas("category" , function($query) use ($value){
+                    $query->where('name','like',"%$value%");
+                })
+                ->skip($page)->take(6)->orderBy('id', 'desc')->get();
+        }
+        else{
+            $posts = Post::with('user', 'category')->where('isArchive','0')->skip($page)->take(6)->orderBy('id', 'desc')->get();
         }
         $count = Post::count();
         foreach ($posts as $post) {
@@ -53,6 +67,7 @@ class PostController extends Controller
         }
         return response()->json([ 'data' => $data, 'count' => $count, ]);
     }
+    
     public function AddQuestions(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
@@ -92,7 +107,7 @@ class PostController extends Controller
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $data = [];
         $page = $request->query('page', 1);
-        $posts = Post::with('user', 'category')->where('user_id',$id)->skip($page)->take(6)->orderBy('updated_at', 'desc')->get();
+        $posts = Post::with('user', 'category')->where('isArchive','0')->where('user_id',$id)->skip($page)->take(6)->orderBy('updated_at', 'desc')->get();
         $count = Post::count();
         foreach ($posts as $post) {
             $dataTage =[];
@@ -267,6 +282,34 @@ class PostController extends Controller
         return response()->json([
             'message' => 'Views added successfully',
         ]);
+    }
+
+    public function getPostManage(Request $request,$skip){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
+        $posts = Post::with('user', 'category')->skip($skip)->take(6)->get();
+        $data=[];
+        foreach ($posts as $post) {
+            $data[] = [
+                'id' => $post->id,
+                'username'=>$post->user->name,
+                'category'=>$post->category->name,
+                'title' => $post->title,
+                'isArchive'=>$post->isArchive,
+                'content' => $post->content,
+                'category' => $post->category->name,
+                'created_at' => Carbon::parse($post->created_at)->format('F j, Y'),
+            ];
+        }
+        return response()->json(['posts' => $data, 'count'=>Post::count()]);
+    }
+    public function changeStatusPost(Request $request){
+        if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
+        $post = Post::find($request->id);
+        if($post->isArchive == "1") $post->isArchive= '0';
+        else $post->isArchive="1";
+        $post->save();
+        return response()->json(['message'=>"updated status secsufully"]);
+
     }
 }
          

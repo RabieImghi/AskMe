@@ -39,6 +39,10 @@
                                     <button v-if="user.isFollowed !=0 " @click="follow()" class="btn btn-outline-primary me-2">
                                         <span>Following</span>
                                     </button>
+
+                                    <a v-if="user.donnationLink && user.id != this.store.user_id" :href="user.donnationLink" target="_blank" class="btn btn-warning me-2">
+                                        donnation
+                                    </a>
                                 </div>
                             </div>
                         </div>

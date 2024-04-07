@@ -63,6 +63,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/banneUser', [UserController::class, 'banneUser']);
     Route::post('/changeUser', [UserController::class, 'changeUser']);
     Route::get('/getAllTagesAdmin/{skip}', [TageController::class, 'getAllTagesAdmin']);
+    Route::get('/getPostManage/{skip}', [PostController::class, 'getPostManage']);
+    Route::post('/changeStatusPost', [PostController::class, 'changeStatusPost']);
+    
+    
 });
 Route::get('/getusers/{skip}', [UserController::class, 'getusers']);
 Route::post('/getTages/{skip}', [TageController::class, 'getAllTagesAdmin']);
