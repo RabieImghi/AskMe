@@ -35,7 +35,7 @@ Route::post('/CheckPermissionUser',[CheckController::class,'CheckPermissionUser'
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getPemissionsAndRole',[PermissionController::class,'getPemissionsAndRole']);
     Route::get('/getRolePemissions',[PermissionController::class,'getRolePemissions']);
-    Route::get('/getRolePemissionsUsers',[PermissionController::class,'getRolePemissionsUsers']);
+    Route::get('/getRolePemissionsUsers/{skip}',[PermissionController::class,'getRolePemissionsUsers']);
     Route::post('/ChangeStatusPermissions',[PermissionController::class,'ChangeStatusPermissionsUser']);
     Route::post('/addNewPermissions',[PermissionController::class,'addNewPermissions']);
     Route::post('/deleteNewPermissions',[PermissionController::class,'deleteNewPermissions']);
@@ -58,15 +58,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/verfyAnswer', [AnswerController::class, 'verfyAnswer']);
     Route::post('/updateUserInfo', [UserController::class, 'updateUserInfo']);
     Route::post('/follow', [UserController::class, 'follow']);
-    Route::get('/getusers/{skip}', [UserController::class, 'getusers']);
     Route::get('/searchusers/{search}', [UserController::class, 'searchUser']);
     Route::post('/deleteUser', [UserController::class, 'deleteUser']);
     Route::post('/banneUser', [UserController::class, 'banneUser']);
     Route::post('/changeUser', [UserController::class, 'changeUser']);
+    Route::get('/getAllTagesAdmin/{skip}', [TageController::class, 'getAllTagesAdmin']);
+    Route::get('/getPostManage/{skip}', [PostController::class, 'getPostManage']);
+    Route::post('/changeStatusPost', [PostController::class, 'changeStatusPost']);
+    
     
 });
+Route::get('/getusers/{skip}', [UserController::class, 'getusers']);
+Route::post('/getTages/{skip}', [TageController::class, 'getAllTagesAdmin']);
 Route::get('/getAllTagesCategory', [CategoryController::class, 'getAllTagesCategory']);
 Route::get('/allPost',[PostController::class,'allPost']);
+Route::post('/allPost',[PostController::class,'allPost']);
 Route::get('/addViewsPost/{id}',[PostController::class,'addViewsPost']); 
 Route::get('/getPostAnswers/{id}',[AnswerController::class,'getPostAnswers']);
 Route::get('/getAllTages', [TageController::class, 'getAllTages']);

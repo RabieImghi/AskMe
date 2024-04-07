@@ -5,9 +5,6 @@
         </div>
         <hr>
         <div class="container-mf">
-            <div class="text-end">
-                <button class="btn btn-primary" @click="showModal = !showModal">Add Tages</button>
-            </div>
             <table class="w-100">
                 <thead >
                     <tr class="itemsPermission">
@@ -56,10 +53,10 @@
             <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
                 <Loader/>
             </section>  
-            <div class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
-                <button @click="previewsPage()" class="btn btn-primary fw-bold">&lt;</button>
+            <div v-if="nbPage > 1" class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+                <button @click="previewsPage()" class="btn btn-dark fw-bold">&lt;</button>
                 <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
-                <button @click="nextPage()" class="btn btn-primary fw-bold">></button>
+                <button @click="nextPage()" class="btn btn-dark fw-bold">></button>
             </div> 
         </div>
         <div v-if="showConfirmModal" class="modal shad show d-block" tabindex="-1">
@@ -178,6 +175,11 @@
         bottom: 5vh;
         right: 20px;
     }
+    .activeClass{
+        background-color: black !important;
+        color: white;
+    
+    }
 </style>
 <script>
 import axios from 'axios';
@@ -209,7 +211,7 @@ export default {
     methods: {
         getUsers() {
             const store = useStore();
-            axios.get(`http://localhost:8000/api/getusers/${this.skip}`,{
+            axios.get(`${store.URL}getusers/${this.skip}`,{
                 headers: {'Authorization': `Bearer ${store.token}` }
             })
             .then(response =>{
@@ -226,7 +228,7 @@ export default {
             var formData = new FormData();
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
-            axios.post('http://127.0.0.1:8000/api/addNewTage',formData,{
+            axios.post(`${store.URL}addNewTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -240,7 +242,7 @@ export default {
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/updateTage',formData,{
+            axios.post(`${store.URL}updateTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -257,7 +259,7 @@ export default {
             const store = useStore();
             var formData = new FormData();
             formData.append('id', this.userId);
-            axios.post('http://127.0.0.1:8000/api/deleteUser',formData,{
+            axios.post(`${store.URL}deleteUser`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -298,7 +300,7 @@ export default {
             const store = new useStore();
             var formData = new FormData();
             formData.append('id', id);
-            axios.post('http://127.0.0.1:8000/api/banneUser',formData,{
+            axios.post(`${store.URL}banneUser`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             }).then(response=>{
                 console.log(response.data.message)
@@ -309,7 +311,7 @@ export default {
             const store = new useStore();
             var formData = new FormData();
             formData.append('id', id);
-            axios.post('http://127.0.0.1:8000/api/changeUser',formData,{
+            axios.post(`${store.URL}changeUser`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             }).then(response=>{
                 console.log(response.data.message)

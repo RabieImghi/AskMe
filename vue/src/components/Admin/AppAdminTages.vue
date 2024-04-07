@@ -40,6 +40,14 @@
                     </tr>
                 </tbody>
             </table>   
+            <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
+                <Loader/>
+            </section>  
+            <div v-if="nbPage > 1" class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+                <button @click="previewsPage()" class="btn btn-dark fw-bold">&lt;</button>
+                <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
+                <button @click="nextPage()" class="btn btn-dark fw-bold">></button>
+            </div> 
         </div>
         <div class="overlay" @click="showModal = !showModal" v-bind:class="{ 'show': !showModal }"></div>
         <div class="model addpermission"  v-bind:class="{ 'show': !showModal }">
@@ -207,7 +215,8 @@
 </style>
 <script>
 import axios from 'axios';
-import {useStore} from '../../store'
+import {useStore} from '../../store';
+import Loader  from '../User/AppLoader';
 export default {
     name: "AppAdminPermissions",
     data() {
@@ -219,19 +228,30 @@ export default {
             tageId: null,
             tageName:null,
             tageDesc:null,
+            skip: 0,
+            count:0,
+            page:1,
+            nbPage:1,
+            isLoading: true,
         }
     },
     mounted() {
         this.getTages();
-    },  
+    }, 
+    components:{
+        Loader
+    }, 
     methods: {
         getTages() {
             const store = useStore();
-            axios.get('http://127.0.0.1:8000/api/getAllTages',{
+            axios.get(`${store.URL}getAllTagesAdmin/${this.skip}`,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response =>{
                 this.tages=response.data.tages;
+                this.count=response.data.count;
+                this.nbPage = Math.ceil(this.count / 6);
+                this.isLoading = false;
             }).catch(error =>{
                 console.log(error)
             });
@@ -241,7 +261,7 @@ export default {
             var formData = new FormData();
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
-            axios.post('http://127.0.0.1:8000/api/addNewTage',formData,{
+            axios.post(`${store.URL}addNewTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -255,7 +275,7 @@ export default {
             formData.append('name', this.tageName);
             formData.append('descriprtion', this.tageDesc);
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/updateTage',formData,{
+            axios.post(`${store.URL}updateTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -273,12 +293,11 @@ export default {
             this.tageName = name;
             this.tageDesc = tageDesc;
         },
-        
         confirmDelete(){
             const store = useStore();
             var formData = new FormData();
             formData.append('id', this.tageId);
-            axios.post('http://127.0.0.1:8000/api/deleteTage',formData,{
+            axios.post(`${store.URL}deleteTage`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(() => {
@@ -286,7 +305,26 @@ export default {
                 this.tageName = null;
                 this.showConfirmModal = !this.showConfirmModal;
             });
-        }
+        },
+        nextPage(){
+            if(this.skip < this.count - 6){
+                this.skip += 6;
+                this.page += 1;
+                this.getTages(); 
+            }
+        },
+        previewsPage(){
+            if(this.skip >= 6){
+                this.skip -= 6;
+                this.page -= 1;
+                this.getTages();
+            }
+        },
+        getPage(page){
+            this.skip = page * 6 - 6;
+            this.page = page;
+            this.getTages();
+        },
     },
 }
 </script>

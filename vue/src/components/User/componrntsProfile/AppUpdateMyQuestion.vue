@@ -141,7 +141,7 @@ import { useStore } from '@/store';
             
         },
         mounted(){
-           
+            let store = useStore();
             this.$nextTick(() => {
                 tinymce.init({
                     selector: '#mytextarea',
@@ -152,7 +152,7 @@ import { useStore } from '@/store';
                     }
                 });
             });
-            axios.get('http://localhost:8000/api/getAllTagesCategory')
+            axios.get(`${store.URL}getAllTagesCategory`)
             .then(response => {
                 this.tags = response.data.Tages;
                 this.categoryList = response.data.Categorys;
@@ -178,7 +178,7 @@ import { useStore } from '@/store';
                 formData.append('description', tinymce.get('mytextarea').getContent());
                 formData.append('image', this.file);
                 formData.append('id', this.id);
-                let response = await axios.post('http://localhost:8000/api/UpdateQuestions', formData,{
+                let response = await axios.post(`${store.URL}UpdateQuestions`, formData,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(response.status == 200){

@@ -92,6 +92,7 @@
 </template>
 <script>
 import axios from 'axios';
+import { useStore } from '../../store';
     export default{
         name: 'AppAside',
         data(){
@@ -107,7 +108,8 @@ import axios from 'axios';
         },
         methods: {
             async getStatisics() {
-                const response = await axios.get('http://localhost:8000/api/getStatisics');
+                const store = useStore();
+                const response = await axios.get(`${store.URL}getStatisics`);
                 this.TopUsers = response.data.TopUsers;
                 this.TopTages = response.data.TopTages;
                 this.Statistiques = response.data.Statistiques;

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useStore = defineStore('main', {
   state: () => ({
+    URL: 'http://127.0.0.1:8000/api/',
     role_id: localStorage.getItem('role_id') || 3,
     user_id: localStorage.getItem('user_id') || null,
     user: localStorage.getItem('user') || null,
@@ -11,7 +12,9 @@ export const useStore = defineStore('main', {
     imageUser: localStorage.getItem('imageUser') || null,
     coverImage: localStorage.getItem('coverImage') || null,
     post_id: localStorage.getItem('post_id') || null,
-    userProfileId : sessionStorage.getItem('userProfileId') || null,
+    userProfileId : localStorage.getItem('userProfileId') || null,
+    tageId : localStorage.getItem('tageId') || null,
+    
   }),
   actions: {
     storeRole_id(role_id) {
@@ -51,9 +54,14 @@ export const useStore = defineStore('main', {
       localStorage.setItem('coverImage', coverImage)
     },
     setuserProfileId(userId){
-      sessionStorage.setItem('userProfileId', userId)
+      localStorage.setItem('userProfileId', userId)
       this.userProfileId = userId;
     },
+    setTageId(tageId){
+      localStorage.setItem('tageId', tageId)
+      this.tageId = tageId;
+
+    }
 
     
   },

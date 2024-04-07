@@ -39,7 +39,10 @@
                                     <button v-if="user.isFollowed !=0 " @click="follow()" class="btn btn-outline-primary me-2">
                                         <span>Following</span>
                                     </button>
-                                    <button v-if="this.userId != this.store.user_id" class="btn btn-outline-primary">Message</button>
+
+                                    <a v-if="user.donnationLink && user.id != this.store.user_id" :href="user.donnationLink" target="_blank" class="btn btn-warning me-2">
+                                        donnation
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -355,7 +358,7 @@
                 formData.append('image', file);
                 formData.append('type', type);
                 formData.append('id', this.userId);
-                const response = await axios.post(`http://localhost:8000/api/uploadImage`, formData,{
+                const response = await axios.post(`${store.URL}uploadImage`, formData,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 });
                 if(type ==  'Profil'){
@@ -375,7 +378,7 @@
                 if(this.store.user_id != null){
                     followerId = this.store.user_id;
                 }
-                let response = await axios.get(`http://localhost:8000/api/getUserInfo/${this.userId}/${followerId}`);
+                let response = await axios.get(`${this.store.URL}getUserInfo/${this.userId}/${followerId}`);
                 if(response.data.message == 'errore'){
                     this.$router.push('/user/');
                 }
@@ -389,7 +392,7 @@
                 var formData = new FormData();
                 formData.append('user_id', this.userId);
                 formData.append('follower_id', this.store.user_id);
-                axios.post(`http://localhost:8000/api/follow`,formData,{
+                axios.post(`${this.store.URL}follow`,formData,{
                     headers: {'Authorization': `Bearer ${this.store.token}` }
                 }).then(() => {
                     this.getUserInfo();

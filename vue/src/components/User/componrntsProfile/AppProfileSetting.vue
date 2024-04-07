@@ -2,9 +2,9 @@
     <div class="sectionBadge padding-none  pe-4">
         <div class="bg-white shadow">
             <section class="cover" :style="{
-                backgroundImage: `url(${user.imageCover})`,
-                backgroundSize: 'cover',
-            }">
+                    backgroundImage: `url(${user.imageCover})`,
+                    backgroundSize: 'cover',
+                }">
                 <div class="coverInfo row p-3">
                     <div class="infoProfile col pt-4 pe-4">
                         <input type="file" class="d-none" @change="changeImage('Cover')" id="fileinputCover" />
@@ -83,6 +83,23 @@
                                         <label class="small mb-1" for="inputEmailAddress">About</label>
                                         <textarea name="" class="form-control" id="" v-model="user.about" cols="30" rows="6"></textarea>
                                     </div>
+                                </form>
+                            </div>
+                            <div class="card-header d-flex justify-content-between">
+                                Donnations Details
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="small mb-1" >Coindrop Link</label>
+                                        <input class="form-control mb-3" type="text" placeholder="https://coindrop.to/Exemple" 
+                                        v-model="user.donnationLink"
+                                        />
+                                        <span class="pt-3">If you don't have Coindrop
+                                            <a href="https://coindrop.to" class="text-danger" target="_blank">click here to create Account</a> 
+                                        </span>
+                                    </div>
+                                    
                                 </form>
                             </div>
                             <div class="card-header">Social Link Details</div>
@@ -170,8 +187,7 @@ export default {
         this.getUserInfo();
     },
     created() {
-        axios
-            .get("https://restcountries.com/v3.1/all")
+        axios.get("https://restcountries.com/v3.1/all")
             .then((response) => {
                 this.countries = response.data.sort((a, b) =>
                     a.name.common.localeCompare(b.name.common)
@@ -199,10 +215,7 @@ export default {
             formData.append("image", file);
             formData.append("type", type);
             formData.append("id", this.userId);
-            const response = await axios.post(
-                `http://localhost:8000/api/uploadImage`,
-                formData,
-                {
+            const response = await axios.post(`${store.URL}uploadImage`,formData,{
                     headers: { Authorization: `Bearer ${store.token}` },
                 }
             );
@@ -219,18 +232,19 @@ export default {
             }
         },
         async getUserInfo() {
+            const store = useStore();
             var followerId =null;
             if(this.store.user_id != null){
                 followerId = this.store.user_id;
             }
-            let response = await axios.get(`http://localhost:8000/api/getUserInfo/${this.userId}/${followerId}`);
+            let response = await axios.get(`${store.URL}getUserInfo/${this.userId}/${followerId}`);
             this.user = response.data.user;
             console.log(this.user);
         },
         async submitForm() {
             let store = useStore();
             let response = await axios.post(
-                `http://localhost:8000/api/updateUserInfo`,
+                `${store.URL}updateUserInfo`,
                 this.user,
                 {
                     headers: { Authorization: `Bearer ${store.token}` },

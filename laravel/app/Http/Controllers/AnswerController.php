@@ -108,9 +108,7 @@ class AnswerController extends Controller
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $answer = Answer::find($id);
         $answer->delete();
-        return response()->json([
-            'message' => 'Answer deleted successfully!',
-        ]);
+        return response()->json([ 'message' => 'Answer deleted successfully!'],200);
     }
     public function updateAnswer(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);

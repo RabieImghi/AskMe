@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+                <div v-if="nbPage > 1" class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
                     <button @click="previewsPage()" class="btn btn-primary fw-bold">&lt;</button>
                     <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
                     <button @click="nextPage()" class="btn btn-primary fw-bold">></button>
@@ -184,7 +184,7 @@
         methods: {
             fetchUsers(){
                 const store = useStore();
-                axios.get(`http://localhost:8000/api/getusers/${this.skip}`,{
+                axios.get(`${store.URL}getusers/${this.skip}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 }).then(response => {
                     this.isLoading = false;
@@ -227,7 +227,7 @@
                     this.fetchUsers();
                     return;
                 }
-                axios.get(`http://localhost:8000/api/searchusers/${this.searchQuery}`,{
+                axios.get(`${store.URL}searchusers/${this.searchQuery}`,{
                     headers: {'Authorization': `Bearer ${store.token}` }
                 }).then(response => {
                     this.isLoading = false;

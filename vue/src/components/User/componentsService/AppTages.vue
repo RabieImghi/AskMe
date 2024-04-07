@@ -1,6 +1,6 @@
 <template>
     <div class="contentPage pe-4">
-        <div class="sectionBadge bg-white shadow">
+        <div class="sectionBadge bg-white shadow sectionUser">
             <div class="border-bottom container-mf pt-4 pb-4 d-flex align-items-center justify-content-between">
                 <span class="fw-bold text-secondary">Home / <span class="text-secondary-500"> Badges</span></span>
                 <div class="search">
@@ -8,24 +8,8 @@
                         class="form-control" placeholder="Search Users">
                 </div>
             </div>
-            <!-- <section class="tageList container-mf border-bottom pb-4 pt-4  ">
-                <div class="tage d-flex flex-wrap gap-3 justify-content-between">
-                    <div class="translateEffect cursor-point tagelists border p-3 rounded-1" 
-                    v-for="tage in filteredUsers" :key="tage.id">
-                        <div class="TageTitle d-flex gap-4">
-                            <img src="../../../assets/img/tage.png" width="35px" alt="">
-                            <span class="fw-bold text-secondary h3 ">{{tage.name}}</span>
-                        </div>
-                        <div class="text-secondary">
-
-                            {{ tage.description }}
-                        </div>
-                    </div>
-                    
-                </div>
-            </section> -->
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2" v-for="tage in filteredUsers" :key="tage.id">
+                <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2" v-for="tage in tages" :key="tage.id">
                     <div class="card border-0 bg-light rounded shadow-sm">
                         <div class="card-body p-4">
                             <h5>
@@ -37,12 +21,21 @@
                             </h5>
                                 <div class="mt-3"> 
                                     <span class="text-muted d-block">
-                                        {{ tage.description }}
+                                        {{ tage.descriprtion }}
                                     </span>
                                 </div>
-                            <div class="mt-3"> <a href="#" class="btn btn-primary">View All Post</a></div>
+                            <div class="mt-3"> 
+                                <router-link class="btn btn-primary" to="/user/Servises/Posts" @click="storeId(tage.id)">
+                                    View All Post
+                                </router-link>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div v-if="nbPage > 1" class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
+                    <button @click="previewsPage()" class="btn btn-primary fw-bold">&lt;</button>
+                    <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
+                    <button @click="nextPage()" class="btn btn-primary fw-bold">></button>
                 </div>
             </div>
             <footer class="text-center text-secondary fw-bold pt-3">
@@ -53,23 +46,19 @@
     </div>
 </template>
 <script>
+    import axios from 'axios';
+    import {useStore} from '@/store';
     export default{
         name: 'AppBadge',
         data(){
+            const store = useStore();
             return{
-                tages : [
-                     {id:1, name:'php', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"},  
-                     {id:2, name:'laravel ', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:3, name:'js ', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:4, name:'boostrap', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:5, name:'jquery', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:6, name:'jira', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:7, name:'github', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:8, name:'trilo', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:9, name:'git', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:10, name:'xd', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                     {id:11, name:'tailweend', description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}, 
-                ],
+                tages : [],
+                skip: store.skip,
+                count:0,
+                page:1,
+                nbPage:1,
+                isLoading: true,
                 searchQuery: ''
             };
         },
@@ -79,6 +68,54 @@
                     return tage.name.toLowerCase().includes(this.searchQuery.toLowerCase());
                 });
             }
+        },
+        mounted(){
+            this.fetchTages();
+        },
+        methods:{
+            storeId(id){
+                const store = useStore();
+                store.setTageId(id);
+            },
+            fetchTages(){
+                const store = useStore();
+                let formData = new FormData();
+                formData.append('type','user');
+                axios.post(`${store.URL}getTages/${this.skip}`, formData).then(response => {
+                    this.isLoading = false;
+                    this.tages = response.data.tages;
+                    this.count = response.data.count;
+                    this.nbPage = Math.ceil(this.count / 9);
+                });
+            },
+            nextPage(){
+                if(this.skip < this.count - 9){
+                    this.skip += 9;
+                    this.page += 1;
+                    this.fetchTages(); 
+                    this.$nextTick(() => {
+                        document.querySelector('.sectionUser').scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+            },
+            previewsPage(){
+                if(this.skip >= 9){
+                    this.skip -= 9;
+                    this.page -= 1;
+                    this.fetchTages();
+                    this.$nextTick(() => {
+                        document.querySelector('.sectionUser').scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+            },
+            getPage(page){
+                this.skip = page * 9 - 9;
+                this.page = page;
+                this.fetchTages();
+                this.$nextTick(() => {
+                    document.querySelector('.sectionUser').scrollIntoView({ behavior: 'smooth' });
+                });
+            },
         }
         
     }

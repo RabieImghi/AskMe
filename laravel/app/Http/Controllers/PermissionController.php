@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\permession_vues_users;
 use App\Models\PermessionVue;
 use App\Models\Role;
+use App\Models\User;
 
 class PermissionController extends Controller
 {
@@ -22,18 +23,23 @@ class PermissionController extends Controller
         }
         return response()->json(['permissions'=>$Data],200);
     } 
-    public function getRolePemissionsUsers(Request $request){
+    public function getRolePemissionsUsers(Request $request,$skip){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        $permissions = permession_vues_users::with('permessionVue')->with('user')->get();
+        $permissions = permession_vues_users::with('permessionVue')
+            ->with(['user' => function ($query) use ($skip)  {
+                $query->skip($skip)->take(6);
+            }])->get();
         $Data = [];
         foreach($permissions as $permission){
-            $Data[$permission->user->name][] = [
-                "route" => $permission->permessionVue->name, 
-                "isActive" => $permission->is_active,
-                'id' => $permission->id,
-            ];
+            if ($permission->user && $permission->permessionVue) {
+                $Data[$permission->user->name][] = [
+                    "route" => $permission->permessionVue->name, 
+                    "isActive" => $permission->is_active,
+                    'id' => $permission->id,
+                ];
+            }
         }
-        return response()->json(['permissions'=>$Data]);
+        return response()->json(['permissions'=>$Data, 'count'=>User::count()],200);
     } 
     public function ChangeStatusPermissionsUser(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
