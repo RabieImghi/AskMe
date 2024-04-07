@@ -92,6 +92,9 @@ class AnswerController extends Controller
             'post_id' => 'required',
             'user_id' => 'required'
         ]);
+        $user = User::find($request->user()->id);
+        $user->points=$user->points+ 15;
+        $user->save();
         $answer = new Answer();
         $answer->content = $request->answerDetails;
         $answer->user_id = $request->user_id;
