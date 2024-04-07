@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categorys')->onDelete('cascade')->onUpdate('cascade');
+            $table->enum('isArchive', ['0', '1'])->default('0');
             $table->engine = 'InnoDB';
             $table->timestamps();
         });

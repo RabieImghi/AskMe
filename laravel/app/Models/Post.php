@@ -15,6 +15,7 @@ class Post extends Model
         'image',
         'user_id',
         'category_id',
+        'isArchive',
     ];
     public function user()
     {

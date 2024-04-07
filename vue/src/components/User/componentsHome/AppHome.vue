@@ -11,21 +11,7 @@
             <img src="../../../assets/img/auth.png" id="imageAuth" width="40%" class="p-3" alt="Image">
         </section>
         <section class="QuestionSection shadow pt-4  py-4 ">
-            <div class="border-bottom pb-4">
-                <div class="filtrBar container-mf d-flex flex-wrap gap-2 justify-content-between align-items-center">
-                    <div class="filter d-flex justify-content-between align-items-center gap-2">
-                        <select name="" id="" class="form-select">
-                            <option value="null" selected disabled>Filtr_By</option>
-                            <option value="1">Must read Question</option>
-                            <option value="1">Must read Question 1</option>
-                            <option value="1">Must read Question 11</option>
-                        </select>
-                    </div>
-                    <div class="search d-flex justify-content-betweent align-items-center gap-2">
-                        <input type="search" style="max-width: 250px;" class="form-control" placeholder="Search...">
-                    </div>
-                </div>
-            </div>
+            
             <AppDisplayQuestion/>
             <footer>
                 <p class="fw-bold text-secondary text-center p-2">© Copyright AskMe. All Rights Reserved <br>

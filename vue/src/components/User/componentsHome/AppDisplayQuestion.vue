@@ -1,5 +1,17 @@
 <template>
     <div>
+        <div class="border-bottom pb-4">
+            <div class="filtrBar container-mf d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                <div class="search d-flex justify-content-betweent align-items-center gap-2">
+                    <select name="" id="" v-model="serchType" class="form-select">
+                        <option value="Post" selected disabled>BY</option>
+                        <option value="Category">Category</option>
+                        <option value="Post">Post</option>
+                    </select>
+                    <input type="search" v-model="searchQuery" @input="serchPost()" style="max-width: 350px;" class="form-control" placeholder="Search...">
+                </div>
+            </div>
+        </div>
         <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
                 <Loader/>
             </section>
@@ -76,6 +88,16 @@
             </div>
             
         </div>
+        <div v-if="Posts.length == 0" style="height: 71vh;">
+            <div class="col-md-12">
+                <div class="card mt-4">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-center mt-5 pt-5 h4 fw-bold text-secondary">No Post Found</h5>
+                        <p class="card-text">Sorry, we couldn't find any posts matching your search criteria.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div v-if="nbPage > 1" class="navigation d-flex justify-content-end gap-2 align-items-center pt-3 pb-3">
             <button @click="previews()" class="btn btn-primary fw-bold">&lt;</button>
             <button v-for="nb in nbPage" :key="nb.id" :class="{ activeClass: page === nb } " class="btn btn-light border" @click="getPage(nb)">{{nb}}</button>
@@ -100,6 +122,8 @@
                 count:0,
                 nbPage:1,
                 userId:null,
+                searchQuery: "",
+                serchType: "Post",
                 isLoading: true 
             };
         },
@@ -112,6 +136,24 @@
             Loader, 
         },
         methods: {
+            serchPost(){
+                if(this.searchQuery==''){
+                    this.fetchPosts();
+                }else{
+                    const store = new useStore();
+                    let formData = new FormData();
+                    formData.append('serchType', this.serchType);
+                    formData.append('searchQuery', this.searchQuery);
+                    axios.post(`${store.URL}allPost?page=${this.nombrePost}`,formData)
+                    .then(response => {
+                        this.Posts = response.data.data;
+                        this.count= response.data.count;
+                        this.nbPage = Math.ceil(this.count / 6);
+                        this.isLoading = false;
+                    });
+                }
+
+            },
             navigateToAnswer(postId) {
                 this.$router.push({ name: 'userAnswers', params: { id: postId} });
             },

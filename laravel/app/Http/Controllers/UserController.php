@@ -77,6 +77,8 @@ class UserController extends Controller
     public function getUserInfo($id,$followerId){
         $user = User::with('socialLink')->where('id',$id)->first();
         if(!$user){return response()->json(['message'=>'errore']);}
+        $donnation = explode('|',$user->donnationLink);
+        
         $userData = [
             'id'=>$user->id,
             'name'=>$user->name,
@@ -93,6 +95,7 @@ class UserController extends Controller
             'Github'=> $user->socialLink->Github ?? null,
             'instagram'=> $user->socialLink->instagram ?? null,
             'WebSite'=> $user->socialLink->WebSite ?? null,
+            'donnationLink'=>$user->donnationLink,
             'imageProfile'=>asset('uploads/'.$user->avatar),
             'imageCover'=>asset('uploads/'.$user->coverImage),
             'countQuesions' => Post::where('user_id',$id)->count(),
@@ -121,6 +124,8 @@ class UserController extends Controller
             'Github' => 'nullable',
             'emailSosial' => 'nullable|email',
             'WebSite' => 'nullable',
+            'donnationLink'=>'nullable',
+
         ]);
         $user = User::find($request->id);
         $user->update([
@@ -131,6 +136,18 @@ class UserController extends Controller
             'phone' => $request->phone,
             'about'=>$request->about
         ]);
+        $donnationLink = $user->donnationLink;
+        if(!$donnationLink && $request->donnationLink!= ""){
+            $user->donnationLink = $request->donnationLink;
+            $user->save();
+        }else{
+            if($request->donnationLink != ""){
+                $user->donnationLink =$request->donnationLink;
+            }else{
+                $user->donnationLink = null;
+            }
+            $user->save(); 
+        }
         $socialLink = SocialLink::firstOrCreate(['user_id' => $request->id]);
         $socialLink->update([
             'facebook' => $request->facebook,
