@@ -60,9 +60,10 @@
                 h5: 'h5',
                 Badges:[
                     {id:1, point:20, description: "For Signing up."},
-                    {id:2, point:20, description: "For adding an answer."},
-                    {id:3, point:20, description: "For adding a new question." },
-                    {id:4, point:20, description: "Your question gets a vote." },
+                    {id:2, point:15, description: "For adding an answer."},
+                    {id:3, point:30, description: "For adding a new question." },
+                    {id:4, point:10, description: "Your question gets a vote." },
+                    {id:4, point:25, description: "Your Answer gets a vote." },
                 ],
                 BadgesLevels:[
                     {id:1, class: 'Beginner h6', point:10, level: 'Beginner', description: "You must have a total score of 50 in at least 10 non-community wiki answers to achieve this badge. Highest scoring answer that outscored an accepted answer with score of more than 10."},

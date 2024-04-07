@@ -47,7 +47,6 @@ class AuthController extends Controller
             'name' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'points' => 'required',
             'role_id' => 'required',
         ]);
         
@@ -57,7 +56,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'points' => $request->points,
+            'points' => 20,
             'role_id' => 2,
         ]);
         $permissions = PermessionVue_Role::where('role_id',2)->pluck('permession_vue_id')->toArray();

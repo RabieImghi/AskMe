@@ -70,12 +70,15 @@ class PostController extends Controller
     
     public function AddQuestions(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
+        
         $request->validate([
             'title' => 'required',
             'description' => 'required',
             'category' => 'required',
             'tages' => 'required',
         ]);
+        $user = User::find($request->user()->id);
+        $user->points=$user->points+ 15;
         $filename = "";
         if($request->hasFile('image')) {
             $file = $request->file('image');
