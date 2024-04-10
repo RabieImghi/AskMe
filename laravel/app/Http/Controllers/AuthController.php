@@ -8,22 +8,21 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\PermessionVue_Role;
 use App\Models\permession_vues_users;
-
+use App\Repositories\Interfaces\IAuthRepository;
 
 class AuthController extends Controller
 {
+    protected $iAuthRepository;
+
+    public function __construct(IAuthRepository $iAuthRepository){
+        $this->iAuthRepository = $iAuthRepository;
+    }
     public function login(Request $request){
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        $user = User::where('email', $request->email)->first();
-        if (!$user) 
-            return response()->json(['message' => 'Email not exist or not correct!','error'=>"email"], 401);
-        if (!Hash::check($request->password, $user->password)) 
-            return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
-        if($user->isBanne == "1")
-            return response()->json(['message' => "You Are Banned"],401);
+        $user = $this->iAuthRepository->login($request);
         $token = $user->createToken('API Token')->plainTextToken;
         $dataUser = [
             'firstName'=>$user->firstname,
@@ -38,9 +37,7 @@ class AuthController extends Controller
         return response()->json(['user' => $dataUser, 'token' => $token, "user_id"=>$user->id],200);
     }
 
-    public function register(Request $request)
-    {
-        
+    public function register(Request $request){
         $request->validate([
             'lastname' => 'required',
             'firstname' => 'required',
@@ -50,49 +47,26 @@ class AuthController extends Controller
             'role_id' => 'required',
         ]);
         
-        $user = User::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'points' => 20,
-            'role_id' => 2,
-        ]);
-        $permissions = PermessionVue_Role::where('role_id',2)->pluck('permession_vue_id')->toArray();
-        foreach($permissions as $permission){
-            permession_vues_users::create([
-                'user_id' => $user->id,
-                'permession_vue_id' => $permission,
-                'is_active'=>1,
-                'is_deleted'=>0,
-            ]);
-        }
+        $user = $this->iAuthRepository->register($request);
+        $permissions = $this->iAuthRepository->getPermessionVue_Role();
+        $this->iAuthRepository-> Permession_vues_users_create($permissions,$user->id);
         return response()->json([
             'user' => $user,
         ]);
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request){
         cookie('authToken', "", time() - (60 * 60 * 24 * 365));
         cookie('authUser', "", time() - (60 * 60 * 24 * 365));
         return response()->json(['message' => 'Successfully logged out'],200);
     }
 
-    public function CheckPermission()
-    {
+    public function CheckPermission(){
         return response()->json(['message' => 'You have permission to access this route!'],200);
     }
 
     public function PermissionVueJs(Request $request){
-        PermessionVue::truncate();
-        foreach($request->router as $router){
-            if($router == '/user' || $router == '/admin' || $router == null || $router == '/user/Error404' || $router == '/user/auth') continue;
-            PermessionVue::create([
-                'name' => $router,
-            ]);
-        }
+        $this->iAuthRepository->PermissionVueJs($request);
         return response()->json(['test' => $request->router[2]],200);
     }
 }
