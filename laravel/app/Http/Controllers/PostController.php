@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+
+    public function getReating($id, $table,$champ){
+        return DB::table($table)
+            ->select(DB::raw('SUM(case when type = "+" then 1 when type = "-" then -1 else 0 end) as reating'))
+            ->where($champ, $id)
+            ->first()
+            ->reating ?? 0;
+    }
+    public function getIdUserVoted($table,$id,$champ){
+        return DB::table($table)->select('user_id','type')->where($champ, $id)->get();
+    }
     public function allPost(Request $request){
         
         $data = [];
@@ -48,6 +59,7 @@ class PostController extends Controller
                 $tage = Tage::find($tage->tage_id);
                 $dataTage[] = $tage->name;
             }
+
             $data[] = [
                 'id' => $post->id,
                 'title' => $post->title,
@@ -61,8 +73,8 @@ class PostController extends Controller
                 'category' => $post->category->name,
                 'created_at' => Carbon::parse($post->created_at)->format('F j, Y'),
                 'tages' => $dataTage,
-                'listIdUserVoted'=> AnswerController::getIdUserVoted('post_reatings',$post->id,'post_id'),
-                'reating' => AnswerController::getReating($post->id, 'post_reatings', 'post_id'),
+                'listIdUserVoted'=> $this->getIdUserVoted('post_reatings',$post->id,'post_id'),
+                'reating' =>$this->getReating($post->id, 'post_reatings', 'post_id'),
             ];
         }
         return response()->json([ 'data' => $data, 'count' => $count, ]);
