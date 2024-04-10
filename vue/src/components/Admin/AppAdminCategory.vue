@@ -229,7 +229,7 @@ export default {
             let response = axios.post(`${store.URL}addNewCategory`,formData,{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             });
-            if(response.status == 200){
+            if(response){
                 this.getTages();
                 this.showModal = !this.showModal;
             }
