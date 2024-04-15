@@ -89,8 +89,6 @@ class PostController extends Controller
             'category' => 'required',
             'tages' => 'required',
         ]);
-        $user = User::find($request->user()->id);
-        $user->points=$user->points+ 15;
         $filename = "";
         if($request->hasFile('image')) {
             $file = $request->file('image');
@@ -131,9 +129,6 @@ class PostController extends Controller
             foreach ($tages as $tage) {
                 $tage = Tage::find($tage->tage_id);
                 $dataTage[] = $tage->name;
-            }
-            foreach ($tages as $tage) {
-                $tage = Tage::find($tage->tage_id);
                 $dataTageId[] = $tage->id;
             }
             $data[] = [
@@ -150,8 +145,8 @@ class PostController extends Controller
                 'tages' => $dataTage,
                 'imageUser' => asset('uploads/'.$post->user->avatar),
                 'tages_id' => $dataTageId,
-                'listIdUserVoted'=> AnswerController::getIdUserVoted('post_reatings',$post->id,'post_id'),
-                'reating' => AnswerController::getReating($post->id, 'post_reatings', 'post_id'),
+                'listIdUserVoted'=> $this->getIdUserVoted('post_reatings',$post->id,'post_id'),
+                'reating' =>$this->getReating($post->id, 'post_reatings', 'post_id'),
             ];
         }
         return response()->json([ 'data' => $data, 'count' => $count, ]);
@@ -180,7 +175,6 @@ class PostController extends Controller
         $post->image = $filename;
         $post->category_id = $request->category;
         $post->save();
-        $id = $request->id;
         $tages = explode(',', $request->tages) ;
         $post->tages()->detach();
         foreach ($tages as $tage) {
@@ -298,7 +292,6 @@ class PostController extends Controller
             'message' => 'Views added successfully',
         ]);
     }
-
     public function getPostManage(Request $request,$skip){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $posts = Post::with('user', 'category')->skip($skip)->take(6)->get();

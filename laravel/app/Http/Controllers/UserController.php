@@ -11,14 +11,19 @@ use App\Models\permession_vues_users;
 use Illuminate\Http\Request;
 use App\Models\PermessionVue_Role;
 use App\Models\SocialLink;
+use App\Repositories\Interfaces\IUserRepository;
 use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
 {
+    protected $iUserRepository;
+    public function __construct(IUserRepository $iUserRepository){
+        $this->iUserRepository = $iUserRepository;
+    }
     public function getStatisics(){
-        $tages = Tage::orderBy('id', 'desc')->take(4)->get();
-        $users = User::with('posts')->orderBy('points', 'desc')->take(4)->get();
+        $tages = $this->iUserRepository->getStatisicsTage();
+        $users = $this->iUserRepository->getStatisicsUser();
         $userIndfo = [];
         $lastTages = [];
         foreach($tages as $tage){
@@ -33,12 +38,7 @@ class UserController extends Controller
                 'avatar'=> asset('uploads/'.$user->avatar),
             ];
         }
-        $Statistique=  [
-            'users' => User::count(),
-            'questions' => Post::count(),
-            'answers' => Answer::count(),
-            'views' => Post::sum('views'),
-        ];
+        $Statistique= $this->iUserRepository->getStatisicsCount();
         return response()->json(['Statistiques' => $Statistique, 'TopUsers' => $userIndfo, 'TopTages' => $lastTages]);
         
     }
