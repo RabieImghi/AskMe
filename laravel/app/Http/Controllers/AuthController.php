@@ -2,27 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PermessionVue;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use App\Models\PermessionVue_Role;
-use App\Models\permession_vues_users;
-use App\Repositories\Interfaces\IAuthRepository;
+use App\Repositories\Interfaces\IUserRepository;
 
 class AuthController extends Controller
 {
-    protected $iAuthRepository;
+    protected $IUserRepository;
 
-    public function __construct(IAuthRepository $iAuthRepository){
-        $this->iAuthRepository = $iAuthRepository;
+    public function __construct(IUserRepository $IUserRepository){
+        $this->IUserRepository = $IUserRepository;
     }
     public function login(Request $request){
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        $user = $this->iAuthRepository->login($request);
+        $user = $this->IUserRepository->login($request);
         $token = $user->createToken('API Token')->plainTextToken;
         $dataUser = [
             'firstName'=>$user->firstname,
@@ -47,9 +42,9 @@ class AuthController extends Controller
             'role_id' => 'required',
         ]);
         
-        $user = $this->iAuthRepository->register($request);
-        $permissions = $this->iAuthRepository->getPermessionVue_Role();
-        $this->iAuthRepository-> Permession_vues_users_create($permissions,$user->id);
+        $user = $this->IUserRepository->register($request);
+        $permissions = $this->IUserRepository->getPermessionVue_Role();
+        $this->IUserRepository-> Permession_vues_users_create($permissions,$user->id);
         return response()->json([
             'user' => $user,
         ]);
@@ -66,7 +61,7 @@ class AuthController extends Controller
     }
 
     public function PermissionVueJs(Request $request){
-        $this->iAuthRepository->PermissionVueJs($request);
+        $this->IUserRepository->PermissionVueJs($request);
         return response()->json(['test' => $request->router[2]],200);
     }
 }

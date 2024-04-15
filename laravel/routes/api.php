@@ -29,8 +29,8 @@ Route::post('/RegisterUser',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::get('/logout',[AuthController::class,'logout']);
 Route::post('/PermissionVueJs',[AuthController::class,'PermissionVueJs']);
-Route::post('/CheckPermission',[CheckController::class,'CheckPermission']);
-Route::post('/CheckPermissionUser',[CheckController::class,'CheckPermissionUser']);
+Route::post('/CheckPermission',[PermissionController::class,'CheckPermission']);
+Route::post('/CheckPermissionUser',[PermissionController::class,'CheckPermissionUser']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getPemissionsAndRole',[PermissionController::class,'getPemissionsAndRole']);

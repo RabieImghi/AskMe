@@ -1,19 +1,18 @@
 <?php 
 
-namespace App\Repositories; 
+namespace App\Repositories;
 
-use App\Models\Auth; 
-use App\Models\User; 
+use App\Models\Answer;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\PermessionVue_Role;
 use App\Models\PermessionVue;
+use App\Models\Tage;
 use App\Models\permession_vues_users;
+use App\Models\Post;
+use App\Repositories\Interfaces\IUserRepository; 
 
-
-
-use App\Repositories\Interfaces\IAuthRepository; 
-
-class AuthRepository implements IAuthRepository 
+class UserRepository implements IUserRepository 
 { 
     public function login($request){
         $user = User::where('email', $request->email)->first();
@@ -61,4 +60,28 @@ class AuthRepository implements IAuthRepository
             ]);
         }
     }
+    public function getStatisicsCount(){
+        $Statistique=  [
+            'users' => User::count(),
+            'questions' => Post::count(),
+            'answers' => Answer::count(),
+            'views' => Post::sum('views'),
+        ];
+        return $Statistique;
+    }
+    public function getStatisicsTage(){
+        return Tage::orderBy('id', 'desc')->take(4)->get();
+    }
+    public function getStatisicsUser(){
+        return User::with('posts')->orderBy('points', 'desc')->take(4)->get();
+    }
+    public function uploadImage($request){}
+    public function getUserInfo($id,$followerId){}
+    public function updateUserInfo($request){}
+    public function follow($request){}
+    public function getusers($request,$skip){}
+    public function searchUser($request, $search){}
+    public function deleteUser($request){}
+    public function banneUser($request){}
+    public function changeUser($request){}
 }

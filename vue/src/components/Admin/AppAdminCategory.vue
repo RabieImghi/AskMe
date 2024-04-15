@@ -196,7 +196,6 @@
 <script>
 import axios from 'axios';
 import { useStore } from '@/store';
-// import select2 from "./AppSelect2.vue"
 export default {
     name: "AppAdminPermissions",
     data() {
