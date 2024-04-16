@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Tage;
 use App\Models\Post;
 use App\Models\Answer;
+use App\Models\Category;
 use App\Models\Follower;
-use App\Models\permession_vues_users;
 use Illuminate\Http\Request;
-use App\Models\PermessionVue_Role;
-use App\Models\SocialLink;
 use App\Repositories\Interfaces\IUserRepository;
-use Illuminate\Support\Facades\Hash;
+
 
 
 class UserController extends Controller
@@ -49,36 +46,16 @@ class UserController extends Controller
             'type'=>'required|string',
             'id'=>'required|integer',
         ]);
-        $user = User::find($request->id);
-        if($request->type == 'Profil'){
-            $lastImage = $user->avatar;
-            if($lastImage != 'default.png'){
-                $file_path = public_path('uploads/'.$lastImage);
-                if(file_exists($file_path)) unlink($file_path);
-            }
-            $imageName = time().'.'.$request->image->extension();  
-            $request->image->move(public_path('uploads'), $imageName);
-            $user->avatar = $imageName;
-            $user->save();
-            return response()->json(['image' => asset('uploads/'.$imageName)],200);
-        }else if($request->type == 'Cover') {
-            $lastImage = $user->coverImage;
-            if($lastImage != 'default2.jpg'){
-                $file_path = public_path('uploads/'.$lastImage);
-                if(file_exists($file_path)) unlink($file_path);
-            }
-            $imageName = time().'.'.$request->image->extension();  
-            $request->image->move(public_path('uploads'), $imageName);
-            $user->coverImage = $imageName;
-            $user->save();
-            return response()->json(['image' => asset('uploads/'.$imageName)],200);
-        }
+        $user = $this->iUserRepository->uploadImageFindUser($request->id);
+        $imageName = $this->iUserRepository->uploadImage($request,$request->type,$user);
+        return response()->json(['image' => asset('uploads/'.$imageName)],200);
+    }
+    public function getReatingStatics($id, $table,$champ) {
+        return $this->iUserRepository->getReatingStatics($id, $table,$champ);
     }
     public function getUserInfo($id,$followerId){
-        $user = User::with('socialLink')->where('id',$id)->first();
+        $user = $this->iUserRepository->getUserInfo($id);
         if(!$user){return response()->json(['message'=>'errore']);}
-        $donnation = explode('|',$user->donnationLink);
-        
         $userData = [
             'id'=>$user->id,
             'name'=>$user->name,
@@ -104,7 +81,7 @@ class UserController extends Controller
             'followers' => User::find($id)->followers->count(),
             'following' => Follower::where('follower_id',$id)->count(),
             'isFollowed' => Follower::where('user_id',$id)->where('follower_id',$followerId)->count(),
-            'Review' => AnswerController::getReatingStatics($id,'post_reatings','user_id') + AnswerController::getReatingStatics($id,'answer_reatings','user_id'),
+            'Review' => $this->iUserRepository->getReatingStatics($id,'post_reatings','user_id') + $this->iUserRepository->getReatingStatics($id,'answer_reatings','user_id'),
         ];
         return response()->json(['user'=>$userData]);
     }
@@ -127,36 +104,8 @@ class UserController extends Controller
             'donnationLink'=>'nullable',
 
         ]);
-        $user = User::find($request->id);
-        $user->update([
-            'name' => $request->name,
-            'firstname' => $request->firstName,
-            'lastname' => $request->lastName,
-            'country' => $request->country,
-            'phone' => $request->phone,
-            'about'=>$request->about
-        ]);
-        $donnationLink = $user->donnationLink;
-        if(!$donnationLink && $request->donnationLink!= ""){
-            $user->donnationLink = $request->donnationLink;
-            $user->save();
-        }else{
-            if($request->donnationLink != ""){
-                $user->donnationLink =$request->donnationLink;
-            }else{
-                $user->donnationLink = null;
-            }
-            $user->save(); 
-        }
-        $socialLink = SocialLink::firstOrCreate(['user_id' => $request->id]);
-        $socialLink->update([
-            'facebook' => $request->facebook,
-            'twitter' => $request->twitter,
-            'linkedin' => $request->linkedin,
-            'Github' => $request->Github,
-            'instagram' => $request->instagram,
-            'WebSite' => $request->WebSite,
-        ]);
+        $this->iUserRepository->updateUserInfo($request);
+        $this->iUserRepository->updateUserInfoSocialLink($request);
         return response()->json(['message'=>'User info updated successfully!']);
     }
     public function follow(Request $request){
@@ -165,20 +114,17 @@ class UserController extends Controller
             'user_id' => 'required|integer',
             'follower_id' => 'required|integer',
         ]);
-        $follower = Follower::where('user_id',$request->user_id)->where('follower_id',$request->follower_id)->first();
+        $follower = $this->iUserRepository->follow($request);
         if($follower == null){
-            Follower::create([
-                'user_id' => $request->user_id,
-                'follower_id' => $request->follower_id,
-            ]);
+            $this->iUserRepository->followCreate($request);
             return response()->json(['message'=>'Followed successfully!']);
         }else{
             $follower->delete();
             return response()->json(['message'=>'Unfollowed successfully!']);
         }
     }
-    public function getusers(Request $request,$skip){
-        $users = User::with('role')->skip($skip)->take(12)->get();
+    public function getusers($skip){
+        $users = $this->iUserRepository->getusers($skip);
         $usersData = [];
         foreach($users as $user){
             $usersData[] = [
@@ -202,8 +148,8 @@ class UserController extends Controller
         }
         return response()->json(['users'=>$usersData,'userCount'=> User::count(),]);
     }
-    public function searchUser(Request $request, $search){
-        $users = User::where('name', 'like', '%'.$search.'%')->get();
+    public function searchUser( $search){
+        $users = $this->iUserRepository->searchUser($search);
         $usersData = [];
         foreach($users as $user){
             $usersData[] = [
@@ -222,39 +168,55 @@ class UserController extends Controller
     }
     public function deleteUser(Request $request){
         if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
-        $user = User::find($request->id);
-        if(!$user) return response()->json(['message'=> 'User not found !!']);
-        $user->delete();
+        $this->iUserRepository->deleteUser($request);
         return response()->json(['message', 'user deleted successfully']);
     }
     public function banneUser(Request $request){
         if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
-        $user = User::find($request->id);
-        if($user->isBanne == "0") $user->update(['isBanne'=>"1"]);
-        else $user->update(['isBanne'=>"0"]);
+        $this->iUserRepository->banneUser($request);
         return response()->json(['message'=>"ok"]);
     }
     public function changeUser(Request $request){
         if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
-        $user = User::find($request->id);
-        permession_vues_users::where('user_id',$request->id)->delete();
-        $permission=[];
+        $user = $this->iUserRepository->changeUser($request);
         if($user->role_id == 1){
-            $permissions = PermessionVue_Role::where('role_id',2)->pluck('permession_vue_id')->toArray();
-            $user->update(['role_id'=>2]);
-        }
-        else {
-            $permissions = PermessionVue_Role::where('role_id',1)->pluck('permession_vue_id')->toArray();
-            $user->update(['role_id'=>1]);
+            $permissions = $this->iUserRepository->changeUserGetPermissionRole(2,$user);
+        }else{
+            $permissions = $this->iUserRepository->changeUserGetPermissionRole(1,$user);
         }
         foreach($permissions as $permission){
-            permession_vues_users::create([
-                'user_id' => $request->id,
-                'permession_vue_id' => $permission,
-                'is_active'=>1,
-                'is_deleted'=>0,
-            ]);
+            $this->iUserRepository->changeUserCretaeNewRoles($request,$permission);
         }
         return response()->json(['message'=>"ok"]);
     }
+    public function statiqueAdmin(Request $request){
+        if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
+        $posts = Post::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', now()->year)
+            ->groupBy('month')
+        ->get();
+        $users = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', now()->year)
+            ->groupBy('month')
+        ->get();
+
+        $statisticsPost = array_fill(0, 12, 0);
+        $statisticsUser = array_fill(0, 12, 0);
+
+        foreach ($posts as $post) {
+            $statisticsPost[$post->month - 1] = $post->count;
+        }
+        foreach ($users as $user) {
+            $statisticsUser[$user->month - 1] = $user->count;
+        }
+
+        return response()->json(['statisticsPost' => $statisticsPost, 'statisticsUser' => $statisticsUser]);
+
+    }
+    public function getDataStatics(Request $request){
+        if(!$request->user() && $request->user()->role_id != 1) return response()->json(['message'=>'Unauthenticated'],401);
+        $statistics= $this->iUserRepository->getDataStatics();
+        return response()->json(['statistics'=>$statistics]);
+    }
+    
 }

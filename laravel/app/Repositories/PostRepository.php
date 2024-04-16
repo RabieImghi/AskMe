@@ -22,7 +22,7 @@ class PostRepository implements IPostRepository
         return DB::table($table)->select('user_id','type')->where($champ, $id)->get();
     }
     public function allPost($page){
-        Post::with('user', 'category')->where('isArchive','0')->skip($page)->take(6)->orderBy('id', 'desc')->get();
+        return Post::with('user', 'category')->where('isArchive','0')->skip($page)->take(6)->orderBy('id', 'desc')->get();
     }
     public function allPostCount(){
         return Post::count();
@@ -121,8 +121,18 @@ class PostRepository implements IPostRepository
     public function DeleteReating($table,$id){
         DB::table('post_reatings')->where('id', $id)->delete();
     }
-    public function ChangeReatingAnswer($request,$id,$userId,$type){}
-    public function addViewsPost($id){}
-    public function getPostManage($request,$skip){}
-    public function changeStatusPost($request){}
+    public function addViewsPost($id){
+        $post = Post::find($id);
+        $post->views = $post->views + 1;
+        $post->save();
+    }
+    public function getPostManage($request,$skip){
+        return Post::with('user', 'category')->skip($skip)->take(6)->get();
+    }
+    public function changeStatusPost($request){
+        $post = Post::find($request->id);
+        if($post->isArchive == "1") $post->isArchive= '0';
+        else $post->isArchive="1";
+        $post->save();
+    }
 }

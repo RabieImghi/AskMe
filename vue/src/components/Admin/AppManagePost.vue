@@ -5,9 +5,6 @@
         </div>
         <hr>
         <div class="container-mf">
-            <div class="text-end">
-                <button class="btn btn-primary" @click="showModal = !showModal">Add Tages</button>
-            </div>
             <table class="w-100">
                 <thead >
                     <tr class="itemsPermission">

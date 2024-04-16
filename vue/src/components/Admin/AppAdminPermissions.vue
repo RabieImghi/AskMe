@@ -206,8 +206,6 @@ export default {
         .then(response =>{
             this.options=response.data.permsissions;
             this.Roles=response.data.roles;
-        }).catch(error =>{
-            console.log(error)
         });
     },  
     methods: {
@@ -217,6 +215,7 @@ export default {
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response => {
+                console.log(response.data.permissions);
                 this.permissions = response.data.permissions;
                 this.isLoading = false;
             });
@@ -230,12 +229,9 @@ export default {
             axios.post(`${store.URL}addNewPermissions`,{formData: formData},{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
-            .then(response => {
-                console.log(response.data.data);
+            .then(() => {
                 this.getPermissions();
                 this.showModal = !this.showModal;
-            }).catch(error => {
-                console.log(error);
             });
         },
         deletPermission(id,name) {
@@ -248,13 +244,10 @@ export default {
             axios.post(`${store.URL}deleteNewPermissions`,{id: this.toBeDeleted},{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
-            .then(response => {
+            .then(() => {
                 this.getPermissions();
-                console.log(response.data)
                 this.showConfirmModal = !this.showConfirmModal;
-            }).catch(error => {
-                console.log(error)
-            })
+            });
         }
     },
 }
