@@ -19,14 +19,14 @@ class PermissionController extends Controller
     public function getRolePemissions(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $permissions = $this->permissionRepository->getRolePemissions($request);
-        // $Data = [];
-        // foreach($permissions as $permission){
-        //     $Data[$permission->role->name][] = [
-        //         "name"=>$permission->permessionVue->name,
-        //         "id"=>$permission->id,
-        //     ];
-        // }
-        return response()->json(['permissions'=>$permissions],200);
+        $Data = [];
+        foreach($permissions as $permission){
+            $Data[$permission->role->name][] = [
+                "name"=>$permission->permessionVue->name,
+                "id"=>$permission->id,
+            ];
+        }
+        return response()->json(['permissions'=>$Data],200);
     } 
     public function getRolePemissionsUsers(Request $request,$skip){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);

@@ -26,7 +26,6 @@ interface IPostRepository
     public function InsertReating($table,$id,$userId,$type);
     public function DeleteReating($table,$id);
 
-    public function ChangeReatingAnswer($request,$id,$userId,$type);
     public function addViewsPost($id);
     public function getPostManage($request,$skip);
     public function changeStatusPost($request);
