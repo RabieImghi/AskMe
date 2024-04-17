@@ -66,7 +66,7 @@ class TageController extends Controller
     public function updateTage(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
-            'name' => 'required|unique:tages',
+            'name' =>  'required|unique:tages,name,' . $request->id,
             'descriprtion'=>'required',
             'id' => 'required',
         ]);

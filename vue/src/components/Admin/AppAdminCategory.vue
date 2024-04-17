@@ -195,7 +195,9 @@
 </style>
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { useStore } from '@/store';
+
 export default {
     name: "AppAdminPermissions",
     data() {
@@ -229,8 +231,20 @@ export default {
                 headers: { 'Authorization': `Bearer ${store.token}` }
             });
             if(response){
+                if(response.data.error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.data.error,
+                    })  
+                }
                 this.getTages();
                 this.showModal = !this.showModal;
+                Swal.fire(
+                    'Success',
+                    'Category has been added successfully',
+                    'success'
+                )
             }
         },
         submitFormUpdate() {
@@ -244,7 +258,18 @@ export default {
             .then(() => {
                 this.getTages();
                 this.showModal2 = !this.showModal2;
-            });
+                Swal.fire(
+                    'Success',
+                    'Category has been updated successfully',
+                    'success'
+                )
+            }).catch(() => {
+                Swal.fire(
+                    'Error',
+                    'Category has not been updated',
+                    'error'
+                )
+            })
         },
         deleteTage(id,name) {
             this.categoryId = id;
@@ -267,6 +292,17 @@ export default {
                 this.getTages();
                 this.categoryName = null;
                 this.showConfirmModal = !this.showConfirmModal;
+                Swal.fire(
+                    'Success',
+                    'Category has been deleted successfully',
+                    'success'
+                )
+            }).catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
             });
         }
     },

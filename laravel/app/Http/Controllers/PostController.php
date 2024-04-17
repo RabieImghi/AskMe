@@ -98,6 +98,11 @@ class PostController extends Controller
             'data' => $filename,
         ]);
     }
+    public function AddUserPoints($id){
+        $user = User::find($id);
+        $user->points = $user->points + 10;
+        $user->save();
+    }
     public function MyPost(Request $request,$id){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $data = [];
@@ -107,7 +112,7 @@ class PostController extends Controller
         foreach ($posts as $post) {
             $dataTage =[];
             $dataTageId =[];
-            $tages=$this->postRepository->MyPostTgae($post->id);
+            $tages = $this->postRepository->allPostTages($post->id);
             foreach ($tages as $tage) {
                 $tage = $this->postRepository->MyPostTgae($tage->tage_id);
                 $dataTage[] = $tage->name;

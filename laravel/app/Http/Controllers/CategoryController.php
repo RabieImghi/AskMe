@@ -39,7 +39,7 @@ class CategoryController extends Controller
     public function updateCategory(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         $request->validate([
-            'name' => 'required|unique:categorys',
+            'name' => 'required|unique:categorys,name,'.$request->id,
             'id' => 'required',
         ]);
         $this->iCategoryRepository->updateCategory($request);
@@ -48,9 +48,24 @@ class CategoryController extends Controller
     public function getAllTagesCategory(){
         $Categorys = $this->iCategoryRepository->getAllCategory();
         $tages = $this->iCategoryRepository->getTages();
+
+        $dataCategory=[];
+        $dataTage=[];
+        foreach($Categorys as $Category){
+            $dataCategory[]=[
+                'id'=>$Category->id,
+                'name'=>$Category->name,
+            ];
+        }
+        foreach($tages as $tage){
+            $dataTage[]=[
+                'id'=>$tage->id,
+                'text'=>$tage->name,
+            ];
+        }
         return response()->json([
-            'Categorys' => $Categorys,
-            'Tages' => $tages,
+            'Categorys' => $dataCategory,
+            'Tages' => $dataTage,
         ]);
     }
 }

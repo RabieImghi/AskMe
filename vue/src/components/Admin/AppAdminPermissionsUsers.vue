@@ -5,27 +5,30 @@
         </div>
         <hr>
         <div class="container-mf">
-            <table class="table">
-                <thead class="">
-                    <tr>
-                        <th class="px-3">Role</th>
-                        <th class="px-3">Permissions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(routes, user) in permissions" :key="user">
-                        <td class="px-3">
-                            <p class="fw-bold mb-1 text-start" >{{ user }}</p>
-                        </td>
-                        <td class="d-flex flex-wrap gap-4 px-3" >
-                            <span class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index"
-                            :class="route.isActive === 1 ? 'active' : 'inactive'"
-                            @click="changeStatus(route.id, route.isActive)"
-                            >{{ route.route }}</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>   
+            <div class="tableSectiond">
+               <table class="table">
+                    <thead class="">
+                        <tr>
+                            <th class="px-3">Role</th>
+                            <th class="px-3">Permissions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(routes, user) in permissions" :key="user">
+                            <td class="px-3">
+                                <p class="fw-bold mb-1 text-start" >{{ user }}</p>
+                            </td>
+                            <td class="d-flex flex-wrap gap-4 px-3" >
+                                <span class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index"
+                                :class="route.isActive === 1 ? 'active' : 'inactive'"
+                                @click="changeStatus(route.id, route.isActive)"
+                                >{{ route.route }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>  
+            </div>
+              
             <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
                 <Loader/>
             </section>  
@@ -79,6 +82,7 @@
 import axios from 'axios';
 import {useStore} from '../../store';
 import Loader  from '../User/AppLoader';
+import Swal from 'sweetalert2';
 export default {
     name: "AppAdminPermissions",
     data() {
@@ -120,8 +124,17 @@ export default {
             })
             .then(() => {
                 this.getPermissions();
-            }).catch(error => {
-                console.log(error);
+                Swal.fire(
+                    'Success',
+                    'Permission status has been changed successfully',
+                    'success'
+                )
+            }).catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
             })
         },
         nextPage(){
