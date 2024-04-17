@@ -18,6 +18,12 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         $user = $this->IUserRepository->login($request);
+        if($user === null)
+        return response()->json(['message' => "Email not correct!",'error'=>"email"], 401);
+        if($user === false)
+            return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
+        if($user === true)
+            return response()->json(['message' => "You Are Banned"],401);
         $token = $user->createToken('API Token')->plainTextToken;
         $dataUser = [
             'firstName'=>$user->firstname,

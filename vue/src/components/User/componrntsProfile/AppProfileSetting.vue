@@ -2,7 +2,7 @@
     <div class="sectionBadge padding-none  pe-4">
         <div class="bg-white shadow">
             <section class="cover" :style="{
-                    backgroundImage: `url(${user.imageCover})`,
+                    backgroundImage: `url(${coverImage})`,
                     backgroundSize: 'cover',
                 }">
                 <div class="coverInfo row p-3">
@@ -36,7 +36,7 @@
                             <div class="card-body text-center">
                                 <input type="file" @change="changeImage('Profil')" class="d-none" id="fileinputProfil">
                                 <img  @click="uploadsImageProfile" class="img-account-profile rounded-circle mb-2"
-                                :src="user.imageProfile" alt="" width="250" />
+                                :src="avatar" alt="" width="250" />
                                 <div class="small font-italic text-muted mb-4">
                                     JPG or PNG no larger than 5 MB
                                 </div>

@@ -21,11 +21,11 @@ class UserRepository implements IUserRepository
     public function login($request){
         $user = User::where('email', $request->email)->first();
         if (!$user) 
-            return response()->json(['message' => 'Email not exist or not correct!','error'=>"email"], 401);
+            return null;
         if (!Hash::check($request->password, $user->password)) 
-            return response()->json(['message' => "Password not correct!",'error'=>"password"], 401);
+            return false;
         if($user->isBanne == "1")
-            return response()->json(['message' => "You Are Banned"],401);
+            return true;
         return $user;
     }
     public function register($request){

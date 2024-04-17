@@ -215,6 +215,7 @@
 </style>
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import {useStore} from '../../store';
 import Loader  from '../User/AppLoader';
 export default {
@@ -267,6 +268,19 @@ export default {
             .then(() => {
                 this.getTages();
                 this.showModal = !this.showModal;
+                Swal.fire(
+                    'Success',
+                    'Tage Added Successfully',
+                    'success',
+                )
+            }).catch((error) => {
+                if(error.response.status === 422){
+                    Swal.fire(
+                        'error',
+                        'Tage Name is ALready Exist',
+                        'error'
+                    )
+                }
             });
         },
         submitFormUpdate() {
@@ -281,6 +295,19 @@ export default {
             .then(() => {
                 this.getTages();
                 this.showModal2 = !this.showModal2;
+                Swal.fire(
+                    'Success',
+                    'Tage Updated Successfully',
+                    'success'
+                )
+            }).catch((error) => {
+                if(error.response.status === 422){
+                    Swal.fire(
+                        'error',
+                        'Tage Name is ALready Exist',
+                        'error'
+                    )
+                }
             });
         },
         deleteTage(id,name) {

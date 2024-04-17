@@ -1,7 +1,7 @@
 <template>
     <div class=" padding-none pe-4">
         <div class="bg-white shadow main-body">
-            <section class="cover" :style="{ backgroundImage: `url(${user.imageCover})`, backgroundSize: 'cover' }">
+            <section class="cover" :style="{ backgroundImage: `url(${coverImage})`, backgroundSize: 'cover' }">
                 <div class="coverInfo row p-3">
                     <div class="infoProfile col pt-4 pe-4">
                         <input type="file" class="d-none" @change="changeImage('Cover')" id="fileinputCover">
@@ -27,7 +27,7 @@
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <input type="file" @change="changeImage('Profil')" class="d-none" id="fileinputProfil">
-                                <img @click="uploadsImageProfile" :src="user.imageProfile" alt="Admin"
+                                <img @click="uploadsImageProfile" :src="avatar" alt="Admin"
                                     class="rounded-circle" width="150">
                                 <div class="mt-3">
                                     <h4>{{user.name}}</h4>
@@ -213,9 +213,6 @@
                                                         {{user.countQuesions}}
                                                     </h2>
                                                 </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{  porsentage(user.countQuesions) }} <i class="fa fa-arrow-up"></i></span>
-                                                </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
                                                 <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" 
@@ -236,9 +233,6 @@
                                                     <h2 class="d-flex align-items-center mb-0">
                                                        {{user.countReponse}}
                                                     </h2>
-                                                </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{porsentage(user.countReponse)}} <i class="fa fa-arrow-up"></i></span>
                                                 </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -261,9 +255,6 @@
                                                         {{user.Point}}
                                                     </h2>
                                                 </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{porsentage(user.Point)}} <i class="fa fa-arrow-up"></i></span>
-                                                </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
                                                 <div class="progress-bar l-bg-orange" role="progressbar" :style="{ width: porsentage(user.Point)}"
@@ -284,9 +275,6 @@
                                                     <h2 class="d-flex align-items-center mb-0">
                                                         {{user.Review}}
                                                     </h2>
-                                                </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{ porsentage(user.Review) }} <i class="fa fa-arrow-up"></i></span>
                                                 </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -319,6 +307,8 @@
             const store = useStore();
             return {
                 store,
+                imageCover: store.coverImage,
+                imageProfile: store.imageUser,
                 user:[],
             };
         },
@@ -328,7 +318,14 @@
                     this.store.setuserProfileId(this.idUser)
                 }
                 return this.store.userProfileId;
-            }
+            },
+            avatar() {
+                return this.store.imageUser;
+            },
+            
+            coverImage() {
+                return this.store.coverImage;
+            },
         },
         watch: {
             '$route': 'getUserInfo'

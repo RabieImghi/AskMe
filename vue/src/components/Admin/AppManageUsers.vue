@@ -5,7 +5,10 @@
         </div>
         <hr>
         <div class="container-mf">
-            <table class="w-100">
+            <div class="tableSect">
+
+            
+            <table class="w-100 ">
                 <thead >
                     <tr class="itemsPermission">
                         <th class="px-3">Name</th>
@@ -41,15 +44,16 @@
                                 </svg>
                             </button>
                             <button v-if="user.isBanne=='0'" class="btn btn-warning" @click="banneUser(user.id)">
-                                Banne User
+                                Banne_User
                             </button>
                             <button v-else class="btn btn-danger" @click="banneUser(user.id)">
-                                Remove Banne
+                                Remove_Banne
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            </div>
             <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
                 <Loader/>
             </section>  
@@ -80,6 +84,12 @@
     </div>
 </template>
 <style scoped>
+
+    @media screen and (max-width: 930px){
+       .tableSect{
+              overflow-x: auto;
+       }
+    }
     table {
         border-collapse: separate;
         border-spacing: 0 20px;
@@ -183,6 +193,7 @@
 </style>
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import {useStore} from '../../store';
 import Loader  from '../User/AppLoader';
 export default {
@@ -223,33 +234,7 @@ export default {
                 console.log(error)
             });
         },
-        submitForm() {
-            const store = useStore();
-            var formData = new FormData();
-            formData.append('name', this.tageName);
-            formData.append('descriprtion', this.tageDesc);
-            axios.post(`${store.URL}addNewTage`,formData,{
-                headers: { 'Authorization': `Bearer ${store.token}` }
-            })
-            .then(() => {
-                this.getUsers();
-                this.showModal = !this.showModal;
-            });
-        },
-        submitFormUpdate() {
-            const store = useStore();
-            var formData = new FormData();
-            formData.append('name', this.tageName);
-            formData.append('descriprtion', this.tageDesc);
-            formData.append('id', this.tageId);
-            axios.post(`${store.URL}updateTage`,formData,{
-                headers: { 'Authorization': `Bearer ${store.token}` }
-            })
-            .then(() => {
-                this.getUsers();
-                this.showModal2 = !this.showModal2;
-            });
-        },
+        
         deleteTage(id,name) {
             this.userId = id;
             this.userName = name;
@@ -266,6 +251,17 @@ export default {
                 this.getUsers();
                 this.userName = null;
                 this.showConfirmModal = !this.showConfirmModal;
+                Swal.fire(
+                    'Success',
+                    'User has been deleted successfully',
+                    'success'
+                )
+            }).catch(() =>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
             });
         },
         nextPage(){
@@ -305,7 +301,18 @@ export default {
             }).then(response=>{
                 console.log(response.data.message)
                 this.getUsers();
-            })
+                Swal.fire(
+                    'Success',
+                    'The status has been changed successfully',
+                    'success'
+                )
+            }).catch(() =>{
+                Swal.fire(
+                    'Error',
+                    'An error occurred',
+                    'error'
+                )
+            });
         },
         changeUserRole(id){
             const store = new useStore();
@@ -316,7 +323,18 @@ export default {
             }).then(response=>{
                 console.log(response.data.message)
                 this.getUsers();
-            })
+                Swal.fire(
+                    'Success',
+                    ' The role has been changed successfully',
+                    'success'
+                )
+            }).catch(() =>{
+                Swal.fire(
+                    'Error',
+                    'An error occurred',
+                    'error'
+                )
+            });
         }
     },
 }
