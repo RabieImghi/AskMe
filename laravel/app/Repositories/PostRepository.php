@@ -28,7 +28,7 @@ class PostRepository implements IPostRepository
         return Post::count();
     }
     public function allPostSearchByTage($tageId,$page){
-        Post::with('user', 'category')->where('isArchive','0')
+        return Post::with('user', 'category')->where('isArchive','0')
         ->whereHas('tages', function($query) use ($tageId) {
             $query->where('tage_id', $tageId);
         })

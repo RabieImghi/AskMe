@@ -1,0 +1,25 @@
+on: push
+
+name: 🚀 Deploy website on push
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+    
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: 82.197.80.104
+          username: u820736800.rabie.coders-strike.tech
+          password: ${{ secrets.ftp_password }}
+          server-dir: /public_html/Laravel/
