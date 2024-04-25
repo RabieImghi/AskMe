@@ -5,9 +5,6 @@
         </div>
         <hr>
         <div class="container-mf">
-            <div class="text-end">
-                <button class="btn btn-primary" @click="showModal = !showModal">Add Tages</button>
-            </div>
             <table class="w-100">
                 <thead >
                     <tr class="itemsPermission">
@@ -49,10 +46,10 @@
                 <div class="modal-content confirm">
                     <div class="modal-header">
                         <h5 class="modal-title">Post Details</h5>
-                        <button type="button" class="btn-close" @click="showConfirmModal = false"></button>
+                        <button type="button" class="btn-close" @click="showConfirmModal =true"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="card">
+                        <div class="card" style="box-shadow: none;">
                             <div class="row">
                                 <div class="col-2 fw-bold text-secondary">
                                     Post Title
@@ -80,7 +77,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="showConfirmModal = false">No</button>
+                        <button type="button" class="btn btn-secondary" @click="showConfirmModal = true">No</button>
                         <button type="button" class="btn btn-danger" @click="changeStatus">Change status</button>
                     </div>
                 </div>
@@ -96,6 +93,7 @@
 <script>
 import axios from 'axios';
 import {useStore} from '../../store';
+import Swal from 'sweetalert2';
 import Loader  from '../User/AppLoader';
 export default {
     name: "AppManagePost",
@@ -152,6 +150,17 @@ export default {
             })
             .then(() => {
                 this.getPost();
+                Swal.fire(
+                    'Success',
+                    'The status has been changed successfully',
+                    'success'
+                )
+            }).catch(() =>{
+                Swal.fire(
+                    'Error',
+                    'An error occurred',
+                    'error'
+                )
             });
         },
         nextPage(){

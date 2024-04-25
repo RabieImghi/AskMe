@@ -8,12 +8,17 @@ use App\Models\permession_vues_users;
 use App\Models\PermessionVue;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\Interfaces\IPermissionRepository;
 
 class PermissionController extends Controller
 {
+    protected  $permissionRepository;
+    public function __construct(IPermissionRepository $permissionRepository){
+        $this->permissionRepository = $permissionRepository;
+    }
     public function getRolePemissions(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        $permissions = PermessionVue_Role::with('permessionVue')->with('role')->get();
+        $permissions = $this->permissionRepository->getRolePemissions($request);
         $Data = [];
         foreach($permissions as $permission){
             $Data[$permission->role->name][] = [
@@ -25,10 +30,7 @@ class PermissionController extends Controller
     } 
     public function getRolePemissionsUsers(Request $request,$skip){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        $permissions = permession_vues_users::with('permessionVue')
-            ->with(['user' => function ($query) use ($skip)  {
-                $query->skip($skip)->take(6);
-            }])->get();
+        $permissions = $this->permissionRepository->getRolePemissionsUsers($skip);
         $Data = [];
         foreach($permissions as $permission){
             if ($permission->user && $permission->permessionVue) {
@@ -43,14 +45,12 @@ class PermissionController extends Controller
     } 
     public function ChangeStatusPermissionsUser(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        $permission = permession_vues_users::find($request->id);
-        $permission->is_active = $request->is_active;
-        $permission->save();
+        $this->permissionRepository->ChangeStatusPermissionsUser($request);
         return response()->json(['message'=>'Permission Updated'],200);
     }
     public function getPemissionsAndRole(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        $roles = Role::all();
+        $roles = $this->permissionRepository->getPemissionsAndRole($request);
         $rolesData = [];
         foreach($roles as $role){
             $rolesData[]=[
@@ -58,7 +58,7 @@ class PermissionController extends Controller
                 'text'=>$role->name
             ];
         }
-        $permissions = PermessionVue::all();
+        $permissions = $this->permissionRepository->getPemissionsAndRolePer($request);
         $permissionData=[];
         foreach($permissions as $permission){
             $permissionData[]=[
@@ -73,19 +73,64 @@ class PermissionController extends Controller
     public function addNewPermissions(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
         foreach($request->formData['permissions_id'] as $data){
-            $res = PermessionVue_Role::where('role_id',$request->formData["role_id"])->where('permession_vue_id',$data)->count();
+            $res = $this->permissionRepository->PermessionVue_Role($request,$data);
             if($res == 0){
-                $permission = new PermessionVue_Role();
-                $permission->role_id = $request->formData['role_id'];
-                $permission->permession_vue_id = $data;
-                $permission->save();
+                $this->permissionRepository->addNewPermissions($request,$data);
             }
         }
         return response()->json(['data'=>$request->formData],200);
     }
     public function deleteNewPermissions(Request $request){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        PermessionVue_Role::where('id',$request->id)->delete();
+        $this->permissionRepository->deleteNewPermissions($request);
         return response()->json(['data'=>$request->id],200);
+    }
+    public function CheckPermission(Request $request){         
+        $uri = $request->uri;
+        $role_id = $request->role_id;
+        $allowedRoutes = $this->permissionRepository->CheckPermission($request);
+        $allowedRouteTable =[];
+        foreach($allowedRoutes as $allowed){
+            $allowedRouteTable[]= $allowed->permessionVue->name;
+        }
+        if (in_array($uri, $allowedRouteTable)) return response()->json(['uri'=>$uri]);
+        else return response()->json(['errors'=>"Not Auth ouriside"], 401);
+    }
+    public function CheckPermissionUser(Request $request){
+        $uri = $request->dataUser['uri'];
+        $role_id = $request->dataUser['role_id'];
+        $user_id = $request->dataUser['user_id'];
+        $message = "";
+        if($user_id != null){
+            $allowedRoutesRole = $this->permissionRepository->CheckPermissionUserRole($role_id);
+            $allowedRouteRoleTable =[];
+            foreach($allowedRoutesRole as $allowed){
+                $allowedRouteRoleTable[]= $allowed->permessionVue->name;
+            }
+            if (in_array($uri, $allowedRouteRoleTable)){
+                $allowedRoutes = $this->permissionRepository->CheckPermissionUser($user_id);
+                $allowedRouteTable =[];
+                foreach($allowedRoutes as $allowed){
+                    $allowedRouteTable['route'][]= $allowed->permessionVue->name;
+                    $allowedRouteTable['isActive'][]= $allowed->is_active;
+                }
+                $index = array_search($uri, $allowedRouteTable['route']);
+                if($index !== FALSE){
+                    if( $allowedRouteTable['isActive'][$index] == 1){
+                        $message = "Auth";
+                    }else $message = "notAuth1";
+                }else $message = "notAuth2";
+            }else $message = "notAuth3";
+        }else{
+            $allowedRoutesRole = $this->permissionRepository->CheckPermissionUserRole($role_id);
+            $allowedRouteRoleTable =[];
+            foreach($allowedRoutesRole as $allowed){
+                $allowedRouteRoleTable[]= $allowed->permessionVue->name;
+            }
+            if (in_array($uri, $allowedRouteRoleTable)){
+                $message = "Auth";
+            }else $message= "notAuth4";
+        }
+        return response()->json($message);
     }
 }

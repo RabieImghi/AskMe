@@ -19,6 +19,15 @@
             AppUserLayout,
             AppUserAside,
         },
+        mounted() {
+          var Tawk_API = Tawk_API || {};
+          var s1 = document.createElement("script");
+          s1.async = true;
+          s1.src = 'https://embed.tawk.to/646c82c974285f0ec46d177a/1h13ttpc4';
+          s1.charset = 'UTF-8';
+          s1.setAttribute('crossorigin', '*');
+          document.head.appendChild(s1);
+        }
     }
 </script>
 <style>

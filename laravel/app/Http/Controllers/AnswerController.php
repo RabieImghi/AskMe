@@ -6,46 +6,42 @@ use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\Post;
 use App\Models\User;
+use App\Repositories\Interfaces\IAnswerRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class AnswerController extends Controller
 {
+    protected $answerRepository;
+    public function __construct(IAnswerRepository $answerRepository ){
+        $this->answerRepository = $answerRepository;
+    }
     public static function getBadge($points) {
         if($points >= 250) return "Professional";
         else if($points >= 100) return "Enlightened";
         else if($points >= 50) return "Explainer";
         else return "Beginner";
     }
-    public static function getReating($id, $table,$champ) {
-        return DB::table($table)
-            ->select(DB::raw('SUM(case when type = "+" then 1 when type = "-" then -1 else 0 end) as reating'))
-            ->where($champ, $id)
-            ->first()
-            ->reating ?? 0;
+    public function getReating($id, $table,$champ) {
+        return $this->answerRepository->getReatingStatics($id, $table,$champ);
     }
-    public static function getReatingStatics($id, $table,$champ) {
-        return DB::table($table)
-            ->select(DB::raw('SUM(case when type = "+" then 1 when type = "-" then 1 else 0 end) as reating'))
-            ->where($champ, $id)
-            ->first()
-            ->reating ?? 0;
+    public function getReatingStatics($id, $table,$champ) {
+        return $this->answerRepository->getReatingStatics($id, $table,$champ);
     }
-    public static function getIdUserVoted($table,$id,$champ) {
-        $listIdUserVoted = DB::table($table)->select('user_id','type')->where($champ, $id)->get();
+    public function getIdUserVoted($table,$id,$champ) {
+        $listIdUserVoted = $this->answerRepository->getIdUserVoted($table,$id,$champ);
         $IdUserVoted = [];
         foreach ($listIdUserVoted as $idUserVoted) {
             $IdUserVoted[] = [ 'id' => $idUserVoted->user_id, 'type' => $idUserVoted->type,];
         }
         return $IdUserVoted;
     }
-    
     public function getPostAnswers($id) {
         $data = [];
         $dataPost = [];
-        $answers = Answer::with('user', 'post')->where('post_id', $id)->orderBy('isVerfy','asc')->orderBy('id','desc')->get();
-        $post = Post::with('user', 'category')->where('id',$id)->first();
-        $countAnswer = Answer::with('user', 'post')->where('post_id', $id)->count();
+        $answers = $this->answerRepository->getPostAnswers($id);
+        $post = $this->answerRepository->getPost($id);
+        $countAnswer = $this->answerRepository->countAnswer($id);
 
         foreach ($answers as $answer) {
             $data[] = [
@@ -92,22 +88,15 @@ class AnswerController extends Controller
             'post_id' => 'required',
             'user_id' => 'required'
         ]);
-        $answer = new Answer();
-        $answer->content = $request->answerDetails;
-        $answer->user_id = $request->user_id;
-        $answer->post_id = $request->post_id;
-        $answer->save();
-        $user = User::find($request->user_id);
-        $user->points = $user->points + 5;
-        $user->save();
+        $this->answerRepository->addAnswer($request);
+        $this->answerRepository-> addPointUser($request->user_id);
         return response()->json([
             'message' => 'Answer added successfully!',
         ]);
     }
     public function deleteAnswer(Request $request,$id){
         if(!$request->user()) return response()->json(['message'=>'Unauthenticated'],401);
-        $answer = Answer::find($id);
-        $answer->delete();
+        $this->answerRepository->deleteAnswer($id);
         return response()->json([ 'message' => 'Answer deleted successfully!'],200);
     }
     public function updateAnswer(Request $request){
@@ -116,9 +105,7 @@ class AnswerController extends Controller
             'answerDetails' => 'required',
             'answerId' => 'required',
         ]);
-        $answer = Answer::find($request->answerId);
-        $answer->content = $request->answerDetails;
-        $answer->save();
+        $this->answerRepository->updateAnswer($request);
         return response()->json([
             'message' => 'Answer updated successfully!',
         ]);
@@ -128,9 +115,7 @@ class AnswerController extends Controller
         $request->validate([
             'answerId' => 'required',
         ]);
-        $answer = Answer::find($request->answerId);
-        $answer->isVerfy ='verfy';
-        $answer->save();
+        $this->answerRepository->verfyAnswer($request);
         return response()->json([
             'message' => 'Answer verified successfully!',
         ]);

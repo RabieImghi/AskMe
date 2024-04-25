@@ -23,7 +23,7 @@
             </section> 
             <div class="row pt-4 gutters-sm">
                 <div class="col-md-4 mb-3">
-                    <div class="card">
+                    <div class="card"  style="box-shadow: none;">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <input type="file" @change="changeImage('Profil')" class="d-none" id="fileinputProfil">
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card mt-3">
+                    <div class="card mt-3"  style="box-shadow: none;">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap mt-2 mb-2">
                                 <a :href='user.WebSite' target="_blank" class="text-secondary" style="text-decoration: none">
@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="col-md-8 border-left">
-                    <div class="card mb-3">
+                    <div class="card mb-3"  style="box-shadow: none;">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">
@@ -197,7 +197,7 @@
                             <hr>
                         </div>
                     </div>
-                    <div class="card mb-3">
+                    <div class="card mb-3"  style="box-shadow: none;">
                         <div class="">
                             <div class="row ">
                                 <div class="col-xl-6 col-lg-6">
@@ -212,9 +212,6 @@
                                                     <h2 class="d-flex align-items-center mb-0">
                                                         {{user.countQuesions}}
                                                     </h2>
-                                                </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{  porsentage(user.countQuesions) }} <i class="fa fa-arrow-up"></i></span>
                                                 </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -237,9 +234,6 @@
                                                        {{user.countReponse}}
                                                     </h2>
                                                 </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{porsentage(user.countReponse)}} <i class="fa fa-arrow-up"></i></span>
-                                                </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
                                                 <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" 
@@ -261,9 +255,6 @@
                                                         {{user.Point}}
                                                     </h2>
                                                 </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{porsentage(user.Point)}} <i class="fa fa-arrow-up"></i></span>
-                                                </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
                                                 <div class="progress-bar l-bg-orange" role="progressbar" :style="{ width: porsentage(user.Point)}"
@@ -284,9 +275,6 @@
                                                     <h2 class="d-flex align-items-center mb-0">
                                                         {{user.Review}}
                                                     </h2>
-                                                </div>
-                                                <div class="col-4 text-right">
-                                                    <span>{{ porsentage(user.Review) }} <i class="fa fa-arrow-up"></i></span>
                                                 </div>
                                             </div>
                                             <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -319,6 +307,8 @@
             const store = useStore();
             return {
                 store,
+                imageCover: store.coverImage,
+                imageProfile: store.imageUser,
                 user:[],
             };
         },
@@ -328,7 +318,14 @@
                     this.store.setuserProfileId(this.idUser)
                 }
                 return this.store.userProfileId;
-            }
+            },
+            avatar() {
+                return this.store.imageUser;
+            },
+            
+            coverImage() {
+                return this.store.coverImage;
+            },
         },
         watch: {
             '$route': 'getUserInfo'

@@ -9,25 +9,25 @@
                 <button class="btn btn-primary" @click="showModal = !showModal">Add Permission</button>
             </div>
             <table class="table">
-                <thead >
-                    <tr class="itemsPermission">
+                <thead class="">
+                    <tr>
                         <th class="px-3">Role</th>
                         <th class="px-3">Permissions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(routes, role) in permissions" :key="role"  class="itemsPermission">
+                    <tr v-for="(routes, user) in permissions" :key="user">
                         <td class="px-3">
-                            <p class="fw-bold mb-1 text-start" :class="role">{{ role }}</p>
+                            <p class="fw-bold mb-1 text-start" >{{ user }}</p>
                         </td>
                         <td class="d-flex flex-wrap gap-4 px-3" >
-                            <span @click="deletPermission(route.id,route.name)" class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index">
-                                {{ route.name }}
-                            </span>
-                        </td>
+                        <span @click="deletPermission(route.id,route.name)" class="cursor-point fw-normal mb-1 prmissions" v-for="(route, index) in routes" :key="index">
+                            {{ route.name }}
+                        </span>
+                    </td>
                     </tr>
                 </tbody>
-            </table>   
+            </table>    
             <section v-if="isLoading" style="height: 68vh;" class="d-flex align-items-center justify-content-center"> 
                 <Loader/>
             </section>  
@@ -79,11 +79,14 @@
     </div>
 </template>
 <style scoped>
+
     table {
         border-collapse: separate;
         border-spacing: 0 20px;
     }
-
+    .role-width {
+        width: 40px !important;
+    }
     table tr {
         box-shadow: 2px 3px 10px rgba(211, 211, 211, 0.635);
         border-radius: 3px;
@@ -173,11 +176,13 @@
         bottom: 5vh;
         right: 20px;
     }
+   
 </style>
 <script>
 import axios from 'axios';
 import select2 from "./AppSelect22.vue"
 import { useStore } from '@/store';
+import Swal from 'sweetalert2';
 import Loader  from '../User/AppLoader';
 export default {
     name: "AppAdminPermissions",
@@ -206,8 +211,6 @@ export default {
         .then(response =>{
             this.options=response.data.permsissions;
             this.Roles=response.data.roles;
-        }).catch(error =>{
-            console.log(error)
         });
     },  
     methods: {
@@ -217,6 +220,7 @@ export default {
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
             .then(response => {
+                console.log(response.data.permissions);
                 this.permissions = response.data.permissions;
                 this.isLoading = false;
             });
@@ -230,12 +234,20 @@ export default {
             axios.post(`${store.URL}addNewPermissions`,{formData: formData},{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
-            .then(response => {
-                console.log(response.data.data);
+            .then(() => {
                 this.getPermissions();
                 this.showModal = !this.showModal;
-            }).catch(error => {
-                console.log(error);
+                Swal.fire(
+                    'Success',
+                    'New Permission has been added successfully',
+                    'success'
+                )
+            }).catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
             });
         },
         deletPermission(id,name) {
@@ -248,13 +260,21 @@ export default {
             axios.post(`${store.URL}deleteNewPermissions`,{id: this.toBeDeleted},{
                 headers: { 'Authorization': `Bearer ${store.token}` }
             })
-            .then(response => {
+            .then(() => {
                 this.getPermissions();
-                console.log(response.data)
                 this.showConfirmModal = !this.showConfirmModal;
-            }).catch(error => {
-                console.log(error)
-            })
+                Swal.fire(
+                    'Success',
+                    'Permission has been deleted successfully',
+                    'success'
+                )
+            }).catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+            });
         }
     },
 }
