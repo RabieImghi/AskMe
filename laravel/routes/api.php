@@ -66,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getPostManage/{skip}', [PostController::class, 'getPostManage']);
     Route::post('/changeStatusPost', [PostController::class, 'changeStatusPost']);
     Route::get('/statiqueAdmin', [UserController::class, 'statiqueAdmin']);
-    Route::get('/getDataStatics', [UserController::class, 'getDataStatics']);
+    Route::get('/getDataStatics', [UserController::class, 'statiqueAdmin']);
     
     
 });

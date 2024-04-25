@@ -14,17 +14,17 @@
            
             <section class="userList container-mf border-bottom pb-4 pt-4 ">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 gutters-sm">
-                    <div v-for="user in users" :key="user.id" class="col mb-3">
+                    <div v-for="user in users" :key="user.id" class="col mb-3 " >
                         <div class="card" data-bs-toggle="modal" data-bs-target="#exampleModal"
                         @click="aficheDetailModel(user.name,user.firstName,user.lastName,user.about,
                         user.country,user.phone,user.followers,user.following,user.avatar, user.id)" > 
-                            <img :src="user.coverImage" alt="Cover" class="card-img-top">
+                            <img :src="user.coverImage" alt="Cover" class="card-img-top" style="height: 120px;">
                             <div class="card-body text-center"> 
-                                <img :src="user.avatar" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
+                                <img :src="user.avatar" style="width:100px; margin-top:-65px; height: 100px;" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
                                 <h5 class="card-title">{{user.name}}</h5>
                                 
-                                <p class="text-secondary mb-1" v-if="user.country">{{user.country}}</p>
-                                <p class="text-secondary mb-1" v-else>Null</p>
+                                <p class="text-secondary mb-1" v-if="user.country">Country : {{user.country}}</p>
+                                <p class="text-secondary mb-1" v-else>Country : Null</p>
                                 <p class="text-muted font-size-sm">{{user.followers}} Follower | {{ user.following }} following</p>
                             </div>
                             <div class="border rounded-1 d-flex justify-content-between"> 
@@ -52,7 +52,7 @@
                     <div class="modal-content" style="width: 80%;">
                         <div class="row pt-4 gutters-sm">
                             <div class="col-md-4 mb-3">
-                                <div class="card">
+                                <div class="card"  style="box-shadow: none;">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
                                             <img  :src="this.imageProfile" alt="Admin"
@@ -60,15 +60,15 @@
                                             <div class="mt-3">
                                                 <h4>{{this.name}}</h4>
                                                 <p class="text-secondary mb-1 fw-bold h6">{{this.followers}} Follower | {{ this.following }} Following</p>
-                                                <p class="text-muted font-size-sm" v-if="this.country">{{ this.country }}</p>
-                                                <p class="text-muted font-size-sm" v-else>Null</p>
+                                                <p class="text-muted font-size-sm" v-if="this.country">Country : {{ this.country }}</p>
+                                                <p class="text-muted font-size-sm" v-else>Country : Null</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-8 border-left">
-                                <div class="card mb-3">
+                                <div class="card mb-3" style="box-shadow: none;">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-sm-3">

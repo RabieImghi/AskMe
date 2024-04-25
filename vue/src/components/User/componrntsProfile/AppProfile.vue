@@ -1,7 +1,7 @@
 <template>
     <div class=" padding-none pe-4">
         <div class="bg-white shadow main-body">
-            <section class="cover" :style="{ backgroundImage: `url(${coverImage})`, backgroundSize: 'cover' }">
+            <section class="cover" :style="{ backgroundImage: `url(${user.imageCover})`, backgroundSize: 'cover' }">
                 <div class="coverInfo row p-3">
                     <div class="infoProfile col pt-4 pe-4">
                         <input type="file" class="d-none" @change="changeImage('Cover')" id="fileinputCover">
@@ -23,11 +23,11 @@
             </section> 
             <div class="row pt-4 gutters-sm">
                 <div class="col-md-4 mb-3">
-                    <div class="card">
+                    <div class="card"  style="box-shadow: none;">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <input type="file" @change="changeImage('Profil')" class="d-none" id="fileinputProfil">
-                                <img @click="uploadsImageProfile" :src="avatar" alt="Admin"
+                                <img @click="uploadsImageProfile" :src="user.imageProfile" alt="Admin"
                                     class="rounded-circle" width="150">
                                 <div class="mt-3">
                                     <h4>{{user.name}}</h4>
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card mt-3">
+                    <div class="card mt-3"  style="box-shadow: none;">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap mt-2 mb-2">
                                 <a :href='user.WebSite' target="_blank" class="text-secondary" style="text-decoration: none">
@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="col-md-8 border-left">
-                    <div class="card mb-3">
+                    <div class="card mb-3"  style="box-shadow: none;">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">
@@ -197,7 +197,7 @@
                             <hr>
                         </div>
                     </div>
-                    <div class="card mb-3">
+                    <div class="card mb-3"  style="box-shadow: none;">
                         <div class="">
                             <div class="row ">
                                 <div class="col-xl-6 col-lg-6">

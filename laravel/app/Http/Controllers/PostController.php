@@ -30,8 +30,7 @@ class PostController extends Controller
         if($request->tageId){
             $tageId = $request->tageId;
             $posts = $this->postRepository->allPostSearchByTage($tageId,$page);
-        }else
-        if($request->serchType){
+        }else if($request->serchType){
             $type =$request->serchType;
             $value = $request->searchQuery;
             if($type=='Post')

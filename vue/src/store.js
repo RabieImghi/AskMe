@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useStore = defineStore('main', {
   state: () => ({
-    URL: 'http://127.0.0.1:8000/api/',
+    URL: 'https://rabie.coders-strike.tech/api/',
     role_id: localStorage.getItem('role_id') || 3,
     user_id: localStorage.getItem('user_id') || null,
     user: localStorage.getItem('user') || null,

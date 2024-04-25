@@ -61,8 +61,7 @@ import { useStore } from '@/store';
         methods:{
             logout() {
                 const store = useStore();
-                localStorage.setItem('role_id', 3);
-                localStorage.removeItem('token');
+                localStorage.clear();
                 axios.get(`${store.URL}logout`);
             },
             toggleAside(){
